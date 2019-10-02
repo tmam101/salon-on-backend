@@ -10,6 +10,7 @@ async function start() {
 	database.connect();
 	setupRefresh();
 	await database.runExampleQueries();
+	//TODO Test
 	// TODO Set up this code on github first, then create a new heroku project and connect it to that repo, then we can use github with it.
 	// https://www.freecodecamp.org/news/how-to-deploy-a-nodejs-app-to-heroku-from-github-without-installing-heroku-on-your-machine-433bec770efe/
 	// TODO Consider CircleCI which is auto tests

@@ -7,7 +7,7 @@ const 	thisURL		= "salon-on-backend.herokuapp.com"
 //MARK: SERVER & SETUP
 async function start() {
 	await network.startServer();
-	database.connect();
+	// database.connect();
 	setupRefresh();
 	// await database.runExampleQueries();
 	// await database.distanceBetweenTwoPoints();

@@ -83,7 +83,7 @@ async function distanceBetweenTwoPoints(origin, destination) {
   destination.replace(" ", "+")
   destination.replace(",", "")
   const baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
-  const parameters = "origins=" + address1 + "&destinations=" + address2 + "&key=" + googleAPIKEY
+  const parameters = "origins=" + origin + "&destinations=" + destination + "&key=" + googleAPIKEY
   const calculatedURL = baseURL + parameters
   var response = await network.get(calculatedURL)
   var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")

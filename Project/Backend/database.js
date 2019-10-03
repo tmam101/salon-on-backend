@@ -77,14 +77,15 @@ const googleAPIKEY='AIzaSyCgDS5ZY-EXYpG2lG-w50mqa8yM4bNX9Ls'
 const network = require('./network.js')
 
 async function distanceBetweenTwoPoints(origin, destination) {
-  // TODO could probably just do origin.replace
   // TODO Consider the matrix since this is a 3 way transaction
-  var address1 = origin.replace(" ", "+")
-  address1 = address1.replace(",", "")
-  var address2 = destination.replace(" ", "+")
-  address2 = address2.replace(",", "")
-  var response = await network.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + address1 + "&destinations=" + address2 + "&key=" + googleAPIKEY)
-  // console.log(response);
+  origin.replace(" ", "+")
+  origin.replace(",", "")
+  destination.replace(" ", "+")
+  destination.replace(",", "")
+  const baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
+  const parameters = "origins=" + address1 + "&destinations=" + address2 + "&key=" + googleAPIKEY
+  const calculatedURL = baseURL + parameters
+  var response = await network.get(calculatedURL)
   var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
   console.log(distanceInMiles)
 }

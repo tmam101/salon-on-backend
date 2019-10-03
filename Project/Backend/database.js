@@ -85,7 +85,8 @@ async function distanceBetweenTwoPoints(origin, destination) {
   address2 = address2.replace(",", "")
   var response = await network.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + address1 + "&destinations=" + address2 + "&key=" + googleAPIKEY)
   // console.log(response);
-  console.log(response.rows[0].elements[0].distance.text)
+  var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
+  console.log(distanceInMiles)
 }
 
 exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;

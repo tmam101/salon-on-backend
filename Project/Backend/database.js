@@ -73,7 +73,7 @@
 // exports.runExampleQueries = runExampleQueries;
 // exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;
 
-const googleAPIKEY='AIzaSyD_v4kiyVsjwJ0S-mb9fSaqZ-PEcH_Ww_A'
+const googleAPIKEY='AIzaSyCgDS5ZY-EXYpG2lG-w50mqa8yM4bNX9Ls'
 const network = require('./network.js')
 
 async function distanceBetweenTwoPoints(origin, destination) {

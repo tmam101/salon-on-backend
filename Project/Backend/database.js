@@ -3,18 +3,10 @@ const mysql = require('mysql');
 
 //Database properties
 const connection = mysql.createConnection({
-	//for deployment
-//   host: process.env.HOSTNAME,
-//   user: process.env.DBUSER,
-//   password: process.env.DBPASSWORD,
-//   database: process.env.DATABASE
-
-  //for dev (Running node without heroku)
-  host: "database-1.caeuq5vnl2gn.us-east-1.rds.amazonaws.com",
-  user: "admin",
-  password: "salonondbinstance",
-  database: "testdatabase"
-  
+  host: process.env.HOSTNAME,
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
+  database: process.env.DATABASE
 
 });
 

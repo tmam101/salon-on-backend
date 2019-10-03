@@ -1,13 +1,13 @@
 const mysql = require('mysql');
-
+const googleAPIKEY='AIzaSyD_v4kiyVsjwJ0S-mb9fSaqZ-PEcH_Ww_A'
+const network = require('network.js')
 
 //Database properties
 const connection = mysql.createConnection({
   host: process.env.HOSTNAME,
   user: process.env.DBUSER,
-  password: process.env.DBPASSWORD,
+  password: process.env.PASSWORD,
   database: process.env.DATABASE
-
 });
 
 //Connect to DB
@@ -33,7 +33,7 @@ function disconnect(){
 //Playground
 async function runExampleQueries() {
 	// Example queries
-	return await runQuery('SELECT * FROM stylists;');
+	await runQuery("SELECT * FROM stylists")
 }
 
 
@@ -59,8 +59,13 @@ async function runQuery(SQLString) {
 	});
 	//Promise failed
 	promise.catch((message) => {console.log(message)});
-	
+
 	return results;
+}
+
+async function distanceBetweenTwoPoints(origin, destination) {
+  var response = await network.get("http://maps.googleapis.com/maps/api/distancematrix/json?origins=700+Bolinwood+Dr+Chapel+Hill+NC?destinations=209+South+Rd+Chapel+Hill+NC")
+  console.log(response);
 }
 
 // TODO Is this necessary? It might be useful during server crashes because of errors.
@@ -72,3 +77,4 @@ runExampleQueries();
 
 exports.connect = connect;
 exports.runExampleQueries = runExampleQueries;
+exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;

@@ -1,9 +1,7 @@
 const mysql = require('mysql');
-const googleAPIKEY='AIzaSyD_v4kiyVsjwJ0S-mb9fSaqZ-PEcH_Ww_A'
-const network = require('./network.js')
 
 // Database properties
-TODO This creates an error upon startup no matter what if these credentials are invalid.
+// TODO This creates an error upon startup no matter what if these credentials are invalid.
 const connection = mysql.createConnection({
   host: process.env.HOSTNAME,
   user: process.env.DBUSER,
@@ -62,11 +60,6 @@ async function runQuery(SQLString) {
 	promise.catch((message) => {console.log(message)});
 
 	return results;
-}
-
-async function distanceBetweenTwoPoints(origin, destination) {
-  var response = await network.get("http://maps.googleapis.com/maps/api/distancematrix/json?origins=700+Bolinwood+Dr+Chapel+Hill+NC?destinations=209+South+Rd+Chapel+Hill+NC")
-  console.log(response);
 }
 
 // TODO Is this necessary? It might be useful during server crashes because of errors.

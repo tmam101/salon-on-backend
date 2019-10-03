@@ -11,7 +11,8 @@ async function start() {
 	setupRefresh();
 	// await database.runExampleQueries();
 	// await database.distanceBetweenTwoPoints();
-	await database.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC", "209 South Rd Chapel Hill NC");
+	var distance = await database.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC", "209 South Rd Chapel Hill NC");
+	console.log(distance)
 	//TODO Test
 	// TODO Set up this code on github first, then create a new heroku project and connect it to that repo, then we can use github with it.
 	// https://www.freecodecamp.org/news/how-to-deploy-a-nodejs-app-to-heroku-from-github-without-installing-heroku-on-your-machine-433bec770efe/

@@ -87,7 +87,9 @@ async function distanceBetweenTwoPoints(origin, destination) {
   const calculatedURL = baseURL + parameters
   var response = await network.get(calculatedURL)
   var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
-  console.log(distanceInMiles)
+  var timeToTravel = response.rows[0].elements[0].duration.text // TODO This is so far unused
+  // TODO We can also get these values in meters and seconds.
+  return distanceInMiles
 }
 
 exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;

@@ -2,14 +2,14 @@ const mysql = require('mysql');
 const googleAPIKEY='AIzaSyD_v4kiyVsjwJ0S-mb9fSaqZ-PEcH_Ww_A'
 const network = require('./network.js')
 
-//Database properties
-//TODO This creates an error upon startup no matter what if these credentials are invalid.
-// const connection = mysql.createConnection({
-//   host: process.env.HOSTNAME,
-//   user: process.env.DBUSER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASE
-// });
+// Database properties
+TODO This creates an error upon startup no matter what if these credentials are invalid.
+const connection = mysql.createConnection({
+  host: process.env.HOSTNAME,
+  user: process.env.DBUSER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
+});
 
 //Connect to DB
 function connect(){

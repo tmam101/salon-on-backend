@@ -25,7 +25,7 @@ async function startServer() {
         post: testPost,
         get: async function() {
           respond(this.res, async function() {
-            var name = await database.getSomething()
+            var name = await database.runExampleQueries()
             console.log(name)
             return name
           })

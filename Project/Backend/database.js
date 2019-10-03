@@ -33,7 +33,7 @@ function disconnect(){
 //Playground
 async function runExampleQueries() {
 	// Example queries
-	await runQuery('SELECT * FROM stylists;');
+	return await runQuery('SELECT * FROM stylists;');
 }
 
 

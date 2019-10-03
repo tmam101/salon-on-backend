@@ -2,7 +2,7 @@
 const 	network			= require('./Backend/network.js')
 var 		CronJob 		= require('cron').CronJob;
 const 	database  	= require('./Backend/database.js')
-const 	thisURL		= "salon-on.herokuapp.com"
+const 	thisURL		= "salon-on-backend.herokuapp.com"
 
 //MARK: SERVER & SETUP
 async function start() {
@@ -23,7 +23,7 @@ start();
 
 function setupRefresh() {
 	var refreshJob = new CronJob('0 */2 * * * *', async function() {
-		var botResponse, options, body, botReq;
+		var  options, body;
 		options = {
 			hostname: thisURL,
 			path: '/refresh',

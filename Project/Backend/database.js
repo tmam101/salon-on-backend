@@ -79,7 +79,7 @@ const network = require('./network.js')
 async function distanceBetweenTwoPoints(origin, destination) {
   var response = await network.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=700+Bolinwood+Dr+Chapel+Hill+NC&destinations=209+South+Rd+Chapel+Hill+NC&key=" + googleAPIKEY)
   console.log(response);
-  console.log(response.elements)
+  console.log(response.rows[0].elements)
 }
 
 exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;

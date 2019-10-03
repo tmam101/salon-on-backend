@@ -81,7 +81,7 @@ async function distanceBetweenTwoPoints(origin, destination) {
   // TODO Consider the matrix since this is a 3 way transaction
   var address1 = origin.replace(" ", "+")
   address1 = address1.replace(",", "")
-  var address2 = origin.replace(" ", "+")
+  var address2 = destination.replace(" ", "+")
   address2 = address2.replace(",", "")
   var response = await network.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + address1 + "&destinations=" + address2 + "&key=" + googleAPIKEY)
   // console.log(response);

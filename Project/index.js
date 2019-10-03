@@ -9,7 +9,7 @@ async function start() {
 	await network.startServer();
 	database.connect();
 	setupRefresh();
-	await database.runExampleQueries();
+	// await database.runExampleQueries();
 	await database.distanceBetweenTwoPoints();
 	//TODO Test
 	// TODO Set up this code on github first, then create a new heroku project and connect it to that repo, then we can use github with it.

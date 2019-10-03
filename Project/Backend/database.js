@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const googleAPIKEY='AIzaSyD_v4kiyVsjwJ0S-mb9fSaqZ-PEcH_Ww_A'
-const network = require('network.js')
+const network = require('./network.js')
 
 //Database properties
 const connection = mysql.createConnection({

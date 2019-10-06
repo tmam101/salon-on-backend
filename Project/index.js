@@ -9,8 +9,9 @@ async function start() {
 	await network.startServer();
 	// database.connect();
 	setupRefresh();
-	database.runExampleQueries();
-	// await database.runExampleQueries();
+	// database.runExampleQueries();
+	await database.connect();
+	await database.runExampleQueries();
 	var distance = await database.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC", "209 South Rd Chapel Hill NC");
 	console.log(distance)
 	//TODO Test

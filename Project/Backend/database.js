@@ -9,11 +9,11 @@ const connection = mysql.createConnection({
   user: process.env.DBUSER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
-  
+
 });
 
 //Connect to DB
-function connect(){
+async function connect(){
 	connection.connect((err) => {
   if (err) {
       console.log('Unable to connect to Db');

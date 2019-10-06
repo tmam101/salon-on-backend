@@ -66,7 +66,7 @@ function testGet() {
   console.log("testGet")
   respond(this.res, function() {
     object = {
-      "test" : "test"
+      "testKey" : "testValue"
     }
     return object
   })

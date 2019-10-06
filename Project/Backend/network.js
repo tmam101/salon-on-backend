@@ -13,7 +13,7 @@ async function startServer() {
     router = new director.http.Router({
       '/test' : {
         post: respondToPost,
-        get: respondToGet
+        get: testGet
       },
       '/refresh' : {
         post: function() {
@@ -32,7 +32,6 @@ async function startServer() {
         }
       }
     });
-
     server = http.createServer(function (req, res) {
       req.chunks = [];
       req.on('data', function (chunk) {

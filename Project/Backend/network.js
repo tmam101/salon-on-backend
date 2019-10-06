@@ -66,7 +66,10 @@ function testPost() {
 function testGet() {
   console.log("testGet")
   respond(this.res, function() {
-    return "test"
+    object = {
+      "test" : "test"
+    }
+    return object
   })
 }
 

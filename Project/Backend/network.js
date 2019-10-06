@@ -11,7 +11,7 @@ var server, port, router;
 async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
-      '/' : {
+      '/test' : {
         post: respondToPost,
         get: respondToGet
       },
@@ -65,6 +65,9 @@ function testPost() {
 
 function testGet() {
   console.log("testGet")
+  respond(this.res, function() {
+    return "test"
+  })
 }
 
 function respondToGet() {

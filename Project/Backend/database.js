@@ -1,17 +1,16 @@
 const mysql = require('mysql');
-// TODO It is likely unsafe to have our api key in the code like this.
-// If we figure out a safer way, maybe by storing it in the database or on heroku, we should refresh this key to be a new key.
-const googleAPIKEY='AIzaSyCgDS5ZY-EXYpG2lG-w50mqa8yM4bNX9Ls'
+const googleAPIKEY=process.env.GOOGLE_API_KEY;
 const network = require('./network.js')
 
 // Database properties
 // TODO This creates an error upon startup no matter what if these credentials are invalid.
-// const connection = mysql.createConnection({
-//   host: process.env.HOSTNAME,
-//   user: process.env.DBUSER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASE
-// });
+const connection = mysql.createConnection({
+  host: process.env.HOSTNAME,
+  user: process.env.DBUSER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
+  
+});
 
 //Connect to DB
 function connect(){
@@ -36,7 +35,7 @@ function disconnect(){
 //Playground
 async function runExampleQueries() {
 	// Example queries
-	await runQuery("SELECT * FROM stylists")
+	await runQuery("SELECT * FROM hairstyles")
 }
 
 async function runQuery(SQLString) {

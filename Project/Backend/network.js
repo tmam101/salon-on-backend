@@ -66,7 +66,7 @@ async function respond(response, callback) {
 }
 
 async function getClientByID() {
-  if !(this.req.chunks[0]) {
+  if (!this.req.chunks[0]) {
     console.log("no parameters")
     return null
   }

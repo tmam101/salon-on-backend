@@ -79,7 +79,7 @@ async function getClientByID() {
   if (!clientID) {
     respond(this.res, function() {
       object = {
-        "serverError" : "Incorrect parameters"
+        "serverIssue" : "Incorrect parameters"
       }
       return object
     })

@@ -77,7 +77,9 @@ async function getClientByID() {
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
   if (!clientID) {
-    return "ERROR"
+    respond(this.res, function() {
+      return "ERROR"
+    })
   }
   if (Number(clientID) == 1) {
     respond(this.res, function() {

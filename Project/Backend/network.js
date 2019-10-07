@@ -143,6 +143,4 @@ function respondToPost() {
 
 
 exports.startServer = startServer;
-exports.get = get;
-exports.post = post;
 exports.getdata=getdata;

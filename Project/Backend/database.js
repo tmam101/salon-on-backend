@@ -47,6 +47,13 @@ async function getAllClients() {
 	// Example queries
 	return await runQuery("SELECT * FROM clients");
 }
+async function getAmenityByID(id){
+	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
+	console.log(result);
+	console.log(JSON.stringify(result));
+	return JSON.stringify(result);
+
+}
 
 
 async function runQuery(SQLString) {
@@ -78,6 +85,7 @@ exports.getAllAmenities= getAllAmenities;
 exports.getAllClients=getAllClients;
 exports.getAllHairStyles=getAllHairStyles;
 exports.getAllStylists=getAllStylists;
+exports.getAmenityByID=getAmenityByID;
 
 
 

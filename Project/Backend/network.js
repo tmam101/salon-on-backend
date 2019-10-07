@@ -74,6 +74,7 @@ async function getClientByID() {
     console.log("no parameters")
     return null
   }
+  console.log(this.req.chunks[0])
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
   if (Number(clientID) == 1) {

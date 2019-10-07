@@ -69,7 +69,7 @@ async function respond(response, callback) {
 function testPost() {
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
-  if Number(clientID) ==  {
+  if (Number(clientID) == 1) {
     respond(this.res, function() {
       object = {
         "firstName" : "Thomas"

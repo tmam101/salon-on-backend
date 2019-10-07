@@ -1,13 +1,11 @@
 const mysql = require('mysql');
-const googleAPIKEY=process.env.GOOGLE_API_KEY;
-const network = require('./network.js')
 
 // Database properties
 // TODO This creates an error upon startup no matter what if these credentials are invalid.
 const connection = mysql.createConnection({
   host: process.env.HOSTNAME,
   user: process.env.DBUSER,
-  password: process.env.PASSWORD,
+  password: process.env.DBPASSWORD,
   database: process.env.DATABASE
 
 });
@@ -16,7 +14,7 @@ const connection = mysql.createConnection({
 async function connect(){
 	connection.connect((err) => {
   if (err) {
-      console.log('Unable to connect to Db');
+	  console.log('Unable to connect to Db');
       return;
   }
   console.log('Connection established');
@@ -32,16 +30,28 @@ function disconnect(){
 	})
 }
 
-//Playground
-async function runExampleQueries() {
+//	QUERY FUNCTIONS
+async function getAllHairStyles() {
 	// Example queries
-	await runQuery("SELECT * FROM hairstyles")
+	return await runQuery("SELECT * FROM hairstyles");
+}
+async function getAllAmenities() {
+	// Example queries
+	return await runQuery("SELECT * FROM amenities");
+}
+async function getAllStylists() {
+	// Example queries
+	return await runQuery("SELECT * FROM stylists");
+}
+async function getAllClients() {
+	// Example queries
+	return await runQuery("SELECT * FROM clients");
 }
 
+
 async function runQuery(SQLString) {
-	let results = null;
 	//Promise, because of long fetch time
-	let promise = new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		connection.query(SQLString, (err,rows) => {
 			if(err) {
 				reject(err)
@@ -49,41 +59,26 @@ async function runQuery(SQLString) {
 				resolve(rows)
 			}
 		  });
-	})
-	//Promise successfull
-	promise.then((message) => {
+	}).then((message) => {
 		console.log('Query Executed successfully \n Data received from Db:\n');
-		console.log(message);
-		results = message;						//THIS IS WHERE DATA IS LOCATED. WE CAN RETURN IT OR DO WHATEVER
+		//console.log(message);
+		return message;					
+	}).catch((message) => {
+		console.log(message)
+		return false;		//	QUERY FAILED
 	});
-	//Promise failed
-	promise.catch((message) => {console.log(message)});
-
-	return results;
 }
 
-// TODO Is this necessary? It might be useful during server crashes because of errors.
-function restartServer() {
-	connection.end()
-	//connection = mysql.createConnection(process.env.DATABASE_URL);
-}
 
-async function distanceBetweenTwoPoints(origin, destination) {
-  // TODO Consider the matrix since this is a 3 way transaction
-  origin.replace(" ", "+")
-  origin.replace(",", "")
-  destination.replace(" ", "+")
-  destination.replace(",", "")
-  const baseURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
-  const parameters = "origins=" + origin + "&destinations=" + destination + "&key=" + googleAPIKEY
-  const calculatedURL = baseURL + parameters
-  var response = await network.get(calculatedURL)
-  var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
-  var timeToTravel = response.rows[0].elements[0].duration.text // TODO This is so far unused
-  // TODO We can also get these values in meters and seconds.
-  return distanceInMiles
-}
 
-exports.connect = connect;
-exports.runExampleQueries = runExampleQueries;
-exports.distanceBetweenTwoPoints = distanceBetweenTwoPoints;
+//exports
+exports.connect= connect;
+exports.disconnect=disconnect;
+exports.getAllAmenities= getAllAmenities;
+exports.getAllClients=getAllClients;
+exports.getAllHairStyles=getAllHairStyles;
+exports.getAllStylists=getAllStylists;
+
+
+
+

@@ -32,11 +32,12 @@ async function startServer() {
         }
       },
       '/stylists-by-location' : {
-        post:
-        get:
+        post: testPost,
+        get: testGet
       },
       '/salons-by-location' : {
-
+        post: testPost,
+        get: testGet
       }
     });
     server = http.createServer(function (req, res) {

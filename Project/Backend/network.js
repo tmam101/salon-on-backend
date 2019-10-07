@@ -54,7 +54,7 @@ async function respond(response, callback) {
 
 async function respond2(response, value){
   await response.writeHead(200, {"Content-Type" : "application/json"});
-  await response.write(value)
+  await response.write(JSON.stringify(value))
   await response.end()
 }
 
@@ -64,7 +64,7 @@ async function getAmenityByID(){
     return null
   }
   let id = JSON.parse(this.req.chunks[0]).id;
-  await respond2(this.res, database.getAmenityByID(id)[0]);
+  await respond2(this.res,database.getAmenityByID(id)[0]);
 
 }
 

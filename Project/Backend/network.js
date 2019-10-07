@@ -59,8 +59,9 @@ async function respond2(response, value){
 }
 
 async function getAmenityByID(){
+  console.log("called get amenity by id");
   if (!this.req.chunks[0]) {
-    console.log("Server error: No parameters")
+    console.log("Server error: No parameters");
     return null
   }
   let id = JSON.parse(this.req.chunks[0]).id;

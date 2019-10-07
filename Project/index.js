@@ -15,7 +15,6 @@ async function start() {
 
 	// var distance = await helperFunctions.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC", "209 South Rd Chapel Hill NC");
 	// console.log(distance)
-	console.log(await database.getAllClients());
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
 	// TODO set up review apps - these get created when you create a new pull request

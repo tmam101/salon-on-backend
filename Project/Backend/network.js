@@ -11,8 +11,8 @@ var server, port, router;
 async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
-      '/test' : {
-        post: testPost
+      '/client-by-id' : {
+        post: getClientByID
       },
       '/refresh' : {
         post: function() {
@@ -65,7 +65,11 @@ async function respond(response, callback) {
   response.end()
 }
 
-function testPost() {
+async function getClientByID() {
+  if !(this.req.chunks[0]) {
+    console.log("no parameters")
+    return null
+  }
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
   if (Number(clientID) == 1) {

@@ -79,6 +79,12 @@ async function respond2(response, value){
   await response.end()
 }
 
+async function getdata (){
+  let value = database.getAmenityByID(JSON.parse(this.req.chunks[0]).id);
+  console.log(value);
+  respond2(this.res, value);
+}
+
 function testPost() {
 
 }
@@ -175,3 +181,4 @@ function post(options, body) {
 exports.startServer = startServer;
 exports.get = get;
 exports.post = post;
+exports.getdata=getdata;

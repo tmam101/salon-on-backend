@@ -10,6 +10,7 @@ async function start() {
 	await network.startServer();
 	setupRefresh();
 	await database.connect();
+	await network.getdata();
 
 	console.log(await database.getAllAmenities());
 

@@ -13,7 +13,8 @@ async function startServer() {
     router = new director.http.Router({
       'amenity-by-id' : {
         post : function (){
-          let value = database.getAmenityByID(JSON.parse(this.req.chunks[0]).id)
+          let value = database.getAmenityByID(JSON.parse(this.req.chunks[0]).id);
+          console.log(value);
           respond2(this.res, value);
         }
       },

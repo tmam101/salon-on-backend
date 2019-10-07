@@ -11,9 +11,8 @@ var server, port, router;
 async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
-      '/test' : {
-        post: respondToPost,
-        get: testGet
+      '/client-by-id' : {
+        post: getClientByID
       },
       '/refresh' : {
         post: function() {
@@ -31,6 +30,14 @@ async function startServer() {
           })
         }
       }
+      // '/stylists-by-location' : {
+      //   post: testPost,
+      //   get: testGet
+      // },
+      // '/salons-by-location' : {
+      //   post: testPost,
+      //   get: testGet
+      // }
     });
     server = http.createServer(function (req, res) {
       req.chunks = [];
@@ -52,14 +59,47 @@ async function startServer() {
 }
 
 async function respond(response, callback) {
-  response.writeHead(200, {"Content-Type" : "application/json"});
+  await response.writeHead(200, {"Content-Type" : "application/json"});
   var result = await callback()
-  response.write(JSON.stringify(result))
-  response.end()
+  await response.write(JSON.stringify(result))
+  await response.end()
 }
 
 function testPost() {
-  console.log("testPost")
+
+}
+
+async function getClientByID() {
+  if (!this.req.chunks[0]) {
+    console.log("no parameters")
+    return null
+  }
+  var request = JSON.parse(this.req.chunks[0])
+  var clientID = request.clientID
+  if (!clientID) {
+    await respond(this.res, function() {
+      console.log("API issue: Incorrect parameters")
+      object = {
+        "serverIssue" : "Incorrect parameters"
+      }
+      return object
+    })
+  }
+  if (Number(clientID) == 1) {
+    await respond(this.res, function() {
+      object = {
+        "firstName" : "Thomas"
+      }
+      return object
+    })
+  } else {
+    await respond(this.res, function() {
+      object = {
+        "firstName" : "Ethan"
+      }
+      return object
+    })
+  }
 }
 
 function testGet() {

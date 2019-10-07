@@ -65,6 +65,10 @@ async function respond(response, callback) {
   response.end()
 }
 
+function testPost() {
+
+}
+
 async function getClientByID() {
   if (!this.req.chunks[0]) {
     console.log("no parameters")

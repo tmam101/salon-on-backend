@@ -12,7 +12,7 @@ async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
       '/test' : {
-        post: respondToPost,
+        post: testPost,
         get: testGet
       },
       '/refresh' : {
@@ -30,6 +30,13 @@ async function startServer() {
             return name
           })
         }
+      },
+      '/stylists-by-location' : {
+        post:
+        get:
+      },
+      '/salons-by-location' : {
+
       }
     });
     server = http.createServer(function (req, res) {
@@ -60,6 +67,8 @@ async function respond(response, callback) {
 
 function testPost() {
   console.log("testPost")
+  var request = JSON.parse(this.req.chunks[0])
+  console.log(request)
 }
 
 function testGet() {

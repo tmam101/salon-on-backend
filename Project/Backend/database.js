@@ -17,7 +17,7 @@ async function connect(){
 	  console.log('Unable to connect to Db');
       return;
   }
-  console.log('Connection established');
+  console.log('DB connection established');
 });
 }
 
@@ -48,10 +48,10 @@ async function getAllClients() {
 	return await runQuery("SELECT * FROM clients");
 }
 async function getAmenityByID(id){
-	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
+	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`)[0];
+	//result = JSON.stringify(result);
 	console.log(result);
-	console.log(JSON.stringify(result));
-	return JSON.stringify(result);
+	return result;
 
 }
 
@@ -67,7 +67,8 @@ async function runQuery(SQLString) {
 			}
 		  });
 	}).then((message) => {
-		console.log('Query Executed successfully \n Data received from Db:\n');
+		console.log('Query Executed successfully');
+		//console.log(`Data received from Db:`)
 		//console.log(message);
 		return message;					
 	}).catch((message) => {

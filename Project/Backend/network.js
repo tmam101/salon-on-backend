@@ -77,7 +77,7 @@ async function getClientByID() {
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
   if (!clientID) {
-    respond(this.res, function() {
+    await respond(this.res, function() {
       console.log("API issue: Incorrect parameters")
       object = {
         "serverIssue" : "Incorrect parameters"
@@ -86,14 +86,14 @@ async function getClientByID() {
     })
   }
   if (Number(clientID) == 1) {
-    respond(this.res, function() {
+    await respond(this.res, function() {
       object = {
         "firstName" : "Thomas"
       }
       return object
     })
   } else {
-    respond(this.res, function() {
+    await respond(this.res, function() {
       object = {
         "firstName" : "Ethan"
       }

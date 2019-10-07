@@ -10,7 +10,7 @@ async function start() {
 	await network.startServer();
 	setupRefresh();
 	await database.connect();
-	
+
 	console.log(await database.getAllAmenities());
 
 	var distance = await helperFunctions.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC", "209 South Rd Chapel Hill NC");
@@ -22,10 +22,10 @@ async function start() {
 
 start();
 
-//Alternate refresh?
-setInterval(function() {
-    http.get("http://salon-on-backend.herokuapp.com");
-}, 300000); // every 5 minutes (300000)
+// //Alternate refresh?
+// setInterval(function() {
+//     http.get("http://salon-on-backend.herokuapp.com");
+// }, 300000); // every 5 minutes (300000)
 
 
 //REFRESH

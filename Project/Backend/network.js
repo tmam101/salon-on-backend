@@ -12,7 +12,7 @@ async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
       '/client-by-id' : {
-        post: getClientByID
+        post: await getClientByID
       },
       '/refresh' : {
         post: function() {
@@ -78,6 +78,7 @@ async function getClientByID() {
   var clientID = request.clientID
   if (!clientID) {
     respond(this.res, function() {
+      console.log("API issue: Incorrect parameters")
       object = {
         "serverIssue" : "Incorrect parameters"
       }

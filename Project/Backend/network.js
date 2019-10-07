@@ -67,17 +67,23 @@ async function respond(response, callback) {
 }
 
 function testPost() {
-  console.log("testPost")
-  console.log(this.req.chunks[0])
   var request = JSON.parse(this.req.chunks[0])
-  console.log(request)
-  console.log(request.key)
-  respond(this.res, function() {
-    object = {
-      "testKey" : "testValue"
-    }
-    return object
-  })
+  var clientID = request.clientID
+  if Number(clientID) ==  {
+    respond(this.res, function() {
+      object = {
+        "firstName" : "Thomas"
+      }
+      return object
+    })
+  } else {
+    respond(this.res, function() {
+      object = {
+        "firstName" : "Ethan"
+      }
+      return object
+    })
+  }
 }
 
 function testGet() {

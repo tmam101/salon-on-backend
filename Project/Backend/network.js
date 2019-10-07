@@ -11,6 +11,13 @@ var server, port, router;
 async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
+      'amenity-by-id' : {
+        post : function (){
+          let value = database.getAmenityByID(JSON.parse(this.req.chunks[0]).id)
+          respond2(this.res, value);
+        }
+      },
+
       '/client-by-id' : {
         post: getClientByID
       },
@@ -62,6 +69,12 @@ async function respond(response, callback) {
   await response.writeHead(200, {"Content-Type" : "application/json"});
   var result = await callback()
   await response.write(JSON.stringify(result))
+  await response.end()
+}
+
+async function respond2(response, value){
+  await response.writeHead(200, {"Content-Type" : "application/json"});
+  await response.write(value)
   await response.end()
 }
 

@@ -78,7 +78,10 @@ async function getClientByID() {
   var clientID = request.clientID
   if (!clientID) {
     respond(this.res, function() {
-      return "ERROR"
+      object = {
+        "ERROR" : "Incorrect parameters"
+      }
+      return object
     })
   }
   if (Number(clientID) == 1) {

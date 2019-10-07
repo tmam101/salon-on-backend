@@ -71,6 +71,7 @@ async function getAmenityByID(){
 
 
 async function getClientByID() {
+  console.log("called get client by id");
   if (!this.req.chunks[0]) {
     console.log("no parameters")
     return null

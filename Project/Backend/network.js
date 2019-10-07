@@ -74,6 +74,8 @@ function testPost() {
 
 function testGet() {
   console.log("testGet")
+  var request = JSON.parse(this.req.chunks[0])
+  console.log(request)
   respond(this.res, function() {
     object = {
       "testKey" : "testValue"

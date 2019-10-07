@@ -30,15 +30,15 @@ async function startServer() {
             return name
           })
         }
-      },
-      '/stylists-by-location' : {
-        post: testPost,
-        get: testGet
-      },
-      '/salons-by-location' : {
-        post: testPost,
-        get: testGet
       }
+      // '/stylists-by-location' : {
+      //   post: testPost,
+      //   get: testGet
+      // },
+      // '/salons-by-location' : {
+      //   post: testPost,
+      //   get: testGet
+      // }
     });
     server = http.createServer(function (req, res) {
       req.chunks = [];

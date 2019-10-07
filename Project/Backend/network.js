@@ -59,10 +59,10 @@ async function startServer() {
 }
 
 async function respond(response, callback) {
-  response.writeHead(200, {"Content-Type" : "application/json"});
+  await response.writeHead(200, {"Content-Type" : "application/json"});
   var result = await callback()
-  response.write(JSON.stringify(result))
-  response.end()
+  await response.write(JSON.stringify(result))
+  await response.end()
 }
 
 function testPost() {

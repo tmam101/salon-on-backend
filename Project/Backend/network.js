@@ -12,7 +12,7 @@ async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
       '/client-by-id' : {
-        post: await getClientByID
+        post: getClientByID
       },
       '/refresh' : {
         post: function() {

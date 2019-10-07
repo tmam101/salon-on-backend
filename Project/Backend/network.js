@@ -12,8 +12,7 @@ async function startServer() {
   var promise = new Promise(function(resolve, reject) {
     router = new director.http.Router({
       '/test' : {
-        post: testPost,
-        get: testGet
+        post: testPost
       },
       '/refresh' : {
         post: function() {

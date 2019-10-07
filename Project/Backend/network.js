@@ -69,7 +69,7 @@ async function respond(response, callback) {
 function testPost() {
   console.log("testPost")
   var request = JSON.parse(this.req.chunks[0])
-  console.log(request)
+  console.log(this.req.chunks)
   respond(this.res, function() {
     object = {
       "testKey" : "testValue"

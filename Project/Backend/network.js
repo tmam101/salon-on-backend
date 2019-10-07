@@ -79,7 +79,7 @@ async function getClientByID() {
   console.log(request)
   var clientID = request.clientID
   if (!clientID) {
-    console.log("no client id")
+    return null
   }
   if (Number(clientID) == 1) {
     respond(this.res, function() {

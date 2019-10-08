@@ -9,12 +9,10 @@ async function start() {
 	await server.startServer();
 	//setupRefresh();
 	await database.connect();
-	network.get(testURL)
+	refresh();
 
 	//REFRESH -- CHANGE TO http://localhost:3000/refresh FOR LOCAL TESTING
-	setInterval(function() {
-		network.get(testURL);
-	}, 300000); // every 5 minutes (300000)
+	setInterval(await refresh, 300000/10); // every 5 minutes (300000)
 
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
@@ -22,3 +20,12 @@ async function start() {
 }
 
 start();
+
+async function refresh() {
+	options = {
+		hostname: testURL,
+		path: '/refresh',
+		method: 'POST'
+	};
+	network.post(options, null);
+}

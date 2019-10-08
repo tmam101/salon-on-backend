@@ -79,7 +79,7 @@ async function getAmenityByID(){
   let id = JSON.parse(this.req.chunks[0]).id;
   let amenity = database.getAmenityByID(id)
   console.log(amenity)
-  console.log(JSON.parse(amenity));
+  console.log(amenity.id);
   await respond2(this.res,database.getAmenityByID(id));
 
 }

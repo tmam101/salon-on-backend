@@ -78,7 +78,9 @@ async function getAmenityByID(){
   }
   let id = JSON.parse(this.req.chunks[0]).id;
   let amenity = await database.getAmenityByID(id)
-  await respond2(this.res,amenity);
+  if (amenity) {
+    await respond2(this.res,amenity);
+  }
 }
 
 //Returns client from id, TODO: CHANGE TO USE RESPOND #2

@@ -37,9 +37,9 @@ let router = new director.http.Router({
     get: refresh
   },
   '/' : {
-    get: () => {
+    get: function() {
       console.log("made it")
-      refresh()
+      refresh
   }
 });
 

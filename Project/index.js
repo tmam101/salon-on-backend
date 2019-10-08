@@ -4,6 +4,7 @@ const		network 	= require('./Backend/network.js')
 const 	database  = require('./Backend/database.js')
 const 	thisURL		= "salon-on-backend.herokuapp.com"
 const 	testURL 	= "salon-on-thomas.herokuapp.com"
+
 //SERVER & SETUP
 async function start() {
 	await server.startServer();

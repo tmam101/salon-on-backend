@@ -103,7 +103,7 @@ async function getClientByID() {
     object = {
       "firstName" : "Thomas"
     }
-    respond2(object)
+    respond2(this.res, object)
     // await respond(this.res, function() {
     //   object = {
     //     "firstName" : "Thomas"

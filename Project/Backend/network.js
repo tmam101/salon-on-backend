@@ -20,7 +20,7 @@ let server = http.createServer(async (req, res) => {
 //FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
 function startServer(){
   let port = Number(process.env.PORT || 5000);
-  server.listen(1234);
+  server.listen(port);
   console.log("http server started")
 }
 

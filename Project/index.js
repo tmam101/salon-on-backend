@@ -12,7 +12,7 @@ async function start() {
 
 	//REFRESH -- CHANGE TO http://localhost:3000/refresh FOR LOCAL TESTING
 	setInterval(function() {
-		http.get("http://localhost:3000/refresh");
+		http.get("salon-on-backend.herokuapp.com/refresh");
 	}, 300000); // every 5 minutes (300000)
 
 	//TODO Test

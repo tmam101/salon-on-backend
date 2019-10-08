@@ -17,6 +17,7 @@ async function start() {
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
 	// TODO set up review apps - these get created when you create a new pull request
+	// TODO Test sending multiple requests at once to see if the server can handle it.
 }
 
 start();

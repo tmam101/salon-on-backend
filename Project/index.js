@@ -27,5 +27,8 @@ async function refresh() {
 		path: '/refresh',
 		method: 'POST'
 	};
-	network.post(options, null);
+	body = {
+    "text" : "refresh"
+  };
+	network.post(options, body);
 }

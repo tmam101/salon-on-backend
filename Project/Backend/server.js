@@ -33,7 +33,7 @@ let router = new director.http.Router({
     post: getClientByID
   },
   '/refresh' : {
-    get: refresh
+    post: refresh
   },
   '/' : {
     // get: () => {

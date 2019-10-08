@@ -40,6 +40,7 @@ let router = new director.http.Router({
     get: function() {
       console.log("made it")
       refresh
+    }
   }
 });
 

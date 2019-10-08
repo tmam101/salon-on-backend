@@ -33,26 +33,19 @@ let router = new director.http.Router({
     post: getClientByID
   },
   '/refresh' : {
-    post: refresh
+    post: refresh,
+    get: refresh
   },
   '/' : {
-    // get: () => {
-    //   console.log("made it");
-    // }
-    get: refresh
+    get: () => {
+      console.log("made it")
+      refresh()
   }
 });
 
 
-//FUNCTIONS FOR HANDLEING RESPONSE. #2 SEEMS TO BE WORKING. MAY REMOVE #1
-// async function respond(response, callback) {
-//   await response.writeHead(200, {"Content-Type" : "application/json"});
-//   var result = await callback()
-//   await response.write(JSON.stringify(result))
-//   await response.end()
-// }
-
-async function respond2(response, value){
+//FUNCTION FOR HANDLING RESPONSE.
+async function respond(response, value){
   await response.writeHead(200, {"Content-Type" : "application/json"});
   await response.write(JSON.stringify(value))
   await response.end()
@@ -64,10 +57,11 @@ async function respond2(response, value){
 
 async function refresh(){
   console.log("refreshed");
+  // Respond only works with objects.
   object = {
     "response" : "1"
   }
-  respond2(this.res, object);
+  respond(this.res, object);
 }
 
 //Returns JSON OBJECT of the matching amenity.
@@ -81,7 +75,7 @@ async function getAmenityByID(){
   let amenity = await database.getAmenityByID(id)
   // TODO we are getting undefined on the first one here for some reason.
   if (amenity) {
-    await respond2(this.res,amenity);
+    await respond(this.res,amenity);
   }
 }
 
@@ -99,17 +93,17 @@ async function getClientByID() {
     object = {
       "serverIssue" : "Incorrect parameters"
     }
-    await respond2(this.res, object)
+    await respond(this.res, object)
   }
   if (Number(clientID) == 1) {
     object = {
       "firstName" : "Thomas"
     }
-    await respond2(this.res, object)
+    await respond(this.res, object)
   } else {
     object = {
       "firstName" : "Ethan"
     }
-    await respond2(this.res, object)
+    await respond(this.res, object)
   }
 }

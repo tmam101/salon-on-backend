@@ -1,15 +1,19 @@
 //PROPERTIES
 const 	network		= require('./Backend/network.js')
 const 	database  	= require('./Backend/database.js')
-const 	helperFunctions 	= require('./helperFunctions.js')
-var 	CronJob 	= require('cron').CronJob;
 const 	thisURL		= "salon-on-backend.herokuapp.com"
+const http = require('http');
 
 //SERVER & SETUP
 async function start() {
 	await network.startServer();
-	setupRefresh();
+	//setupRefresh();
 	await database.connect();
+
+	//REFRESH -- CHANGE TO http://localhost:3000/refresh FOR LOCAL TESTING
+	setInterval(function() {
+		http.get("http://localhost:3000/refresh");
+	}, 300000); // every 5 minutes (300000)
 
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
@@ -18,25 +22,6 @@ async function start() {
 
 start();
 
-// //Alternate refresh?
-// setInterval(function() {
-//     http.get("http://salon-on-backend.herokuapp.com");
-// }, 300000); // every 5 minutes (300000)
 
 
-//REFRESH
-function setupRefresh() {
-	var refreshJob = new CronJob('0 */2 * * * *', async function() {
-		var  options, body;
-		options = {
-			hostname: thisURL,
-			path: '/refresh',
-			method: 'POST'
-		};
-		body = {
-			"Refresh" : "Refresh"
-		};
-		network.post(options, body)
-	}, null, true, 'America/New_York')
-	refreshJob.start();
-}
+

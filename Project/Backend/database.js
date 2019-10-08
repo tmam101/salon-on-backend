@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 
 // Database properties
-// TODO This creates an error upon startup no matter what if these credentials are invalid.
 const connection = mysql.createConnection({
   host: process.env.HOSTNAME,
   user: process.env.DBUSER,
@@ -32,26 +31,21 @@ function disconnect(){
 
 //	QUERY FUNCTIONS
 async function getAllHairStyles() {
-	// Example queries
 	return await runQuery("SELECT * FROM hairstyles");
 }
 async function getAllAmenities() {
-	// Example queries
 	return await runQuery("SELECT * FROM amenities");
 }
 async function getAllStylists() {
-	// Example queries
 	return await runQuery("SELECT * FROM stylists");
 }
 async function getAllClients() {
-	// Example queries
 	return await runQuery("SELECT * FROM clients");
 }
 async function getAmenityByID(id){
-	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`)[0];
-	//result = JSON.stringify(result);
-	console.log(result);
-	return result;
+	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
+	console.log(result[0]);
+	return result[0];
 
 }
 

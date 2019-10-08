@@ -1,50 +1,49 @@
-const HTTPS     = require('https');
-const index     = require('../index.js')
 const http      = require('http');
 const director  = require('director');
 const database  = require('./database.js')
 //todo consider using express instead
+exports.startServer=startServer;
 
-var server, port, router;
+//CODE THAT SETS OF THE HTTP SERVER. 
+let server = http.createServer(async (req, res) => {
+  req.chunks = [];
+  req.on('data', function (chunk) {
+    req.chunks.push(chunk.toString());
+  });
 
-//MARK: SERVER
-async function startServer() {
-  var promise = new Promise(function(resolve, reject) {
-    router = new director.http.Router({
-      'amenity-by-id' : {
-        post : getAmenityByID
-      },
-      '/client-by-id' : {
-        post: getClientByID
-      },
-      '/refresh' : {
-        post: function() {
-          console.log("refreshed")
-        },
-        // get: testGet
-      }
-      // '/data' : {
-      //   post: testPost,
-      //   get: async function() {
-      //     respond(this.res, async function() {
-      //       var name = await database.runExampleQueries()
-      //       console.log(name)
-      //       return name
-      //     })
-      //   }
-      // }
-      // '/stylists-by-location' : {
-      //   post: testPost,
-      //   get: testGet
-      // },
-      // '/salons-by-location' : {
-      //   post: testPost,
-      //   get: testGet
-      // }
-    });
+  router.dispatch(req, res, function(err) {
+    res.writeHead(err.status, {"Content-Type": "text/plain"});
+    res.end(err.message);
+  });
+});
+
+//FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
+function startServer(){
+  let port = Number(process.env.PORT || 5000);
+  server.listen(1234);
+  console.log("http server started")
+}
+
+//ROUTER FOR FORWARDING REQUEST INFO TO METHODS
+let router = new director.http.Router({
+  '/amenity-by-id' : {
+    post : getAmenityByID
+  },
+  '/client-by-id' : {
+    post: getClientByID
+  },
+  '/refresh' : {
+    get: refresh
+  },
+  '/' : {
+    get: () => {
+      console.log("made it");
+    }
+  }
+});
 
 
-
+//FUNCTIONS FOR HANDLEING RESPONSE. #2 SEEMS TO BE WORKING. MAY REMOVE #1 
 async function respond(response, callback) {
   await response.writeHead(200, {"Content-Type" : "application/json"});
   var result = await callback()
@@ -58,6 +57,20 @@ async function respond2(response, value){
   await response.end()
 }
 
+//FUNCTION ASSOCIATED WITH REFRESH, NORMALLY WOULD JUST RESPOND WITH "1",
+//BUT I HAVE BEEN USING IT AS A TEST FUNCTION (BECAUSE IT REQUIRES NO PARAMETERS AND 
+// YOU CAN TEST WITH YOUR WEB BROWSER BY GOING TO address/refresh)
+
+async function refresh(){
+  console.log("refreshed");
+  // result = await database.getAmenityByID(1);
+  // console.log("got data");
+  // respond2(this.res, result);
+
+  respond2(this.res, 1);
+}
+
+//Returns JSON OBJECT of the matching amenity.
 async function getAmenityByID(){
   console.log("called get amenity by id");
   if (!this.req.chunks[0]) {
@@ -65,11 +78,11 @@ async function getAmenityByID(){
     return null
   }
   let id = JSON.parse(this.req.chunks[0]).id;
-  await respond2(this.res,database.getAmenityByID(id)[0]);
+  await respond2(this.res,database.getAmenityByID(id));
 
 }
 
-
+//Returns client from id, TODO: CHANGE TO USE RESPOND #2
 async function getClientByID() {
   console.log("called get client by id");
   if (!this.req.chunks[0]) {
@@ -104,26 +117,7 @@ async function getClientByID() {
   }
 }
 
-server = http.createServer(function (req, res) {
-      req.chunks = [];
-      req.on('data', function (chunk) {
-        req.chunks.push(chunk.toString());
-      });
-
-      router.dispatch(req, res, function(err) {
-        res.writeHead(err.status, {"Content-Type": "text/plain"});
-        res.end(err.message);
-      });
-    });
-      port = Number(process.env.PORT || 5000);
-      server.listen(port);
-      console.log("http server started")
-      resolve()
-  })
-  return promise
-}
 
 
 
 
-exports.startServer = startServer;

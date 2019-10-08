@@ -24,7 +24,7 @@ function post(options, body) {
   var botReq;
   botReq = HTTPS.request(options, function(res) {
     // console.log(res)
-    if(res.statusCode != 202) {
+    if(res.statusCode > 299 || res.statusCode < 200) {
       console.log('rejecting bad status code ' + res.statusCode);
     } else {
       // console.log('good status code')

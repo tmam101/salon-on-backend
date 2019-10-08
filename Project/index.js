@@ -9,10 +9,9 @@ async function start() {
 	await server.startServer();
 	//setupRefresh();
 	await database.connect();
-	refresh();
 
 	//REFRESH -- CHANGE TO http://localhost:3000/refresh FOR LOCAL TESTING
-	setInterval(await refresh, 300000/10); // every 5 minutes (300000)
+	setInterval(await refresh, 300000); // every 5 minutes (300000)
 
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests

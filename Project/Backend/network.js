@@ -1,3 +1,5 @@
+const HTTPS     = require('https');
+
 //MARK: HTTPS FUNCTIONS
 async function get(url) {
   var promise = new Promise(function(resolve, reject) {

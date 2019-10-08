@@ -1,8 +1,8 @@
 //PROPERTIES
 const 	server		= require('./Backend/server.js')
-const 	database  	= require('./Backend/database.js')
+const		network 	= require('./Backend/network.js')
+const 	database  = require('./Backend/database.js')
 const 	thisURL		= "salon-on-backend.herokuapp.com"
-const http = require('http');
 
 //SERVER & SETUP
 async function start() {

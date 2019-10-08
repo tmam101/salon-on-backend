@@ -45,12 +45,12 @@ let router = new director.http.Router({
 
 
 //FUNCTIONS FOR HANDLEING RESPONSE. #2 SEEMS TO BE WORKING. MAY REMOVE #1
-async function respond(response, callback) {
-  await response.writeHead(200, {"Content-Type" : "application/json"});
-  var result = await callback()
-  await response.write(JSON.stringify(result))
-  await response.end()
-}
+// async function respond(response, callback) {
+//   await response.writeHead(200, {"Content-Type" : "application/json"});
+//   var result = await callback()
+//   await response.write(JSON.stringify(result))
+//   await response.end()
+// }
 
 async function respond2(response, value){
   await response.writeHead(200, {"Content-Type" : "application/json"});
@@ -95,31 +95,21 @@ async function getClientByID() {
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
   if (!clientID) {
-    await respond(this.res, function() {
-      console.log("API issue: Incorrect parameters")
-      object = {
-        "serverIssue" : "Incorrect parameters"
-      }
-      return object
-    })
+    onsole.log("API issue: Incorrect parameters")
+    object = {
+      "serverIssue" : "Incorrect parameters"
+    }
+    await respond2(this.res, object)
   }
   if (Number(clientID) == 1) {
     object = {
       "firstName" : "Thomas"
     }
-    respond2(this.res, object)
-    // await respond(this.res, function() {
-    //   object = {
-    //     "firstName" : "Thomas"
-    //   }
-    //   return object
-    // })
+    await respond2(this.res, object)
   } else {
-    await respond(this.res, function() {
-      object = {
-        "firstName" : "Ethan"
-      }
-      return object
-    })
+    object = {
+      "firstName" : "Ethan"
+    }
+    await respond2(this.res, object)
   }
 }

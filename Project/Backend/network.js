@@ -4,7 +4,7 @@ const database  = require('./database.js')
 //todo consider using express instead
 exports.startServer=startServer;
 
-//CODE THAT SETS OF THE HTTP SERVER. 
+//CODE THAT SETS OF THE HTTP SERVER.
 let server = http.createServer(async (req, res) => {
   req.chunks = [];
   req.on('data', function (chunk) {
@@ -43,7 +43,7 @@ let router = new director.http.Router({
 });
 
 
-//FUNCTIONS FOR HANDLEING RESPONSE. #2 SEEMS TO BE WORKING. MAY REMOVE #1 
+//FUNCTIONS FOR HANDLEING RESPONSE. #2 SEEMS TO BE WORKING. MAY REMOVE #1
 async function respond(response, callback) {
   await response.writeHead(200, {"Content-Type" : "application/json"});
   var result = await callback()
@@ -58,16 +58,15 @@ async function respond2(response, value){
 }
 
 //FUNCTION ASSOCIATED WITH REFRESH, NORMALLY WOULD JUST RESPOND WITH "1",
-//BUT I HAVE BEEN USING IT AS A TEST FUNCTION (BECAUSE IT REQUIRES NO PARAMETERS AND 
+//BUT I HAVE BEEN USING IT AS A TEST FUNCTION (BECAUSE IT REQUIRES NO PARAMETERS AND
 // YOU CAN TEST WITH YOUR WEB BROWSER BY GOING TO address/refresh)
 
 async function refresh(){
   console.log("refreshed");
-  // result = await database.getAmenityByID(1);
-  // console.log("got data");
-  // respond2(this.res, result);
-
-  respond2(this.res, 1);
+  object = {
+    "response" : "1"
+  }
+  respond2(this.res, object);
 }
 
 //Returns JSON OBJECT of the matching amenity.
@@ -101,12 +100,16 @@ async function getClientByID() {
     })
   }
   if (Number(clientID) == 1) {
-    await respond(this.res, function() {
-      object = {
-        "firstName" : "Thomas"
-      }
-      return object
-    })
+    object = {
+      "firstName" : "Thomas"
+    }
+    respond2(object)
+    // await respond(this.res, function() {
+    //   object = {
+    //     "firstName" : "Thomas"
+    //   }
+    //   return object
+    // })
   } else {
     await respond(this.res, function() {
       object = {
@@ -116,8 +119,3 @@ async function getClientByID() {
     })
   }
 }
-
-
-
-
-

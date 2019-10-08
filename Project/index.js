@@ -22,6 +22,8 @@ async function start() {
 start();
 
 async function refresh() {
+	// Thomas: I was getting errors unless this is sent via post request in this manner.
+	// If it worked for you Ethan, maybe we should talk about this.
 	options = {
 		hostname: testURL,
 		path: '/refresh',

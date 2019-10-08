@@ -58,7 +58,8 @@ async function respond(response, value){
 
 async function refresh(){
   console.log("refreshed");
-  // Respond only works with objects.
+  // Thomas: Respond only works with objects, I think.
+  // I was getting an error with the 1 at least.
   object = {
     "response" : "1"
   }
@@ -68,10 +69,12 @@ async function refresh(){
 //Returns JSON OBJECT of the matching amenity.
 async function getAmenityByID(){
   console.log("called get amenity by id");
+  // If no parameters,
   if (!this.req.chunks[0]) {
     console.log("Server error: No parameters");
     return null
   }
+  // Get amenity by ID and send it if its found.
   let id = JSON.parse(this.req.chunks[0]).id;
   let amenity = await database.getAmenityByID(id)
   if (amenity) {
@@ -81,15 +84,18 @@ async function getAmenityByID(){
   }
 }
 
-//Returns client from id, TODO: CHANGE TO USE RESPOND #2
+// Returns client from id
 async function getClientByID() {
   console.log("called get client by id");
+  // Handle no parameters
   if (!this.req.chunks[0]) {
     console.log("no parameters")
     return null
   }
+  // Get clientID from parameters
   var request = JSON.parse(this.req.chunks[0])
   var clientID = request.clientID
+  // Handle incorrect parameters
   if (!clientID) {
     onsole.log("API issue: Incorrect parameters")
     object = {
@@ -97,12 +103,14 @@ async function getClientByID() {
     }
     await respond(this.res, object)
   }
+  // Handle client ID 1
   if (Number(clientID) == 1) {
     object = {
       "firstName" : "Thomas"
     }
     await respond(this.res, object)
   } else {
+    // Handle other client IDs
     object = {
       "firstName" : "Ethan"
     }

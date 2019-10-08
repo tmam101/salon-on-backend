@@ -36,9 +36,10 @@ let router = new director.http.Router({
     get: refresh
   },
   '/' : {
-    get: () => {
-      console.log("made it");
-    }
+    // get: () => {
+    //   console.log("made it");
+    // }
+    get: refresh
   }
 });
 
@@ -78,6 +79,7 @@ async function getAmenityByID(){
   }
   let id = JSON.parse(this.req.chunks[0]).id;
   let amenity = await database.getAmenityByID(id)
+  // TODO we are getting undefined on the first one here for some reason.
   if (amenity) {
     await respond2(this.res,amenity);
   }

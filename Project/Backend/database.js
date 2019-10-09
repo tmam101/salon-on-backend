@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-// Database properties
+// DATABASE PROPERTIES
 const connection = mysql.createConnection({
   host: process.env.HOSTNAME,
   user: process.env.DBUSER,
@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
 
 });
 
-//Connect to DB
+//CONNECT TO DB
 async function connect(){
 	connection.connect((err) => {
   if (err) {
@@ -20,7 +20,7 @@ async function connect(){
 });
 }
 
-//Desconnect from DB
+//DISCONNECT FROM DB
 function disconnect(){
 	connection.end ((err) => {
 		// The connection is terminated gracefully
@@ -44,12 +44,16 @@ async function getAllClients() {
 }
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
-	console.log(result[0]);
+	console.log("Got amenity from DB");
 	return result[0];
-
+}
+async function getClientByID(id){
+	result = await renQuery(`SELECT * FROM clients WHERE cid =${id}`);
+	console.log("Got client from DB");
+	return result[0];
 }
 
-
+//EXECUTE QUERY
 async function runQuery(SQLString) {
 	//Promise, because of long fetch time
 	return new Promise((resolve, reject) => {
@@ -73,7 +77,7 @@ async function runQuery(SQLString) {
 
 
 
-//exports
+//EXPORTS
 exports.connect= connect;
 exports.disconnect=disconnect;
 exports.getAllAmenities= getAllAmenities;
@@ -81,6 +85,7 @@ exports.getAllClients=getAllClients;
 exports.getAllHairStyles=getAllHairStyles;
 exports.getAllStylists=getAllStylists;
 exports.getAmenityByID=getAmenityByID;
+exports.getClientByID=getClientByID;
 
 
 

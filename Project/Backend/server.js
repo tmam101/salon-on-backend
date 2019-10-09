@@ -84,36 +84,20 @@ async function getAmenityByID(){
   }
 }
 
-// Returns client from id
-async function getClientByID() {
-  console.log("called get client by id");
-  // Handle no parameters
+// RETURNS CLIENT BY ID
+async function getClientByID(){
+  console.log("called get Client by id");
+  // If no parameters,
   if (!this.req.chunks[0]) {
-    console.log("no parameters")
+    console.log("Server error: No parameters");
     return null
   }
-  // Get clientID from parameters
-  var request = JSON.parse(this.req.chunks[0])
-  var clientID = request.clientID
-  // Handle incorrect parameters
-  if (!clientID) {
-    onsole.log("API issue: Incorrect parameters")
-    object = {
-      "serverIssue" : "Incorrect parameters"
-    }
-    await respond(this.res, object)
-  }
-  // Handle client ID 1
-  if (Number(clientID) == 1) {
-    object = {
-      "firstName" : "Thomas"
-    }
-    await respond(this.res, object)
+  // Get amenity by ID and send it if its found.
+  let id = JSON.parse(this.req.chunks[0]).id;
+  let amenity = await database.getClientByID(id)
+  if (amenity) {
+    await respond(this.res,amenity);
   } else {
-    // Handle other client IDs
-    object = {
-      "firstName" : "Ethan"
-    }
-    await respond(this.res, object)
+    // TODO Handle no client found.
   }
 }

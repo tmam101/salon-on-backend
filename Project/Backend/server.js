@@ -37,10 +37,7 @@ let router = new director.http.Router({
     get: refresh
   },
   '/' : {
-    get: function() {
-      console.log("made it")
-      refresh
-    }
+    get: root
   },
   'login' : {
     post : login
@@ -65,6 +62,14 @@ async function refresh(){
   // I was getting an error with the 1 at least.
   object = {"response" : "1"}
   respond(this.res, object);
+}
+
+//FUNCTION TO REDIRECT ROOT TO APP WEBSITE
+async function root(){
+  response.writeHead(301,
+    {Location: 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
+  );
+  response.end()
 }
 
 //RETURNS PROFILE FROM LOGIN

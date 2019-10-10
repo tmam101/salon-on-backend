@@ -41,6 +41,9 @@ let router = new director.http.Router({
       console.log("made it")
       refresh
     }
+  },
+  'login' : {
+    post : login
   }
 });
 
@@ -60,13 +63,11 @@ async function refresh(){
   console.log("refreshed");
   // Thomas: Respond only works with objects, I think.
   // I was getting an error with the 1 at least.
-  object = {
-    "response" : "1"
-  }
+  object = {"response" : "1"}
   respond(this.res, object);
 }
 
-//RETURNS PROFILE FOR LOGIN
+//RETURNS PROFILE FROM LOGIN
 async function login(){
   console.log("attempting to login...");
   if (!this.req.chunks[0]) {

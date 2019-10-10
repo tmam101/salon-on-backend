@@ -66,6 +66,20 @@ async function refresh(){
   respond(this.res, object);
 }
 
+//RETURNS PROFILE FOR LOGIN
+async function login(){
+  console.log("attempting to login...");
+  if (!this.req.chunks[0]) {
+    console.log("Login Failed: No parameters");
+    return null
+  }
+  let user = JSON.parse(this.req.chunks[0]).user;
+  let pass = JSON.parse(this.req.chunks[0]).pass;
+  let clientProfile = database.getClientByUserAndPass(user, pass);
+  await respond(this.res, clientProfile);
+
+}
+
 //Returns JSON OBJECT of the matching amenity.
 async function getAmenityByID(){
   console.log("called get amenity by id");

@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const sha1 = require('sha1');
 
 // DATABASE PROPERTIES
 const connection = mysql.createConnection({
@@ -52,6 +53,13 @@ async function getClientByID(id){
 	console.log("Got client from DB");
 	return result[0];
 }
+async function getClientByUserAndPass(user, pass){
+	result = await runQuery(`SELECT * FROM clients WHERE email = ${user} AND hashword = ${sha1(hash)}`)
+	if (result.length == 0){
+		return {Error: "No user found"}
+	}
+	return[0];
+}
 
 //EXECUTE QUERY
 async function runQuery(SQLString) {
@@ -86,6 +94,7 @@ exports.getAllHairStyles=getAllHairStyles;
 exports.getAllStylists=getAllStylists;
 exports.getAmenityByID=getAmenityByID;
 exports.getClientByID=getClientByID;
+exports.getClientByUserAndPass=getClientByUserAndPass;
 
 
 

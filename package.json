@@ -26,6 +26,7 @@
     "opn": "^6.0.0",
     "q": "^1.5.1",
     "request": "^2.88.0",
+    "sha1": "^1.1.1",
     "twitter": "^1.7.1"
   },
   "devDependencies": {

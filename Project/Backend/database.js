@@ -1,5 +1,6 @@
-const mysql = require('mysql');
+//const mysql = require('mysql');
 const sha1 = require('sha1');
+const proxy=require('./proxy.js');
 
 // DATABASE PROPERTIES
 const connection = mysql.createConnection({
@@ -12,7 +13,7 @@ const connection = mysql.createConnection({
 
 //CONNECT TO DB
 async function connect(){
-	connection.connect((err) => {
+	dbConnection.connect((err) => {
   if (err) {
 	  console.log('Unable to connect to Db');
       return;
@@ -29,6 +30,8 @@ function disconnect(){
 	  // before sending a COM_QUIT packet to the MySQL server.
 	})
 }
+
+
 
 //	QUERY FUNCTIONS
 async function getAllHairStyles() {
@@ -54,11 +57,18 @@ async function getClientByID(id){
 	return result[0];
 }
 async function getClientByUserAndPass(user, pass){
-	result = await runQuery(`SELECT * FROM clients WHERE email = ${user} AND hashword = ${sha1(hash)}`)
+	result = await runQuery(`SELECT * FROM clients WHERE email = ${user} AND hashword = ${sha1(pass)}`)
 	if (result.length == 0){
 		return {Error: "No user found"}
 	}
 	return[0];
+}
+async function createUser(first, last, email, pass){
+	status = runQuery(`INSERT INTO clients VALUES (NULL, ${first}, ${last}, ${email}, ${sha1(pass)})`)
+	if (!status){
+		return false;
+	}
+	return true;
 }
 
 //EXECUTE QUERY

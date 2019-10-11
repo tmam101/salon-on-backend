@@ -39,8 +39,11 @@ let router = new director.http.Router({
   '/' : {
     get: root
   },
-  'login' : {
+  '/login' : {
     post : login
+  },
+  '/createuser' : {
+    post : 
   }
 });
 
@@ -51,6 +54,16 @@ async function respond(response, value){
   await response.write(JSON.stringify(value))
   await response.end()
 }
+
+
+
+//*****REQUEST FUNCTIONS*********
+
+//TODO: CREATE USER
+async function createUser(){
+  return null;
+}
+ 
 
 //FUNCTION ASSOCIATED WITH REFRESH, NORMALLY WOULD JUST RESPOND WITH "1",
 //BUT I HAVE BEEN USING IT AS A TEST FUNCTION (BECAUSE IT REQUIRES NO PARAMETERS AND

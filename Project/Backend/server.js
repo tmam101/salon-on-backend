@@ -43,7 +43,7 @@ let router = new director.http.Router({
     post : login
   },
   '/createuser' : {
-    post : 
+    post : createUser
   }
 });
 
@@ -56,19 +56,29 @@ async function respond(response, value){
 }
 
 
-
 //*****REQUEST FUNCTIONS*********
 
 //TODO: CREATE USER
 async function createUser(){
-  return null;
+  console.log("called create user");
+  // If no parameters,
+  if (!this.req.chunks[0]) {
+    console.log("Server error: No parameters");
+    return null
+  }
+  // Get user info from rquest.
+  let email = JSON.parse(this.req.chunks[0]).user;
+  let first = JSON.parse(this.req.chunks[0]).first;
+  let last = JSON.parse(this.req.chunks[0]).last;
+  let pass = JSON.parse(this.req.chunks[0]).pass;
+  
+
+  let status = await database.createUser(first, last, email, pass);
+  return status;
 }
  
 
-//FUNCTION ASSOCIATED WITH REFRESH, NORMALLY WOULD JUST RESPOND WITH "1",
-//BUT I HAVE BEEN USING IT AS A TEST FUNCTION (BECAUSE IT REQUIRES NO PARAMETERS AND
-// YOU CAN TEST WITH YOUR WEB BROWSER BY GOING TO address/refresh)
-
+//REFRESH
 async function refresh(){
   console.log("refreshed");
   // Thomas: Respond only works with objects, I think.
@@ -77,7 +87,7 @@ async function refresh(){
   respond(this.res, object);
 }
 
-//FUNCTION TO REDIRECT ROOT TO APP WEBSITE
+//REDIRECT ROOT TO APP WEBSITE
 async function root(){
   response.writeHead(301,
     {Location: 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}

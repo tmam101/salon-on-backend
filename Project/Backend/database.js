@@ -10,27 +10,9 @@ const connection = mysql.createConnection({
 
 });
 
-//CONNECT TO DB
-async function connect(){
-	connection.connect((err) => {
-  if (err) {
-	  console.log('Unable to connect to Db');
-      return;
-  }
-  console.log('DB connection established');
-});
-}
 
-//DISCONNECT FROM DB
-function disconnect(){
-	connection.end ((err) => {
-		// The connection is terminated gracefully
-	  // Ensures all previously enqueued queries are still
-	  // before sending a COM_QUIT packet to the MySQL server.
-	})
-}
 
-//	QUERY FUNCTIONS
+//	'GET ALL' QUERY FUNCTIONS
 async function getAllHairStyles() {
 	return await runQuery("SELECT * FROM hairstyles");
 }
@@ -38,30 +20,124 @@ async function getAllAmenities() {
 	return await runQuery("SELECT * FROM amenities");
 }
 async function getAllStylists() {
-	return await runQuery("SELECT * FROM stylists");
+	return await runQuery("SELECT * FROM user WHERE isStylist=TRUE");
 }
 async function getAllClients() {
-	return await runQuery("SELECT * FROM clients");
+	return await runQuery("SELECT * FROM user");
 }
+
+//MORE QUERY FUNCTIONS
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
 	console.log("Got amenity from DB");
 	return result[0];
 }
-async function getClientByID(id){
-	result = await renQuery(`SELECT * FROM clients WHERE cid =${id}`);
+async function getClientByID(email){
+	result = await renQuery(`SELECT * FROM user WHERE email ='${email}'`);
 	console.log("Got client from DB");
 	return result[0];
 }
 async function getClientByUserAndPass(user, pass){
-	result = await runQuery(`SELECT * FROM clients WHERE email = ${user} AND hashword = ${sha1(hash)}`)
+	result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
 	if (result.length == 0){
 		return {Error: "No user found"}
 	}
 	return[0];
 }
 
-//EXECUTE QUERY
+
+
+//FUNCTION TO CREATE NEW ACCOUNT. 'isStylist' and 'isSalon" are booleans, and should be set 
+//accordingly on the front end. Bio variables and salonRate should be null when not applicable.
+
+async function createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate){
+	query = `INSERT INTO user VALUES ('${email}', '${sha1(pass)}', '${first}', '${last}', ${isStylist}, ${isSalon}, '${stylistBio}', '${salonBio}', '${salonRate}')`;
+	status = await runQuery(query);
+	if (!status){
+		console.log("unable to create new user");
+		return false;
+	}
+	console.log("new user created successfully");
+	return true;
+}
+
+
+
+//ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of 
+//style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
+ 
+async function addstylist(email, stylistBio, styles){
+	//TOGGLES isStylist TO TRUE
+	console.log("activating stylist account...")
+	status =  await runQuery(`UPDATE user SET isStylist = TRUE, stylistBio = '${stylistBio}' WHERE EMAIL = '${email}'`)
+	if (!status){
+		console.log("FAILED: unable to activate stylist account");
+		return false;
+	}
+	//ADDS HAIRSTYLES TO offersStyle.
+	let styleQueries = [];
+	console.log("Adding hairstyles to stylist account..")
+	styles.forEach((e) => {
+		styleQueries.push(`INSERT INTO offersStyle VALUES ('${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
+	});
+	status = await transaction(styleQueries);
+	if (!status){
+		console.log("FAILED: unable to add hairstyles to stylist account")
+		return false;
+	}
+	console.log("Stylist account activated successfully")
+	return false;
+}
+
+
+
+//TODO: ADD SALON COMPONENT TO ACCOUNT.
+
+
+
+
+
+//******DATABASE CONNECTION AND RUN-QUERY FUNCTIONS *********/
+
+//CONNECT TO DB
+async function connect(){
+	return new Promise((resolve, reject)=>{
+	   connection.connect((err) => {
+		   if (err) {
+			   reject(err);
+		   } else {
+			  resolve();
+		   }
+	   });
+	}).then(()=>{
+	   console.log('DB connection established');
+	}).catch((err)=>{
+	   console.log('Unable to connect to Db');
+	   //console.log(err);
+	})
+}
+
+//DISCONNECT FROM DB
+async function disconnect(){
+   return new Promise((resolve, reject)=>{
+	  connection.end((err) => {
+		  if (err) {
+			  reject(err);
+		  } else {
+			 resolve();
+		  }
+	  });
+   }).then(()=>{
+	  console.log('DB connection ended gracefully');
+   }).catch((err)=>{
+	  console.log('Error ending Db connection');
+	  //console.log(err);
+   })
+}
+
+
+
+//EXECUTE QUERY (run this for selects and single insertions)
 async function runQuery(SQLString) {
 	//Promise, because of long fetch time
 	return new Promise((resolve, reject) => {
@@ -72,18 +148,55 @@ async function runQuery(SQLString) {
 				resolve(rows)
 			}
 		  });
-	}).then((message) => {
-		console.log('Query Executed successfully');
+	}).then((rows) => {
+		console.log('Query Executed successfully: '+SQLString);
 		//console.log(`Data received from Db:`)
 		//console.log(message);
-		return message;					
+		return rows;					
 	}).catch((message) => {
-		console.log(message)
+		console.log('Query Failed: '+ message)
 		return false;		//	QUERY FAILED
 	});
 }
 
 
+//EXECUTE TRANSACTION (run this for multiple insertions)
+ async function transaction(queries) {
+	return new Promise((resolve, reject) => {
+		console.log("Beginning transaction...");
+		connection.beginTransaction((err) => {
+		if (err) { 
+			reject(err);
+		} else {
+			queries.forEach(async (e) => {		//LOOP THROUGH QUERIES
+				status = await runQuery(e);
+				if (!status ){
+					reject()
+				}else {
+					if (queries.indexOf(e) == queries.length-1){	//IF WE ARE AT LAST QUERY, AND NO ERROR, RESOLVE.
+						resolve();
+					}
+				}
+			});
+		}
+		});
+	}).then(()=> {					//ALL QUERIES RETURNED WITHOUT ERRORS
+	connection.commit();
+	console.log("Transaction commited successfully")
+	return true;
+	}).catch(()=>{			//A QUERY FAILED: ATTEMPT ROLLBACK CHANGES.
+		console.log("Transaction failed, attempting to rollback changes... \n");
+		connection.rollback((err) => {
+			if (err){
+				console.log("Rollback failed: "+err)
+			} else {
+				console.log("Rollback succeeded.")
+			}
+		});
+		return false;
+	});
+
+}
 
 //EXPORTS
 exports.connect= connect;
@@ -95,6 +208,8 @@ exports.getAllStylists=getAllStylists;
 exports.getAmenityByID=getAmenityByID;
 exports.getClientByID=getClientByID;
 exports.getClientByUserAndPass=getClientByUserAndPass;
+exports.addstylist=addstylist;
+exports.createUser=createUser;
 
 
 

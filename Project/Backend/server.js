@@ -71,9 +71,14 @@ async function createUser(){
   let first = JSON.parse(this.req.chunks[0]).first;
   let last = JSON.parse(this.req.chunks[0]).last;
   let pass = JSON.parse(this.req.chunks[0]).pass;
+  let isStylst = JSON.parse(this.req.chunks[0]).isStylist;
+  let isSalon = JSON.parse(this.req.chunks[0]).isSalon;
+  let stylistBio = JSON.parse(this.req.chunks[0]).stylistBio;
+  let salonBio = JSON.parse(this.req.chunks[0]).salonBio;
+  let salonRate = JSON.parse(this.req.chunks[0]).salonRate;
   
 
-  let status = await database.createUser(first, last, email, pass);
+  let status = await database.createUser(email, pass, first, last, isStylst, isSalon, stylistBio, salonBio, salonRate);
   return status;
 }
  

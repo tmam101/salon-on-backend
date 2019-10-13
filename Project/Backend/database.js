@@ -33,7 +33,7 @@ async function getAmenityByID(id){
 	return result[0];
 }
 async function getClientByID(email){
-	result = await renQuery(`SELECT * FROM user WHERE email ='${email}'`);
+	result = await runQuery(`SELECT * FROM user WHERE email ='${email}'`);
 	console.log("Got client from DB");
 	return result[0];
 }

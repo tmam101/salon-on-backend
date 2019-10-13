@@ -6,11 +6,14 @@ const 	thisURL		= "salon-on-backend.herokuapp.com"
 const 	testURL 	= "salon-on-thomas.herokuapp.com" //INSTEAD OF THIS, HOW ABOUT A HEROKU CONFIG VAR?/.ENV FOR LOCAL?
 
 //SERVER & SETUP
-function start() {
+async function start() {
 	server.startServer();
-	//database.createUser("test@mail.com","bestpassword", "ethan", "bateman",false, false, null, null);
-	database.addstylist("test@mail.com", "I chopa chopa yo face", [{id:5, price: 1.99, deposit:2.99, duration:1.30 }]);
-	//database.disconnect();
+	await database.connect()
+	//database.createUser("susie@mail.com","bestpassword", "susie", "jenkins",false, false, null, null, null);
+	//database.createUser("dylan@mail.com","bestpassword", "dylan", "jezo",false, false, null, null, null);
+	await database.addstylist("dylan@mail.com", "I chopa lotta yo hair", [{id:1, price: 1.99, deposit:2.99, duration:1.30 }, {id:2, price: 1.99, deposit:2.99, duration:1.30 }]);
+	
+	await database.disconnect();
 
 	setInterval(refresh, 300000); // every 5 minutes (300000)
 

@@ -27,6 +27,9 @@ async function getAllClients() {
 }
 
 //MORE QUERY FUNCTIONS
+async function searchStylists(term){
+	results = await runQuery(`SELECT * FROM STYLISTS WHERE first like '%${term}%' OR last like '%${term}%'`)
+}
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
 	console.log("Got amenity from DB");

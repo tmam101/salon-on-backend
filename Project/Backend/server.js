@@ -27,9 +27,11 @@ function startServer(){
 //ROUTER FOR FORWARDING REQUEST INFO TO METHODS
 let router = new director.http.Router({
   '/amenity-by-id' : {
+    get: test,
     post : getAmenityByID
   },
   '/client-by-id' : {
+    get: test,
     post: getClientByID
   },
   '/refresh' : {
@@ -37,15 +39,22 @@ let router = new director.http.Router({
     get: refresh
   },
   '/' : {
-    get: root
+    get: root,
+    post: test
   },
   '/login' : {
+    get: test,
     post : login
   },
   '/createuser' : {
+    get: test,
     post : createUser
   }
 });
+
+async function test() {
+
+}
 
 
 //FUNCTION FOR HANDLING RESPONSE.

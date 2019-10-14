@@ -46,10 +46,6 @@ let router = new director.http.Router({
   }
 });
 
-async function test() {
-
-}
-
 
 //FUNCTION FOR HANDLING RESPONSE.
 async function respond(response, value){

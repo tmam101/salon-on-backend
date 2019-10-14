@@ -85,7 +85,10 @@ async function createUser(){
 
   // TODO This is a bool, will it return properly?
   let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
-  respond(this.res, status)
+  let object = {
+    "status" : status
+  }
+  respond(this.res, object)
 }
 
 
@@ -109,12 +112,23 @@ async function root(){
 //RETURNS PROFILE FROM LOGIN
 async function login(){
   console.log("attempting to login...");
+  // Handle no parameters
   if (!this.req.chunks[0]) {
     console.log("Login Failed: No parameters");
-    return null
+    let status = {
+      "status" : "Login Failed: No parameters"
+    }
+    await respond(this.res, status)
   }
   let user = JSON.parse(this.req.chunks[0]).user;
   let pass = JSON.parse(this.req.chunks[0]).pass;
+  // Handle incorrect parameters
+  if (!user || !pass) {
+    let status = {
+      "status" : "Login Failed: No parameters"
+    }
+    await respond(this.res, status)
+  }
   let clientProfile = database.getClientByUserAndPass(user, pass);
   await respond(this.res, clientProfile);
 

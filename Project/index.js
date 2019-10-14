@@ -15,7 +15,7 @@ async function start() {
 
 	// await database.disconnect();
 
-	setInterval(refresh, 3000); // every 5 minutes (300000)
+	setInterval(refresh, 300000); // every 5 minutes (300000)
 
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests

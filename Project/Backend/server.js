@@ -76,7 +76,7 @@ async function createUser(){
   let pass = JSON.parse(this.req.chunks[0]).pass;
 
   // TODO This is a bool, will it return properly?
-  let status = await database.createUser(first, last, email, pass);
+  let status = await database.createUser(email, pass, first, last, null, null, null, null, null);
   return status;
 }
 

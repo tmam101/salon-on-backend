@@ -33,10 +33,10 @@ let router = new director.http.Router({
     post: getClientByID
   },
   '/refresh' : {
-    post: refresh,
+    post: refresh
   },
   '/' : {
-    get: root,
+    get: root
   },
   '/login' : {
     post : login

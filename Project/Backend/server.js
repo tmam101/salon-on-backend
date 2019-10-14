@@ -130,6 +130,10 @@ async function login(){
     await respond(this.res, status)
   }
   let clientProfile = database.getClientByUserAndPass(user, pass);
+  console.log(clientProfile)
+  let returnObject = {
+    "profile" : clientProfile
+  }
   await respond(this.res, clientProfile);
 
 }

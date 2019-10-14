@@ -42,12 +42,12 @@ async function getClientByUserAndPass(user, pass){
 	if (result.length == 0){
 		return {Error: "No user found"}
 	}
-	return[0];
+	return result[0];
 }
 
 
 
-//FUNCTION TO CREATE NEW ACCOUNT. 'isStylist' and 'isSalon" are booleans, and should be set 
+//FUNCTION TO CREATE NEW ACCOUNT. 'isStylist' and 'isSalon" are booleans, and should be set
 //accordingly on the front end. Bio variables and salonRate should be null when not applicable.
 
 async function createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate){
@@ -63,9 +63,9 @@ async function createUser(email, pass, first, last, isStylist, isSalon, stylistB
 
 
 
-//ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of 
+//ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
 //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
- 
+
 async function addstylist(email, stylistBio, styles){
 	//TOGGLES isStylist TO TRUE
 	console.log("activating stylist account...")
@@ -152,7 +152,7 @@ async function runQuery(SQLString) {
 		console.log('Query Executed successfully: '+SQLString);
 		//console.log(`Data received from Db:`)
 		//console.log(message);
-		return rows;					
+		return rows;
 	}).catch((message) => {
 		console.log('Query Failed: '+ message)
 		return false;		//	QUERY FAILED
@@ -165,7 +165,7 @@ async function runQuery(SQLString) {
 	return new Promise((resolve, reject) => {
 		console.log("Beginning transaction...");
 		connection.beginTransaction((err) => {
-		if (err) { 
+		if (err) {
 			reject(err);
 		} else {
 			queries.forEach(async (e) => {		//LOOP THROUGH QUERIES
@@ -210,7 +210,3 @@ exports.getClientByID=getClientByID;
 exports.getClientByUserAndPass=getClientByUserAndPass;
 exports.addstylist=addstylist;
 exports.createUser=createUser;
-
-
-
-

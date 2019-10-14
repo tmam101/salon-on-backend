@@ -98,10 +98,10 @@ async function refresh(){
 
 //REDIRECT ROOT TO APP WEBSITE
 async function root(){
-  response.writeHead(301,
+  this.res.writeHead(301,
     {Location: 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
   );
-  response.end()
+  this.res.end()
 }
 
 //RETURNS PROFILE FROM LOGIN

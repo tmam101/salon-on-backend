@@ -80,10 +80,11 @@ async function createUser(){
   let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
   let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
   let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
+  let salonRate = properties.salonRate != undefined ? properties.salonRate : null
 
 
   // TODO This is a bool, will it return properly?
-  let status = await database.createUser(email, pass, first, last, isStylist, isSalon, null, salonBio, null);
+  let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
   respond(this.res, status)
 }
 

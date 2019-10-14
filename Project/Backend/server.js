@@ -63,7 +63,7 @@ async function createUser(){
   // If no parameters,
   if (!this.req.chunks[0]) {
     console.log("Server error: No parameters");
-    return null
+    return null;
   }
   // Get user info from rquest.
   let properties = JSON.parse(this.req.chunks[0])
@@ -88,6 +88,8 @@ async function createUser(){
   respond(this.res, object)
 }
 
+startServer();
+ 
 
 //REFRESH
 async function refresh(){
@@ -101,9 +103,9 @@ async function refresh(){
 //REDIRECT ROOT TO APP WEBSITE
 async function root(){
   this.res.writeHead(301,
-    {Location: 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
+    {"Location": 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
   );
-  this.res.end()
+    this.res.end()
 }
 
 //RETURNS PROFILE FROM LOGIN

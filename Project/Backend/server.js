@@ -77,7 +77,7 @@ async function createUser(){
 
   // TODO This is a bool, will it return properly?
   let status = await database.createUser(email, pass, first, last, null, null, null, null, null);
-  return status;
+  respond(this.res, status)
 }
 
 

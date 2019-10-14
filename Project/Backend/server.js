@@ -78,6 +78,7 @@ async function createUser(){
   let isStylist = properties.isStylist;
   let isSalon = properties.isSalon;
   let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
+  console.log(stylistBio)
   let salonBio = properties.salonBio;
 
 

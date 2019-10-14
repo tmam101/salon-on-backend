@@ -72,15 +72,14 @@ async function createUser(){
   // Get user info from rquest.
   let properties = JSON.parse(this.req.chunks[0])
   console.log(properties)
-  let email = properties.user;
-  let first = properties.first;
-  let last = properties.last;
-  let pass = properties.pass;
-  let isStylist = properties.isStylist;
-  let isSalon = properties.isSalon;
+  let email = properties.user  != undefined ? properties.user : null;
+  let first = properties.first != undefined ? properties.first : null;
+  let last = properties.last != undefined ? properties.last : null;
+  let pass = properties.pass != undefined ? properties.pass : null;
+  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;
+  let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
   let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
-  console.log(stylistBio)
-  let salonBio = properties.salonBio;
+  let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
 
 
   // TODO This is a bool, will it return properly?

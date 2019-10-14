@@ -71,6 +71,7 @@ async function createUser(){
   }
   // Get user info from rquest.
   let properties = JSON.parse(this.req.chunks[0])
+  console.log(properties)
   let email = properties.user;
   let first = properties.first;
   let last = properties.last;

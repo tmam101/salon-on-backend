@@ -76,7 +76,7 @@ async function createUser(){
   let first = properties.first != undefined ? properties.first : null;
   let last = properties.last != undefined ? properties.last : null;
   let pass = properties.pass != undefined ? properties.pass : null;
-  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;
+  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;  //todo broken?
   let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
   let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
   let salonBio = properties.salonBio != undefined ? properties.salonBio : null;

@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const sha1 = require('sha1');
+var zipcodes = require('zipcodes');
 
 // DATABASE PROPERTIES
 const connection = mysql.createConnection({
@@ -27,6 +28,37 @@ async function getAllClients() {
 }
 
 //MORE QUERY FUNCTIONS
+async function searchStylists(term){
+	results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
+	return JSON.stringify(results);
+}
+async function searchByLocation(zip, radius){
+	console.log("Searching stylists by zipcode...")
+	zips = zipcodes.radius(zip, radius)
+	//WILL ALWAYS RETURN AT LEAST USER ZIP
+	query = `SELECT * FROM users WHERE isStylist=true AND (zip=${zips[0]} `
+
+	//IF THERE ARE MORE ZIPS:
+	if (zips.length>1){
+		for (let i=1; i< zips.length; i++){
+			query+= `or zip =${zips[i]} `
+		}
+	}
+	query+= `);`
+	results = await runQuery(query);
+	if (results.length==0){
+		console.log("No styists found near zipcode")
+		return {sorry: "No stylists found"}
+	}
+	console.log(`Found ${results.length} stylists near zipcode`)
+	return {"profiles": results}
+}
+
+
+array = [123, 35654, 33535]
+console.log({key: array});
+console.log(JSON.stringify(array));
+
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
 	console.log("Got amenity from DB");
@@ -210,3 +242,10 @@ exports.getClientByID=getClientByID;
 exports.getClientByUserAndPass=getClientByUserAndPass;
 exports.addstylist=addstylist;
 exports.createUser=createUser;
+exports.searchByLocation =searchByLocation;
+exports.searchStylists = searchStylists;
+
+
+
+
+

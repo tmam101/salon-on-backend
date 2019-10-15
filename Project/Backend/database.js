@@ -51,10 +51,13 @@ async function searchByLocation(zip, radius){
 		return {sorry: "No stylists found"}
 	}
 	console.log(`Found ${results.length} stylists near zipcode`)
-	return JSON.stringify(results);
+	return {"profiles": results}
 }
 
-searchByLocation(27949, 10)
+
+array = [123, 35654, 33535]
+console.log({key: array});
+console.log(JSON.stringify(array));
 
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
@@ -239,6 +242,8 @@ exports.getClientByID=getClientByID;
 exports.getClientByUserAndPass=getClientByUserAndPass;
 exports.addstylist=addstylist;
 exports.createUser=createUser;
+exports.searchByLocation;
+exports.searchStylists;
 
 
 

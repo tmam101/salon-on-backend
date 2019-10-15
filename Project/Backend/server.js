@@ -44,6 +44,9 @@ let router = new director.http.Router({
   },
   '/createuser' : {
     post : createUser
+  },
+  '/searchstylistslocation' : {
+    post : searchStylistLocation
   }
 });
 
@@ -58,7 +61,23 @@ async function respond(response, value){
 
 //*****REQUEST FUNCTIONS*********
 
-//TODO: CREATE USER
+//SEARCH STYLIST BY LOCATION
+  async function searchStylistLocation(){
+    console.log("called search Stylist by location");
+    if (!this.req.chunks[0]) {
+      console.log("Server error: No parameters");
+      return null;
+    }
+    info = JSON.parse(this.req.chunks[0])
+    let zip = info.zip;
+    let radius = info.radius;
+
+    let profiles = await database.searchStylistLocation(zip, radius);
+    await respond (this.res, profiles)
+  }
+
+
+//CREATE USER
 async function createUser(){
   console.log("called create user");
   // If no parameters,

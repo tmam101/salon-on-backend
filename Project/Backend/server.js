@@ -33,8 +33,7 @@ let router = new director.http.Router({
     post: getClientByID
   },
   '/refresh' : {
-    post: refresh,
-    get: refresh
+    post: refresh
   },
   '/' : {
     get: root
@@ -86,20 +85,28 @@ async function createUser(){
     return null;
   }
   // Get user info from rquest.
-  let email = JSON.parse(this.req.chunks[0]).user;
-  let first = JSON.parse(this.req.chunks[0]).first;
-  let last = JSON.parse(this.req.chunks[0]).last;
-  let pass = JSON.parse(this.req.chunks[0]).pass;
-  let isStylst = JSON.parse(this.req.chunks[0]).isStylist;
-  let isSalon = JSON.parse(this.req.chunks[0]).isSalon;
-  let stylistBio = JSON.parse(this.req.chunks[0]).stylistBio;
-  let salonBio = JSON.parse(this.req.chunks[0]).salonBio;
-  let salonRate = JSON.parse(this.req.chunks[0]).salonRate;
-  
+  let properties = JSON.parse(this.req.chunks[0])
+  console.log(properties)
+  // TODO ETHAN: I'm unsure of what to enter when its null.  Is it null like this, or "null" in quotes?
+  let email = properties.user  != undefined ? properties.user : null;
+  let first = properties.first != undefined ? properties.first : null;
+  let last = properties.last != undefined ? properties.last : null;
+  let pass = properties.pass != undefined ? properties.pass : null;
+  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;  //todo broken?
+  let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
+  let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
+  let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
+  let salonRate = properties.salonRate != undefined ? properties.salonRate : null
 
-  let status = await database.createUser(email, pass, first, last, isStylst, isSalon, stylistBio, salonBio, salonRate);
-  return status;
+
+  // TODO This is a bool, will it return properly?
+  let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
+  let object = {
+    "status" : status
+  }
+  respond(this.res, object)
 }
+
 startServer();
  
 
@@ -123,13 +130,28 @@ async function root(){
 //RETURNS PROFILE FROM LOGIN
 async function login(){
   console.log("attempting to login...");
+  // Handle no parameters
   if (!this.req.chunks[0]) {
     console.log("Login Failed: No parameters");
-    return null
+    let status = {
+      "status" : "Login Failed: No parameters"
+    }
+    await respond(this.res, status)
   }
   let user = JSON.parse(this.req.chunks[0]).user;
   let pass = JSON.parse(this.req.chunks[0]).pass;
-  let clientProfile = database.getClientByUserAndPass(user, pass);
+  // Handle incorrect parameters
+  if (!user || !pass) {
+    let status = {
+      "status" : "Login Failed: No parameters"
+    }
+    await respond(this.res, status)
+  }
+  let clientProfile = await database.getClientByUserAndPass(user, pass);
+  console.log(clientProfile)
+  let returnObject = {
+    "profile" : clientProfile
+  }
   await respond(this.res, clientProfile);
 
 }

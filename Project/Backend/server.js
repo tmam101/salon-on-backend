@@ -71,7 +71,7 @@ async function respond(response, value){
     let zip = info.zip;
     let radius = info.radius;
 
-    let profiles = await database.searchStylistLocation(parseint(zip), parseint(radius));
+    let profiles = await database.searchStylistLocation(parseInt(zip), parseInt(radius));
     await respond (this.res, profiles)
   }
 

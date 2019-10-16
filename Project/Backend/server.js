@@ -53,7 +53,7 @@ function startServer(){
 //   }
 // });
 
-app.post('/amenity-by-id', async function(req, res) => {
+app.post('/amenity-by-id', async function(req, res) {
   console.log("called get amenity by id");
   // Get amenity by ID and send it if its found.
   let id = req.query.id;

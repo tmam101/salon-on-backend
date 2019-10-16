@@ -2,56 +2,14 @@ const http      = require('http');
 const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
-
 var app = express()
-//todo consider using express instead
-exports.startServer=startServer;
-
-// //CODE THAT SETS OF THE HTTP SERVER.
-// let server = http.createServer(async (req, res) => {
-//   req.chunks = [];
-//   req.on('data', function (chunk) {
-//     req.chunks.push(chunk.toString());
-//   });
-//
-//   router.dispatch(req, res, function(err) {
-//     res.writeHead(err.status, {"Content-Type": "text/plain"});
-//     res.end(err.message);
-//   });
-// });
 
 //FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
 function startServer(){
   let port = Number(process.env.PORT || 5000);
   app.listen(port)
-  // server.listen(port);
   console.log("http server started")
 }
-
-// //ROUTER FOR FORWARDING REQUEST INFO TO METHODS
-// let router = new director.http.Router({
-//   '/amenity-by-id' : {
-//     post : getAmenityByID
-//   },
-//   '/client-by-id' : {
-//     post: getClientByID
-//   },
-//   '/refresh' : {
-//     post: refresh
-//   },
-//   '/' : {
-//     get: root
-//   },
-//   '/login' : {
-//     post : login
-//   },
-//   '/createuser' : {
-//     post : createUser
-//   },
-//   '/searchstylistslocation' : {
-//     post : searchStylistLocation
-//   }
-// });
 
 app.post('/amenity-by-id', async function(req, res) {
   console.log("called get amenity by id");
@@ -209,3 +167,5 @@ async function getClientByID(){
     // TODO Handle no client found.
   }
 }
+
+exports.startServer=startServer;

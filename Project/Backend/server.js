@@ -15,8 +15,6 @@ app.post('/amenity-by-id', async function(req, res) {
   console.log("called get amenity by id");
   // Get amenity by ID and send it if its found.
   let id = req.query.id;
-  console.log(req)
-  console.log(req.query)
   let amenity = await database.getAmenityByID(id)
   if (amenity) {
     res.send(JSON.stringify(amenity));
@@ -25,16 +23,28 @@ app.post('/amenity-by-id', async function(req, res) {
   }
 })
 
+app.post('/client-by-id', async function(req, res) {
+  console.log("called get Client by id");
+  // Get amenity by ID and send it if its found.
+  let id = req.query.id;
+  if (!id) {
+    // TODO Test
+    res.send(JSON.Stringify({"status" : "no ID provided"}))
+  }
+  let client = await database.getClientByID(id)
+  if (client) {
+    res.send(JSON.stringify(amenity));
+  } else {
+    // TODO Handle no client found.
+  }
+})
 
-//FUNCTION FOR HANDLING RESPONSE.
-async function respond(response, value){
-  await response.writeHead(200, {"Content-Type" : "application/json"});
-  await response.write(JSON.stringify(value))
-  await response.end()
-}
+app.post('/refresh', (req, res) => {
+  console.log("refreshed");
+  object = {"response" : "1"}
+  res.send(JSON.stringify(object));
+})
 
-
-//*****REQUEST FUNCTIONS*********
 
 //SEARCH STYLIST BY LOCATION
   async function searchStylistLocation(){
@@ -85,15 +95,6 @@ async function createUser(){
 
 // startServer();
 
-
-//REFRESH
-async function refresh(){
-  console.log("refreshed");
-  // Thomas: Respond only works with objects, I think.
-  // I was getting an error with the 1 at least.
-  object = {"response" : "1"}
-  respond(this.res, object);
-}
 
 //REDIRECT ROOT TO APP WEBSITE
 async function root(){
@@ -147,24 +148,6 @@ async function getAmenityByID(){
     await respond(this.res,amenity);
   } else {
     // TODO Handle no amenity found.
-  }
-}
-
-// RETURNS CLIENT BY ID
-async function getClientByID(){
-  console.log("called get Client by id");
-  // If no parameters,
-  if (!this.req.chunks[0]) {
-    console.log("Server error: No parameters");
-    return null
-  }
-  // Get amenity by ID and send it if its found.
-  let id = JSON.parse(this.req.chunks[0]).id;
-  let amenity = await database.getClientByID(id)
-  if (amenity) {
-    await respond(this.res,amenity);
-  } else {
-    // TODO Handle no client found.
   }
 }
 

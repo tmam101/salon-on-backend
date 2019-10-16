@@ -49,7 +49,7 @@ app.post('/refresh', (req, res) => {
 app.post('/createuser', async function(req, res) {
   console.log("called create user");
   // Get user info from rquest.
-  let properties = JSON.parse(this.req.chunks[0])
+  let properties = req.query
   console.log(properties)
   // TODO ETHAN: I'm unsure of what to enter when its null.  Is it null like this, or "null" in quotes?
   let email = properties.user  != undefined ? properties.user : null;

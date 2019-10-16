@@ -55,9 +55,9 @@ async function searchByLocation(zip, radius){
 }
 
 
-array = [123, 35654, 33535]
-console.log({key: array});
-console.log(JSON.stringify(array));
+// array = [123, 35654, 33535]
+// console.log({key: array});
+// console.log(JSON.stringify(array));
 
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
@@ -244,8 +244,3 @@ exports.addstylist=addstylist;
 exports.createUser=createUser;
 exports.searchByLocation =searchByLocation;
 exports.searchStylists = searchStylists;
-
-
-
-
-

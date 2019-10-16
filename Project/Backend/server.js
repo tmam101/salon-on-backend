@@ -57,7 +57,8 @@ app.post('/amenity-by-id', async function(req, res) {
   console.log("called get amenity by id");
   // Get amenity by ID and send it if its found.
   let id = req.query.id;
-  console.log(id)
+  console.log(req)
+  console.log(req.query)
   let amenity = await database.getAmenityByID(id)
   if (amenity) {
     res.send(JSON.stringify(amenity));

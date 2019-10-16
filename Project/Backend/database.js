@@ -54,11 +54,6 @@ async function searchByLocation(zip, radius){
 	return {"profiles": results}
 }
 
-
-// array = [123, 35654, 33535]
-// console.log({key: array});
-// console.log(JSON.stringify(array));
-
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
 	console.log("Got amenity from DB");

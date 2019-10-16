@@ -23,6 +23,7 @@ app.post('/amenity-by-id', async function(req, res) {
   }
 })
 
+// TODO Delete?
 app.post('/client-by-id', async function(req, res) {
   console.log("called get Client by id");
   // Get amenity by ID and send it if its found.
@@ -45,31 +46,8 @@ app.post('/refresh', (req, res) => {
   res.send(JSON.stringify(object));
 })
 
-
-//SEARCH STYLIST BY LOCATION
-  async function searchStylistLocation(){
-    console.log("called search Stylist by location");
-    if (!this.req.chunks[0]) {
-      console.log("Server error: No parameters");
-      return null;
-    }
-    info = JSON.parse(this.req.chunks[0])
-    let zip = info.zip;
-    let radius = info.radius;
-
-    let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
-    await respond (this.res, profiles)
-  }
-
-
-//CREATE USER
-async function createUser(){
+app.post('/createuser', async function(req, res) {
   console.log("called create user");
-  // If no parameters,
-  if (!this.req.chunks[0]) {
-    console.log("Server error: No parameters");
-    return null;
-  }
   // Get user info from rquest.
   let properties = JSON.parse(this.req.chunks[0])
   console.log(properties)
@@ -87,11 +65,24 @@ async function createUser(){
 
   // TODO This is a bool, will it return properly?
   let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
-  let object = {
-    "status" : status
+  res.send(JSON.stringify({"status" : status}))
+})
+
+
+//SEARCH STYLIST BY LOCATION
+  async function searchStylistLocation(){
+    console.log("called search Stylist by location");
+    if (!this.req.chunks[0]) {
+      console.log("Server error: No parameters");
+      return null;
+    }
+    info = JSON.parse(this.req.chunks[0])
+    let zip = info.zip;
+    let radius = info.radius;
+
+    let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
+    await respond (this.res, profiles)
   }
-  respond(this.res, object)
-}
 
 // startServer();
 
@@ -131,24 +122,6 @@ async function login(){
   }
   await respond(this.res, clientProfile);
 
-}
-
-//Returns JSON OBJECT of the matching amenity.
-async function getAmenityByID(){
-  console.log("called get amenity by id");
-  // If no parameters,
-  if (!this.req.chunks[0]) {
-    console.log("Server error: No parameters");
-    return null
-  }
-  // Get amenity by ID and send it if its found.
-  let id = JSON.parse(this.req.chunks[0]).id;
-  let amenity = await database.getAmenityByID(id)
-  if (amenity) {
-    await respond(this.res,amenity);
-  } else {
-    // TODO Handle no amenity found.
-  }
 }
 
 exports.startServer=startServer;

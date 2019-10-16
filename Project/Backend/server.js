@@ -124,7 +124,7 @@ async function createUser(){
   respond(this.res, object)
 }
 
-startServer();
+// startServer();
 
 
 //REFRESH

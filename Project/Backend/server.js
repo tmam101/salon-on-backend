@@ -57,7 +57,7 @@ function redirect() {
 }
 
 //RETURNS PROFILE FROM LOGIN
-async function login(){
+async function login(req, res){
   console.log("attempting to login...");
   // Handle no parameters
   if (!this.req.chunks[0]) {
@@ -81,11 +81,37 @@ async function login(){
   let returnObject = {
     "profile" : clientProfile
   }
-  await respond(this.res, clientProfile);
+  res.send(clientProfile);
 }
 
-async function createUser() {
+async function createUser(req, res){
+  console.log("called create user");
+  // If no parameters,
+  if (!this.req.chunks[0]) {
+    console.log("Server error: No parameters");
+    return null;
+  }
+  // Get user info from rquest.
+  let properties = JSON.parse(this.req.chunks[0])
+  console.log(properties)
+  // TODO ETHAN: I'm unsure of what to enter when its null.  Is it null like this, or "null" in quotes?
+  let email = properties.user  != undefined ? properties.user : null;
+  let first = properties.first != undefined ? properties.first : null;
+  let last = properties.last != undefined ? properties.last : null;
+  let pass = properties.pass != undefined ? properties.pass : null;
+  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;  //todo broken?
+  let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
+  let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
+  let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
+  let salonRate = properties.salonRate != undefined ? properties.salonRate : null
 
+
+  // TODO This is a bool, will it return properly?
+  let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
+  let object = {
+    "status" : status
+  }
+  res.send(object)
 }
 
 //SEARCH STYLIST BY LOCATION

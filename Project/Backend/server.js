@@ -42,11 +42,11 @@ async function getClientByID(req, res) {
   let id = req.query.id;
   if (!id) {
     // TODO Test
-    res.send(JSON.Stringify({"status" : "no ID provided"}))
+    res.send(JSON.stringify({"status" : "no ID provided"}))
   }
   let client = await database.getClientByID(id)
   if (client) {
-    res.send(JSON.stringify(amenity));
+    res.send(JSON.stringify(client));
   } else {
     // TODO Handle no client found.
   }
@@ -60,39 +60,33 @@ function redirect() {
 async function login(req, res){
   console.log("attempting to login...");
   // Handle no parameters
-  if (!this.req.chunks[0]) {
+  if (req.query == undefined) { // TODO This probably isn't right.
     console.log("Login Failed: No parameters");
     let status = {
       "status" : "Login Failed: No parameters"
     }
-    await respond(this.res, status)
+    res.send(JSON.stringify(status))
   }
-  let user = JSON.parse(this.req.chunks[0]).user;
-  let pass = JSON.parse(this.req.chunks[0]).pass;
+  let user = req.query.user
+  let pass = req.query.pass
   // Handle incorrect parameters
   if (!user || !pass) {
-    let status = {
-      "status" : "Login Failed: No parameters"
-    }
-    await respond(this.res, status)
+    res.send(JSON.stringify({"status" : "Login Failed: No parameters"}}))
   }
   let clientProfile = await database.getClientByUserAndPass(user, pass);
   console.log(clientProfile)
-  let returnObject = {
-    "profile" : clientProfile
-  }
-  res.send(clientProfile);
+  res.send(JSON.stringify({"profile" : clientProfile}))
 }
 
 async function createUser(req, res){
   console.log("called create user");
   // If no parameters,
-  if (!this.req.chunks[0]) {
+  if (req.query == undefined) { // TODO This probably isn't right.
     console.log("Server error: No parameters");
-    return null;
+    res.send(JSON.stringify({"status" : "no parameters"}))
   }
   // Get user info from rquest.
-  let properties = JSON.parse(this.req.chunks[0])
+  let properties = req.query
   console.log(properties)
   // TODO ETHAN: I'm unsure of what to enter when its null.  Is it null like this, or "null" in quotes?
   let email = properties.user  != undefined ? properties.user : null;
@@ -105,13 +99,9 @@ async function createUser(req, res){
   let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
   let salonRate = properties.salonRate != undefined ? properties.salonRate : null
 
-
   // TODO This is a bool, will it return properly?
   let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
-  let object = {
-    "status" : status
-  }
-  res.send(object)
+  res.send(JSON.stringify({"status" : status}))
 }
 
 //SEARCH STYLIST BY LOCATION
@@ -126,7 +116,7 @@ async function searchStylistLocation(){
   let radius = info.radius;
 
   let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
-  await respond (this.res, profiles)
+  res.send(JSON.stringify({"profiles" : profiles}))
 }
 
 exports.startServer=startServer;

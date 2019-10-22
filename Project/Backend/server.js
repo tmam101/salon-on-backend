@@ -11,9 +11,16 @@ function startServer(){
   console.log("http server started")
 }
 
-// GET AMENITY BY ID
+// ENDPOINTS
 app.post('/amenity-by-id', getAmenityByID)
+app.post('/refresh', refresh)
+app.post('/client-by-id', getClientByID)  // TODO Unnecessary?
+app.get('/', redirect)
+app.post('/login', login) // TODO
+app.post('/createuser', createUser) // TODO
+app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 
+// ENDPOINT IMPLEMENTATION FUNCTIONS
 async function getAmenityByID(req, res) {
   console.log("called get amenity by id");
   let id = req.query.id;
@@ -25,8 +32,12 @@ async function getAmenityByID(req, res) {
   }
 }
 
-// TODO Delete?
-app.post('/client-by-id', async function(req, res) {
+async function refresh(req, res) {
+  console.log("refreshed");
+  res.send(JSON.stringify({"response" : "1"}));
+}
+
+async function getClientByID(req, res) {
   console.log("called get Client by id");
   let id = req.query.id;
   if (!id) {
@@ -39,41 +50,10 @@ app.post('/client-by-id', async function(req, res) {
   } else {
     // TODO Handle no client found.
   }
-})
+}
 
-// REFRESH
-app.post('/refresh', (req, res) => {
-  console.log("refreshed");
-  object = {"response" : "1"}
-  res.send(JSON.stringify(object));
-})
-
-app.get('/', (req, res) => {
+function redirect() {
   res.redirect('https://frosty-tereshkova-9806e1.netlify.com/index.html/')
-})
-
-
-//SEARCH STYLIST BY LOCATION
-  async function searchStylistLocation(){
-    console.log("called search Stylist by location");
-    if (!this.req.chunks[0]) {
-      console.log("Server error: No parameters");
-      return null;
-    }
-    info = JSON.parse(this.req.chunks[0])
-    let zip = info.zip;
-    let radius = info.radius;
-
-    let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
-    await respond (this.res, profiles)
-  }
-
-//REDIRECT ROOT TO APP WEBSITE
-async function root(){
-  this.res.writeHead(301,
-    {"Location": 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
-  );
-    this.res.end()
 }
 
 //RETURNS PROFILE FROM LOGIN
@@ -102,25 +82,25 @@ async function login(){
     "profile" : clientProfile
   }
   await respond(this.res, clientProfile);
+}
+
+async function createUser() {
 
 }
 
-// //Returns JSON OBJECT of the matching amenity.
-// async function getAmenityByID(){
-//   console.log("called get amenity by id");
-//   // If no parameters,
-//   if (!this.req.chunks[0]) {
-//     console.log("Server error: No parameters");
-//     return null
-//   }
-//   // Get amenity by ID and send it if its found.
-//   let id = JSON.parse(this.req.chunks[0]).id;
-//   let amenity = await database.getAmenityByID(id)
-//   if (amenity) {
-//     await respond(this.res,amenity);
-//   } else {
-//     // TODO Handle no amenity found.
-//   }
-// }
+//SEARCH STYLIST BY LOCATION
+async function searchStylistLocation(){
+  console.log("called search Stylist by location");
+  if (!this.req.chunks[0]) {
+    console.log("Server error: No parameters");
+    return null;
+  }
+  info = JSON.parse(this.req.chunks[0])
+  let zip = info.zip;
+  let radius = info.radius;
+
+  let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
+  await respond (this.res, profiles)
+}
 
 exports.startServer=startServer;

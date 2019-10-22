@@ -36,12 +36,12 @@ async function searchByLocation(zip, radius){
 	console.log("Searching stylists by zipcode...")
 	zips = zipcodes.radius(zip, radius)
 	//WILL ALWAYS RETURN AT LEAST USER ZIP
-	query = `SELECT U.email FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (U.zip=${zips[0]}`
+	query = `SELECT U.email FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
 
 	//IF THERE ARE MORE ZIPS:
 	if (zips.length>1){
 		for (let i=1; i< zips.length; i++){
-			query+= ` OR U.zip =${zips[i]}`
+			query+= ` OR L.zip =${zips[i]}`
 		}
 	}
 	query+= `)`

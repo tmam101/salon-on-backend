@@ -36,15 +36,15 @@ async function searchByLocation(zip, radius){
 	console.log("Searching stylists by zipcode...")
 	zips = zipcodes.radius(zip, radius)
 	//WILL ALWAYS RETURN AT LEAST USER ZIP
-	query = `SELECT * FROM user WHERE user.email = isLocated.email isStylist=true AND (zip=${zips[0]} `
+	query = `SELECT U.* FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
 
 	//IF THERE ARE MORE ZIPS:
 	if (zips.length>1){
 		for (let i=1; i< zips.length; i++){
-			query+= `or zip =${zips[i]} `
+			query+= ` OR L.zip =${zips[i]}`
 		}
 	}
-	query+= `);`
+	query+= `)`
 	results = await runQuery(query);
 	if (results.length==0){
 		console.log("No styists found near zipcode")
@@ -53,11 +53,6 @@ async function searchByLocation(zip, radius){
 	console.log(`Found ${results.length} stylists near zipcode`)
 	return {"profiles": results}
 }
-
-
-array = [123, 35654, 33535]
-console.log({key: array});
-console.log(JSON.stringify(array));
 
 async function getAmenityByID(id){
 	result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
@@ -244,8 +239,3 @@ exports.addstylist=addstylist;
 exports.createUser=createUser;
 exports.searchByLocation =searchByLocation;
 exports.searchStylists = searchStylists;
-
-
-
-
-

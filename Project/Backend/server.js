@@ -105,13 +105,13 @@ async function createUser(req, res){
 }
 
 //SEARCH STYLIST BY LOCATION
-async function searchStylistLocation(){
+async function searchStylistLocation(req, res){
   console.log("called search Stylist by location");
-  if (!this.req.chunks[0]) {
+  if (req.query == undefined) { // TODO Probably not right
     console.log("Server error: No parameters");
-    return null;
+    res.send(JSON.stringify({"status" : "no parameters"}))
   }
-  info = JSON.parse(this.req.chunks[0])
+  info = req.query
   let zip = info.zip;
   let radius = info.radius;
 

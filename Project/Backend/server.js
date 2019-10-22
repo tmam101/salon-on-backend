@@ -71,7 +71,7 @@ async function login(req, res){
   let pass = req.query.pass
   // Handle incorrect parameters
   if (!user || !pass) {
-    res.send(JSON.stringify({"status" : "Login Failed: No parameters"}}))
+    res.send(JSON.stringify({"status" : "Login Failed: No parameters"}))
   }
   let clientProfile = await database.getClientByUserAndPass(user, pass);
   console.log(clientProfile)

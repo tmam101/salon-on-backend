@@ -12,7 +12,9 @@ function startServer(){
 }
 
 // GET AMENITY BY ID
-app.post('/amenity-by-id', async function(req, res) {
+app.post('/amenity-by-id', getAmenityByID)
+
+async function getAmenityByID(req, res) {
   console.log("called get amenity by id");
   let id = req.query.id;
   let amenity = await database.getAmenityByID(id)
@@ -21,7 +23,7 @@ app.post('/amenity-by-id', async function(req, res) {
   } else {
     // TODO Handle no amenity found.
   }
-})
+}
 
 // TODO Delete?
 app.post('/client-by-id', async function(req, res) {

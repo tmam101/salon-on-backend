@@ -105,22 +105,22 @@ async function login(){
 
 }
 
-//Returns JSON OBJECT of the matching amenity.
-async function getAmenityByID(){
-  console.log("called get amenity by id");
-  // If no parameters,
-  if (!this.req.chunks[0]) {
-    console.log("Server error: No parameters");
-    return null
-  }
-  // Get amenity by ID and send it if its found.
-  let id = JSON.parse(this.req.chunks[0]).id;
-  let amenity = await database.getAmenityByID(id)
-  if (amenity) {
-    await respond(this.res,amenity);
-  } else {
-    // TODO Handle no amenity found.
-  }
-}
+// //Returns JSON OBJECT of the matching amenity.
+// async function getAmenityByID(){
+//   console.log("called get amenity by id");
+//   // If no parameters,
+//   if (!this.req.chunks[0]) {
+//     console.log("Server error: No parameters");
+//     return null
+//   }
+//   // Get amenity by ID and send it if its found.
+//   let id = JSON.parse(this.req.chunks[0]).id;
+//   let amenity = await database.getAmenityByID(id)
+//   if (amenity) {
+//     await respond(this.res,amenity);
+//   } else {
+//     // TODO Handle no amenity found.
+//   }
+// }
 
 exports.startServer=startServer;

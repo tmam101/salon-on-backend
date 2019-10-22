@@ -11,9 +11,9 @@ function startServer(){
   console.log("http server started")
 }
 
+// GET AMENITY BY ID
 app.post('/amenity-by-id', async function(req, res) {
   console.log("called get amenity by id");
-  // Get amenity by ID and send it if its found.
   let id = req.query.id;
   let amenity = await database.getAmenityByID(id)
   if (amenity) {
@@ -26,7 +26,6 @@ app.post('/amenity-by-id', async function(req, res) {
 // TODO Delete?
 app.post('/client-by-id', async function(req, res) {
   console.log("called get Client by id");
-  // Get amenity by ID and send it if its found.
   let id = req.query.id;
   if (!id) {
     // TODO Test
@@ -40,32 +39,17 @@ app.post('/client-by-id', async function(req, res) {
   }
 })
 
+// REFRESH
 app.post('/refresh', (req, res) => {
   console.log("refreshed");
   object = {"response" : "1"}
   res.send(JSON.stringify(object));
 })
 
-app.post('/createuser', async function(req, res) {
-  console.log("called create user");
-  // Get user info from rquest.
-  let properties = req.query
-  console.log(properties)
-  // TODO ETHAN: I'm unsure of what to enter when its null.  Is it null like this, or "null" in quotes?
-  let email = properties.user  != undefined ? properties.user : null;
-  let first = properties.first != undefined ? properties.first : null;
-  let last = properties.last != undefined ? properties.last : null;
-  let pass = properties.pass != undefined ? properties.pass : null;
-  let isStylist = properties.isStylist != undefined ? properties.isStylist : null;  //todo broken?
-  let isSalon = properties.isSalon != undefined ? properties.isSalon : null;
-  let stylistBio = properties.stylistBio != undefined ? properties.stylistBio : null
-  let salonBio = properties.salonBio != undefined ? properties.salonBio : null;
-  let salonRate = properties.salonRate != undefined ? properties.salonRate : null
-
-
-  // TODO This is a bool, will it return properly?
-  let status = await database.createUser(email, pass, first, last, isStylist, isSalon, stylistBio, salonBio, salonRate);
-  res.send(JSON.stringify({"status" : status}))
+app.get('/', (req, res) => {
+  res.writeHead(301,
+    {"Location": 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
+  )
 })
 
 
@@ -83,9 +67,6 @@ app.post('/createuser', async function(req, res) {
     let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
     await respond (this.res, profiles)
   }
-
-// startServer();
-
 
 //REDIRECT ROOT TO APP WEBSITE
 async function root(){
@@ -122,6 +103,24 @@ async function login(){
   }
   await respond(this.res, clientProfile);
 
+}
+
+//Returns JSON OBJECT of the matching amenity.
+async function getAmenityByID(){
+  console.log("called get amenity by id");
+  // If no parameters,
+  if (!this.req.chunks[0]) {
+    console.log("Server error: No parameters");
+    return null
+  }
+  // Get amenity by ID and send it if its found.
+  let id = JSON.parse(this.req.chunks[0]).id;
+  let amenity = await database.getAmenityByID(id)
+  if (amenity) {
+    await respond(this.res,amenity);
+  } else {
+    // TODO Handle no amenity found.
+  }
 }
 
 exports.startServer=startServer;

@@ -16,8 +16,8 @@ app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)  // TODO Unnecessary?
 app.get('/', redirect)
-app.post('/login', login) // TODO
-app.post('/createuser', createUser) // TODO
+app.post('/login', login)
+app.post('/createuser', createUser)
 app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 
 // ENDPOINT IMPLEMENTATION FUNCTIONS

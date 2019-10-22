@@ -45,6 +45,7 @@ async function searchByLocation(zip, radius){
 		}
 	}
 	query+= `);`
+  console.log(query)
 	results = await runQuery(query);
 	if (results.length==0){
 		console.log("No styists found near zipcode")

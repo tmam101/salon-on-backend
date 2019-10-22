@@ -7,11 +7,13 @@
   },
   "main": "Project/index.js",
   "scripts": {
-    "start": "node Project/index.js"
+    "start": "node Project/index.js",
+    "test": "node_modules/.bin/jest --watch"
   },
   "dependencies": {
     "cron": "^1.7.1",
     "director": "^1.2.8",
+    "dotenv": "^8.2.0",
     "ejs": "^2.5.6",
     "express": "^4.17.1",
     "fetch": "^1.1.0",

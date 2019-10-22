@@ -2,19 +2,17 @@
 const 	server		= require('./Backend/server.js')
 const		network 	= require('./Backend/network.js')
 const 	database  = require('./Backend/database.js')
-
+// const		env 			= require('dotenv')
 //SERVER & SETUP
 async function start() {
 	server.startServer();
-	// await database.connect()
-	//database.createUser("susie@mail.com","bestpassword", "susie", "jenkins",false, false, null, null, null);
-	//database.createUser("dylan@mail.com","bestpassword", "dylan", "jezo",false, false, null, null, null);
-	// await database.addstylist("dylan@mail.com", "I chopa lotta yo hair", [{id:1, price: 1.99, deposit:2.99, duration:1.30 }, {id:2, price: 1.99, deposit:2.99, duration:1.30 }]);
-
-	// await database.disconnect();
-
 	setInterval(refresh, 300000); // every 5 minutes (300000)
-
+	// if (process.env.NODE_ENV == 'local') {
+	// 	console.log("using local env")
+	// 	env.load()
+	// } else {
+	// 	console.log(process.env.NODE_ENV)
+	// }
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
 	// TODO set up review apps - these get created when you create a new pull request
@@ -24,8 +22,6 @@ async function start() {
 start();
 
 async function refresh() {
-	// Thomas: I was getting errors unless this is sent via post request in this manner.
-	// If it worked for you Ethan, maybe we should talk about this.
 	options = {
 		hostname: process.env.THISURL,
 		path: '/refresh',

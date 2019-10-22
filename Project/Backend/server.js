@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
   res.writeHead(301,
     {"Location": 'https://frosty-tereshkova-9806e1.netlify.com/index.html/'}
   )
+  res.send("Good")
 })
 
 

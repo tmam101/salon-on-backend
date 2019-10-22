@@ -41,7 +41,7 @@ async function searchByLocation(zip, radius){
 	//IF THERE ARE MORE ZIPS:
 	if (zips.length>1){
 		for (let i=1; i< zips.length; i++){
-			query+= ` or zip =${zips[i]}`
+			query+= ` OR zip =${zips[i]}`
 		}
 	}
 	query+= `)`

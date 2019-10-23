@@ -58,8 +58,9 @@ async function searchStylistsByZip(zip, radius){
 // RETURN MORE SPECIFIC LOCATION RESULTS, (PERFORMS GOOGLE API DISTANCE FUNCTION ON ZIP RESULTS)
 async function searchStylistsSpecificLocation(address, zip, radius){
 	let batch = await searchStylistsByZip(zip, radius);
-	batch= batch.profiles;
+	batch= JSON.parse(batch).profiles;
 	let results = []
+  console.log("batch")
 	console.log(batch);
 	batch.forEach((e)=>{
 		if (helperFunctions.distanceBetweenTwoPoints(address, e.address)<radius){

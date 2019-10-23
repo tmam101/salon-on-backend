@@ -8,6 +8,7 @@ const googleAPIKEY=process.env.GOOGLE_API_KEY;
 //functions
 async function distanceBetweenTwoPoints(origin, destination) {
 	// TODO Consider the matrix since this is a 3 way transaction
+	console.log("called distanceBetweenTwoPoints")
 	origin.replace(" ", "+")
 	origin.replace(",", "")
 	destination.replace(" ", "+")
@@ -19,6 +20,7 @@ async function distanceBetweenTwoPoints(origin, destination) {
 	var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
 	var timeToTravel = response.rows[0].elements[0].duration.text // TODO This is so far unused
 	// TODO We can also get these values in meters and seconds.
+	console.log(distanceInMiles)
 	return distanceInMiles
 }
 

@@ -59,7 +59,6 @@ async function searchStylistsByZip(zip, radius){
 async function searchStylistsSpecificLocation(address, zip, radius){
 	let batch = await searchStylistsByZip(zip, radius);
 	batch= batch.profiles;
-  console.log(batch)
 	let results = []
 	console.log(batch);
 	batch.forEach((e)=>{
@@ -255,4 +254,4 @@ exports.addstylist=addstylist;
 exports.createUser=createUser;
 exports.searchStylistsByZip =searchStylistsByZip;
 exports.searchStylists = searchStylists;
-exports.SearchStylistsSpecificLocation = SearchStylistsSpecificLocation;
+exports.searchStylistsSpecificLocation = searchStylistsSpecificLocation;

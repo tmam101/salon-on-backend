@@ -62,7 +62,7 @@ async function searchStylistsSpecificLocation(address, zip, radius){
 	let results = []
   console.log("batch")
 	console.log(batch);
-	batch.forEach((e)=>{
+	batch.forEach(async function(e) {
     const distance = await helperFunctions.distanceBetweenTwoPoints(address, e.address)
 		if (distance<radius){
       console.log("push distance")

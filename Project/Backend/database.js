@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const sha1 = require('sha1');
 var zipcodes = require('zipcodes');
+const helperFunctions = require('../helperFunctions.js');
 
 // DATABASE PROPERTIES
 const connection = mysql.createConnection({
@@ -32,11 +33,11 @@ async function searchStylists(term){
 	results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
 	return JSON.stringify(results);
 }
-async function searchByLocation(zip, radius){
+async function searchStylistsByZip(zip, radius){
 	console.log("Searching stylists by zipcode...")
 	zips = zipcodes.radius(zip, radius)
 	//WILL ALWAYS RETURN AT LEAST USER ZIP
-	query = `SELECT U.* FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
+	query = `SELECT * FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
 
 	//IF THERE ARE MORE ZIPS:
 	if (zips.length>1){
@@ -52,6 +53,20 @@ async function searchByLocation(zip, radius){
 	}
 	console.log(`Found ${results.length} stylists near zipcode`)
 	return {"profiles": results}
+}
+
+// RETURN MORE SPECIFIC LOCATION RESULTS, (PERFORMS GOOGLE API DISTANCE FUNCTION ON ZIP RESULTS)
+async function SearchStylistsSpecificLocation(address, zip, radius){
+	let batch = await searchStylistsByZip(zip, radius);
+	batch= batch.profiles;
+	let results = []
+	console.log(batch);
+	batch.forEach((e)=>{
+		if (helperFunctions.distanceBetweenTwoPoints(address, e.address)<radius){
+			results.push(e);
+		}
+	});
+	return results;
 }
 
 async function getAmenityByID(id){
@@ -237,5 +252,6 @@ exports.getClientByID=getClientByID;
 exports.getClientByUserAndPass=getClientByUserAndPass;
 exports.addstylist=addstylist;
 exports.createUser=createUser;
-exports.searchByLocation =searchByLocation;
+exports.searchStylistsByZip =searchStylistsByZip;
 exports.searchStylists = searchStylists;
+exports.SearchStylistsSpecificLocation = SearchStylistsSpecificLocation;

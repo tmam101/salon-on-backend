@@ -7,11 +7,10 @@ const 	database  = require('./Backend/database.js')
 async function start() {
 	server.startServer();
 	// await database.connect()
-	//database.createUser("susie@mail.com","bestpassword", "susie", "jenkins",false, false, null, null, null);
-	//database.createUser("dylan@mail.com","bestpassword", "dylan", "jezo",false, false, null, null, null);
-	// await database.addstylist("dylan@mail.com", "I chopa lotta yo hair", [{id:1, price: 1.99, deposit:2.99, duration:1.30 }, {id:2, price: 1.99, deposit:2.99, duration:1.30 }]);
 
 	// await database.disconnect();
+	// let results = await  database.SearchStylistsSpecificLocation('108 shadowood drive, chapel hill NC, 27514', 27514, 2);
+	// console.log(results);
 
 	setInterval(refresh, 300000); // every 5 minutes (300000)
 

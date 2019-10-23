@@ -115,7 +115,7 @@ async function searchStylistLocation(req, res){
   let zip = info.zip;
   let radius = info.radius;
 
-  let profiles = await database.searchByLocation(parseInt(zip), parseInt(radius));
+  let profiles = await database.searchStylistsByZip(parseInt(zip), parseInt(radius));
   res.send(JSON.stringify(profiles))
 }
 

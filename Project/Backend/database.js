@@ -64,7 +64,7 @@ async function searchStylistsByZip(zip, radius){
     console.log(batch);
 
     const getDistances = async function(batch) {
-      return new Promise((resolve, reject)=>{
+      // return new Promise((resolve, reject)=>{
         results = []
         for(var i = 0; i < batch.length; i++) {
           const distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
@@ -72,11 +72,12 @@ async function searchStylistsByZip(zip, radius){
             console.log("push profile")
             results.push(batch[i]);
           }
-          if (i == batch.length-1) {
-            resolve(results)
-          }
+          // if (i == batch.length-1) {
+          //   return results
+          // }
         }
-      })
+        return results
+      // })
     }
 
     const results = await getDistances(batch)

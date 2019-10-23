@@ -59,7 +59,7 @@ async function searchStylistsByZip(zip, radius){
   async function searchStylistsSpecificLocation(address, zip, radius){
     let batch = await searchStylistsByZip(zip, radius);
     batch= batch.profiles;
-    let results = []
+    // let results = []
     console.log("batch")
     console.log(batch);
 

@@ -67,7 +67,7 @@ async function searchStylistsByZip(zip, radius){
       return new Promise((resolve, reject)=>{
         results = []
         for(var i = 0; i < batch.length; i++) {
-          const distance = await helperFunctions.distanceBetweenTwoPoints(address, e.address)
+          const distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
           if (distance<radius){
             console.log("push profile")
             results.push(batch[i]);

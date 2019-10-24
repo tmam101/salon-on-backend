@@ -1,4 +1,4 @@
-describe ('getAllAmenities', async function() {
+describe ('getAllAmenities', function() {
   const	env = require('dotenv')
   env.config()
   const database = require('./database.js')

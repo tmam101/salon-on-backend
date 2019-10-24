@@ -12,10 +12,11 @@ describe ('getAllAmenities', function() {
     expect(typeof database.getAllAmenities).toBe("function")
   })
 
-  it('should return json', async function() {
+  it('should be accurate', async function() {
     const amenities = await database.getAllAmenities()
     console.log(amenities);
     expect(amenities).toBeDefined()
     expect(amenities.length).toBe(11)
+    expect(amenities[0].name).toBe("Dryer")
   })
 })

@@ -3,12 +3,22 @@ const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
 var app = express()
+var server;
 
 //FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
 function startServer(){
   let port = Number(process.env.PORT || 5000);
-  app.listen(port)
+  server = app.listen(port)
   console.log("http server started")
+}
+
+async function disconnect() {
+  return new Promise((resolve, reject)=>{
+    server.close(() => {
+      console.log('Closed out remaining connections');
+      resolve()
+    })
+  })
 }
 
 // ENDPOINTS
@@ -120,3 +130,4 @@ async function searchStylistLocation(req, res){
 }
 
 exports.startServer=startServer;
+exports.disconnect = disconnect;

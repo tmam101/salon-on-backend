@@ -1,11 +1,11 @@
-describe ('getAllAmenities', function() {
-  const database = require('./database.js')
-  // dotenv is supposed to configure my .env file, but it isn't working.
-  const		env 			= require('dotenv')
+describe ('getAllAmenities', async function() {
+  const	env = require('dotenv')
   env.config()
-  
-  it('should exist', function() {
-    expect(database.getAllAmenities).toBeDefined()
+  const database = require('./database.js')
+
+  it('should exist', async function() {
+    const amenities = await database.getAllAmenities()
+    expect(amenities).toBeDefined()
   })
 
   it('should be a function', function() {
@@ -13,8 +13,8 @@ describe ('getAllAmenities', function() {
   })
 
   it('should return json', async function() {
-    const result = await database.getAllAmenities()
-    console.log(result);
-    expect(result).toBeDefined()
+    const amenities = await database.getAllAmenities()
+    console.log(amenities);
+    expect(amenities).toBeDefined()
   })
 })

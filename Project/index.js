@@ -2,17 +2,11 @@
 const 	server		= require('./Backend/server.js')
 const		network 	= require('./Backend/network.js')
 const 	database  = require('./Backend/database.js')
-// const		env 			= require('dotenv')
 //SERVER & SETUP
+//TODO Move things from devDependencies into dependencies?
 async function start() {
 	server.startServer();
 	setInterval(refresh, 300000); // every 5 minutes (300000)
-	// if (process.env.NODE_ENV == 'local') {
-	// 	console.log("using local env")
-	// 	env.load()
-	// } else {
-	// 	console.log(process.env.NODE_ENV)
-	// }
 	//TODO Test
 	// TODO Consider CircleCI which is auto tests
 	// TODO set up review apps - these get created when you create a new pull request

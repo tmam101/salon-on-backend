@@ -8,7 +8,7 @@
   "main": "Project/index.js",
   "scripts": {
     "start": "node Project/index.js",
-    "test": "node_modules/.bin/jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "cron": "^1.7.1",

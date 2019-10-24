@@ -19,7 +19,7 @@ describe ('distanceBetweenTwoPoints', function() {
 
   it('should be accurate', async function() {
     const distance = await helperFunctions.distanceBetweenTwoPoints("700 Bolinwood Dr Chapel Hill NC 27514", "61 38th Ave NW Hickory NC")
-    expect(distance).toBe("2")
+    expect(distance).toBe("148")
   })
 
 })

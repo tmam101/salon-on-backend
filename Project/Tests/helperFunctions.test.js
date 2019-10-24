@@ -3,7 +3,7 @@ describe ('distanceBetweenTwoPoints', function() {
   const env = require('dotenv')
   env.config()
 
-  const helperFunctions = require('./helperFunctions.js')
+  const helperFunctions = require('../helperFunctions.js')
 
   it('should exist', function() {
     expect(helperFunctions.distanceBetweenTwoPoints).toBeDefined()

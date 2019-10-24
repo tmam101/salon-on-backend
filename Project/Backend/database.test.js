@@ -16,5 +16,6 @@ describe ('getAllAmenities', function() {
     const amenities = await database.getAllAmenities()
     console.log(amenities);
     expect(amenities).toBeDefined()
+    expect(amenities.length)toBe("11")
   })
 })

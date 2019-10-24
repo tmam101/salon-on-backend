@@ -1,17 +1,9 @@
 describe ('distanceBetweenTwoPoints', function() {
-  // var index = require('./index.js')
-  // const server = require('./Backend/server.js')
+  // Configures env file for local testing
   const env = require('dotenv')
   env.config()
-  const helperFunctions = require('./helperFunctions.js')
 
-  // beforeEach(async function() {
-  //   await index.start()
-  // })
-  //
-  // afterEach(async function() {
-  //   await server.disconnect()
-  // })
+  const helperFunctions = require('./helperFunctions.js')
 
   it('should exist', function() {
     expect(helperFunctions.distanceBetweenTwoPoints).toBeDefined()

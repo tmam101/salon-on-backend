@@ -9,6 +9,7 @@ describe('getAllAmenities', function() {
 
   it('should be accurate', async function() {
     const amenities = await database.getAllAmenities()
+    console.log(amenities)
     expect(amenities).toBeDefined()
     expect(amenities.length).toBe(11)
     expect(amenities[0].name).toBe("Dryer")
@@ -79,7 +80,7 @@ describe('getAmenityByID', function() {
     expect(typeof database.getAmenityByID).toBe("function")
   })
   it('should be accurate', async function() {
-    const amenity = await database.getAmenityByID("0")
+    const amenity = await database.getAmenityByID("1")
     expect(amenity).toBeDefined()
     expect(JSON.parse(amenity)[0].first).toBe("Dryer")
   })

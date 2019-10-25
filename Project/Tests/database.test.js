@@ -58,7 +58,7 @@ describe('searchStylists', function() {
   it('should be accurate', async function() {
     const stylists = await database.searchStylists("bob")
     expect(stylists).toBeDefined()
-    expect(stylists.length).toBeGreaterThan(0)
+    expect(JSON.parse(stylists).length).toBeGreaterThan(0)
     expect(JSON.parse(stylists[0].first)).toBe("bob")
   })
 })
@@ -71,6 +71,6 @@ describe('searchByLocation', function() {
     const profiles = await database.searchByLocation(27514, 10)
     console.log(profiles)
     expect(profiles).toBeDefined()
-    expect(profiles.length).toBeGreaterThan(0)
+    expect(JSON.parse(profiles).length).toBeGreaterThan(0)
   })
 })

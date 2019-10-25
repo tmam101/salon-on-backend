@@ -33,10 +33,9 @@ describe('getAllStylists', function() {
   })
   it('should be accurate', async function() {
     const stylists = await database.getAllStylists()
-    console.log(stylists)
     expect(stylists).toBeDefined()
     expect(stylists.length).toBe(6)
-    expect(stylists[0].name).toBe("Blow Out")
+    expect(stylists[0].first).toBe("bob")
   })
 })
 
@@ -46,9 +45,8 @@ describe('getAllClients', function() {
   })
   it('should be accurate', async function() {
     const clients = await database.getAllClients()
-    console.log(clients)
     expect(clients).toBeDefined()
     expect(clients.length).toBe(18)
-    expect(clients[0].name).toBe("Blow Out")
+    expect(clients[0].first).toBe("first")
   })
 })

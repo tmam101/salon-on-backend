@@ -23,7 +23,7 @@ describe('getAllHairStyles', function() {
     const hairstyles = await database.getAllHairStyles()
     expect(hairstyles).toBeDefined()
     expect(hairstyles.length).toBe(49)
-    expect(hairstyles[0].name).toBe("Beard Styling")
+    expect(hairstyles[0].styleName).toBe("Beard Styling")
   })
 })
 

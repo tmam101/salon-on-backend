@@ -106,3 +106,9 @@ describe('getClientByUserAndPass', function() {
     expect(client.first).toBe("Thomas")
   })
 })
+
+describe('transaction', function() {
+  it('should be a function', function() {
+    expect(typeof database.transaction).toBe("function")
+  })
+})

@@ -59,5 +59,18 @@ describe('searchStylists', function() {
     const stylist = await database.searchStylists("bob")
     console.log(stylist)
     expect(stylist).toBeDefined()
+    expect(stylist.length).toBeGreaterThan(0)
+    expect(stylist[0].first).toBe("bob")
+  })
+})
+
+describe('searchByLocation', function() {
+  it('should be a function', function() {
+    expect(typeof database.searchByLocation).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const profiles = await database.searchByLocation(27514, 10)
+    console.log(profiles)
+    expect(profiles).toBeDefined()
   })
 })

@@ -59,7 +59,7 @@ describe('searchStylists', function() {
     const stylists = await database.searchStylists("bob")
     expect(stylists).toBeDefined()
     expect(JSON.parse(stylists).length).toBeGreaterThan(0)
-    expect(JSON.parse(stylists[0].first)).toBe("bob")
+    expect(JSON.parse(stylists)[0].first).toBe("bob")
   })
 })
 

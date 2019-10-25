@@ -8,7 +8,7 @@
   "main": "Project/index.js",
   "scripts": {
     "start": "node Project/index.js",
-    "test": "jest"
+    "test": "jest --collectCoverage=true"
   },
   "dependencies": {
     "cron": "^1.7.1",

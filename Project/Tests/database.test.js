@@ -2,7 +2,7 @@ const	env = require('dotenv')
 env.config()
 const database = require('../Backend/database.js')
 
-describe ('getAllAmenities', function() {
+describe('getAllAmenities', function() {
   it('should be a function', function() {
     expect(typeof database.getAllAmenities).toBe("function")
   })

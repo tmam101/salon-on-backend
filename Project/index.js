@@ -4,7 +4,7 @@ const		network 	= require('./Backend/network.js')
 const 	database  = require('./Backend/database.js')
 //SERVER & SETUP
 //TODO Move things from devDependencies into dependencies?
-// TODO add install jest as a step of the circleCI so that we can delete it from github?
+//TODO Remove node_modules from github
 async function start() {
 	server.startServer();
 	setInterval(refresh, 300000); // every 5 minutes (300000)

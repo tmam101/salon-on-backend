@@ -50,3 +50,14 @@ describe('getAllClients', function() {
     expect(clients[0].first).toBe("first")
   })
 })
+
+describe('searchStylists', function() {
+  it('should be a function', function() {
+    expect(typeof database.searchStylists).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const stylist = await database.searchStylists("bob")
+    console.log(stylist)
+    expect(stylist).toBeDefined()
+  })
+})

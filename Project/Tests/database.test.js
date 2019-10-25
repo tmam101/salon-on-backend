@@ -21,10 +21,9 @@ describe('getAllHairStyles', function() {
   })
   it('should be accurate', async function() {
     const hairstyles = await database.getAllHairStyles()
-    console.log(hairstyles)
     expect(hairstyles).toBeDefined()
     expect(hairstyles.length).toBe(10)
-    expect(hairstyles[0].name).toBe("Blow Out")
+    expect(hairstyles[0].name).toBe("Beard Styling")
   })
 })
 
@@ -41,7 +40,7 @@ describe('getAllStylists', function() {
   })
 })
 
-describe('getAllClients') {
+describe('getAllClients', function() {
   it('should be a function', function() {
     expect(typeof database.getAllClients).toBe("function")
   })
@@ -52,4 +51,4 @@ describe('getAllClients') {
     expect(clients.length).toBe(10)
     expect(clients[0].name).toBe("Blow Out")
   })
-}
+})

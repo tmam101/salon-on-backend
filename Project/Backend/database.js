@@ -64,11 +64,34 @@ async function getClientByID(email){
 	return result[0];
 }
 async function getClientByUserAndPass(user, pass){
-	result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
+	result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`);
 	if (result.length == 0){
 		return {Error: "No user found"}
 	}
 	return result[0];
+}
+
+async function getClientAppointments(user){
+  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
+  deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+  WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
+  return {"bookings": results}
+}
+async function getStylistAppointments(user){
+  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
+  deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+  WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
+  return {"bookings": results}
+}
+async function createBooking(user, offerID, date, time){
+  status = await runQuery(`INSERT INTO bookings VALUES('${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
+  if(!status){
+    console.log("Error Unable to create booking")
+    return false;
+  } else {
+    console.log("Booking created successfully");
+    return true;
+  }
 }
 
 
@@ -238,3 +261,6 @@ exports.addstylist=addstylist;
 exports.createUser=createUser;
 exports.searchByLocation =searchByLocation;
 exports.searchStylists = searchStylists;
+exports.getClientAppointments = getClientAppointments;
+exports.getStylistAppointments = getStylistAppointments;
+exports.createBooking = createBooking;

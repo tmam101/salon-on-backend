@@ -69,8 +69,42 @@ describe('searchByLocation', function() {
   })
   it('should be accurate', async function() {
     const profiles = await database.searchByLocation(27514, 10)
-    console.log(profiles)
     expect(profiles).toBeDefined()
     expect(profiles.profiles.length).toBeGreaterThan(0)
+  })
+})
+
+describe('getAmenityByID', function() {
+  it('should be a function', function() {
+    expect(typeof database.getAmenityByID).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const amenity = await database.getAmenityByID("0")
+    expect(amenity).toBeDefined()
+    expect(JSON.parse(amenity)[0].first).toBe("Dryer")
+  })
+})
+
+describe('getClientByID', function() {
+  it('should be a function', function() {
+    expect(typeof database.getClientByID).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const client = await database.getClientByID("testemailthomas@gmail.com")
+    console.log(client)
+    expect(client).toBeDefined()
+    expect(JSON.parse(client)[0].first).toBe("Thomas")
+  })
+})
+
+describe('getClientByUserAndPass', function() {
+  it('should be a function', function() {
+    expect(typeof database.getClientByUserAndPass).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const client = await database.getClientByUserAndPass("testemailthomas@gmail.com", "testpasswordthomas")
+    console.log(client)
+    expect(client).toBeDefined()
+    expect(JSON.parse(client).first).toBe("Thomas")
   })
 })

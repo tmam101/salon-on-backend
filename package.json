@@ -35,7 +35,6 @@
     "zipcodes": "^8.0.0"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
     "request": "^2.88.0",
     "tape": "^4.7.0"
   },

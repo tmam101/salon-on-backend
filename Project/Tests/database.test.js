@@ -71,6 +71,6 @@ describe('searchByLocation', function() {
     const profiles = await database.searchByLocation(27514, 10)
     console.log(profiles)
     expect(profiles).toBeDefined()
-    expect(JSON.parse(profiles).length).toBeGreaterThan(0)
+    expect(JSON.parse(profiles).profiles.length).toBeGreaterThan(0)
   })
 })

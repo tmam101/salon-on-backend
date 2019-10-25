@@ -10,4 +10,4 @@ jobs: # a collection of steps
           command: 'sudo npm install -g npm@latest'
       - run: # run tests
           name: test
-          command: npm test
+          command: jest

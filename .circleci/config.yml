@@ -8,6 +8,9 @@ jobs: # a collection of steps
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
+      -run:
+        name: install jest
+        command: npm install jest
       - run: # run tests
           name: test
           command: jest

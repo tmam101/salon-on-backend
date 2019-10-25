@@ -93,7 +93,7 @@ describe('getClientByID', function() {
     const client = await database.getClientByID("testemailthomas@gmail.com")
     console.log(client)
     expect(client).toBeDefined()
-    expect(JSON.parse(client)[0].first).toBe("Thomas")
+    expect(client.first).toBe("Thomas")
   })
 })
 
@@ -105,6 +105,6 @@ describe('getClientByUserAndPass', function() {
     const client = await database.getClientByUserAndPass("testemailthomas@gmail.com", "testpasswordthomas")
     console.log(client)
     expect(client).toBeDefined()
-    expect(JSON.parse(client).first).toBe("Thomas")
+    expect(client.first).toBe("Thomas")
   })
 })

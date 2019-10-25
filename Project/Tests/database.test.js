@@ -14,3 +14,14 @@ describe ('getAllAmenities', function() {
     expect(amenities[0].name).toBe("Dryer")
   })
 })
+
+describe('getAllHairStyles', function() {
+  it('should be a function', function() {
+    expect(typeof database.getAllHairStyles).toBe("function")
+  })
+  it('should be accurate', async function() {
+    const hairstyles = await database.getAllHairStyles()
+    console.log(hairstyles)
+    expect(hairstyles).toBeDefined()
+  })
+})

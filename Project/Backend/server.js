@@ -105,6 +105,7 @@ async function createUser(req, res){
 }
 
 //SEARCH STYLIST BY LOCATION
+//NEED TO CHANGE REQUEST TO CONTAIN ADDRESS IN FORM: {addr: "123 BLAH BLAH", city:"chapel hill", state: "NC", zip: "27514"}
 async function searchStylistLocation(req, res){
   console.log("called search Stylist by location");
   if (req.query == undefined) { // TODO Probably not right
@@ -113,9 +114,10 @@ async function searchStylistLocation(req, res){
   }
   info = req.query
   let zip = info.zip;
+  let address = info.addr+" "+info.city+" "+info.state;
   let radius = info.radius;
 
-  let profiles = await database.searchStylistsByZip(parseInt(zip), parseInt(radius));
+  let profiles = await database.searchStylistsSpecificLocation(address, parseInt(zip), parseInt(radius));
   res.send(JSON.stringify(profiles))
 }
 

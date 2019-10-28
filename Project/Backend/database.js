@@ -33,6 +33,7 @@ async function searchStylists(term){
   results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
   return JSON.stringify(results);
 }
+//GET STYLISTS WITH ZIPCODES IN RADIUS
 async function searchStylistsByZip(zip, radius){
   console.log("Searching stylists by zipcode...")
   zips = zipcodes.radius(zip, radius)

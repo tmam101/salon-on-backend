@@ -9,8 +9,6 @@ async function start() {
 	// await database.connect()
 
 	// await database.disconnect();
-	let results = await database.searchStylistsSpecificLocation('108 shadowood drive, chapel hill NC, 27514', 27514, 2);
-	console.log(results);
 
 	setInterval(refresh, 300000); // every 5 minutes (300000)
 

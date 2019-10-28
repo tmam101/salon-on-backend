@@ -53,29 +53,24 @@ async function searchStylistsByZip(zip, radius){
       return {sorry: "No stylists found"}
     }
     console.log(`Found ${results.length} stylists near zipcode`)
-    return {"profiles": results}
+    return results
   }
 
   // RETURN MORE SPECIFIC LOCATION RESULTS, (PERFORMS GOOGLE API DISTANCE FUNCTION ON ZIP RESULTS)
   async function searchStylistsSpecificLocation(address, zip, radius){
     let batch = await searchStylistsByZip(zip, radius);
-    batch= batch.profiles;
-    console.log(batch);
-
     const getDistances = async function(batch) {
         var results = []
         for(var i = 0; i < batch.length; i++) {
           const distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
           if (distance<radius){
-            console.log("push profile")
             results.push(batch[i]);
           }
         }
-        return results
+        return results;
     }
-
     const results = await getDistances(batch)
-    return results;
+    return {"profiles" :results};
   }
 
   async function getAmenityByID(id){

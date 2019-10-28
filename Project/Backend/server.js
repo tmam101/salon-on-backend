@@ -111,7 +111,7 @@ async function searchStylistLocation(req, res){
     console.log("Server error: No parameters");
     res.send(JSON.stringify({"status" : "no parameters"}))
   }
-  info = req.query
+  info = req.query;
   let zip = info.zip;
   let radius = info.radius;
 

@@ -63,14 +63,14 @@ describe('searchStylists', function() {
   })
 })
 
-describe('searchByLocation', function() {
+describe('searchStylistByZip', function() {
   it('should be a function', function() {
-    expect(typeof database.searchByLocation).toBe("function")
+    expect(typeof database.searchStylistsByZip).toBe("function")
   })
   it('should be accurate', async function() {
-    const profiles = await database.searchByLocation(27514, 10)
+    const profiles = await database.searchStylistsByZip(27514, 10)
     expect(profiles).toBeDefined()
-    expect(profiles.profiles.length).toBeGreaterThan(0)
+    expect(profiles.length).toBeGreaterThan(0)
   })
 })
 

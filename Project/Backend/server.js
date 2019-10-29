@@ -10,7 +10,7 @@ function startServer(){
   app.listen(port)
   console.log("http server started")
 }
-///////
+////////
 // ENDPOINTS
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)

@@ -34,7 +34,7 @@ async function searchStylists(term){
 }
 //GET STYLISTS WITH ZIPCODES IN RADIUS
 async function searchStylistsByZip(zip, radius){
-  console.log("Searching stylists by zipcode...")
+  console.log("Searching stylists by zipcode " + zip)
   zips = zipcodes.radius(zip, radius)
   //WILL ALWAYS RETURN AT LEAST USER ZIP
   query = `SELECT * FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
@@ -46,8 +46,10 @@ async function searchStylistsByZip(zip, radius){
       }
     }
     query+= `)`
+    console.log(query)
     results = await runQuery(query);
-    if (results.length==0){
+    console.log(results)
+    if (results.length==0 || results == false || results==undefined){
       console.log("No styists found near zipcode")
       return {sorry: "No stylists found"}
     }
@@ -91,17 +93,22 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getClientAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
-    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
     return {"bookings": results}
   }
   async function getStylistAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
-    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
+  // TODO This doesn't insert a bid.  Is that a problem?
+  // I think so, because I get the error
+  // "ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1"
+  // With the input
+  // database.createBooking("testemailthomas@gmail.com", "1", "2019-10-10", "09:30:00")
   async function createBooking(user, offerID, date, time){
     status = await runQuery(`INSERT INTO bookings VALUES('${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
@@ -134,7 +141,7 @@ async function searchStylistsByZip(zip, radius){
   //ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
   //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
 
-  async function addstylist(email, stylistBio, styles){
+  async function addStylist(email, stylistBio, styles){
     //TOGGLES isStylist TO TRUE
     console.log("activating stylist account...")
     status =  await runQuery(`UPDATE user SET isStylist = TRUE, stylistBio = '${stylistBio}' WHERE EMAIL = '${email}'`)
@@ -168,40 +175,40 @@ async function searchStylistsByZip(zip, radius){
   //******DATABASE CONNECTION AND RUN-QUERY FUNCTIONS *********/
 
   //CONNECT TO DB
-  async function connect(){
-    return new Promise((resolve, reject)=>{
-      connection.connect((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    }).then(()=>{
-      console.log('DB connection established');
-    }).catch((err)=>{
-      console.log('Unable to connect to Db');
-      //console.log(err);
-    })
-  }
-
-  //DISCONNECT FROM DB
-  async function disconnect(){
-    return new Promise((resolve, reject)=>{
-      connection.end((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    }).then(()=>{
-      console.log('DB connection ended gracefully');
-    }).catch((err)=>{
-      console.log('Error ending Db connection');
-      //console.log(err);
-    })
-  }
+  // async function connect(){
+  //   return new Promise((resolve, reject)=>{
+  //     connection.connect((err) => {
+  //       if (err) {
+  //         reject(err);
+  //       } else {
+  //         resolve();
+  //       }
+  //     });
+  //   }).then(()=>{
+  //     console.log('DB connection established');
+  //   }).catch((err)=>{
+  //     console.log('Unable to connect to Db');
+  //     //console.log(err);
+  //   })
+  // }
+  //
+  // //DISCONNECT FROM DB
+  // async function disconnect(){
+  //   return new Promise((resolve, reject)=>{
+  //     connection.end((err) => {
+  //       if (err) {
+  //         reject(err);
+  //       } else {
+  //         resolve();
+  //       }
+  //     });
+  //   }).then(()=>{
+  //     console.log('DB connection ended gracefully');
+  //   }).catch((err)=>{
+  //     console.log('Error ending Db connection');
+  //     //console.log(err);
+  //   })
+  // }
 
 
 
@@ -267,8 +274,10 @@ async function searchStylistsByZip(zip, radius){
   }
 
   //EXPORTS
-  exports.connect= connect;
-  exports.disconnect=disconnect;
+  // exports.connect= connect;
+  // exports.disconnect=disconnect;
+  exports.transaction=transaction;
+  exports.runQuery = runQuery;
   exports.getAllAmenities= getAllAmenities;
   exports.getAllClients=getAllClients;
   exports.getAllHairStyles=getAllHairStyles;
@@ -276,7 +285,7 @@ async function searchStylistsByZip(zip, radius){
   exports.getAmenityByID=getAmenityByID;
   exports.getClientByID=getClientByID;
   exports.getClientByUserAndPass=getClientByUserAndPass;
-  exports.addstylist=addstylist;
+  exports.addStylist=addStylist;
   exports.createUser=createUser;
   exports.searchStylistsByZip =searchStylistsByZip;
   exports.searchStylists = searchStylists;
@@ -284,7 +293,3 @@ async function searchStylistsByZip(zip, radius){
   exports.createBooking = createBooking;
   exports.getStylistAppointments = getStylistAppointments;
   exports.getClientAppointments = getClientAppointments;
-
-
-
-

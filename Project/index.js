@@ -7,9 +7,7 @@ const 	database  = require('./Backend/database.js')
 //TODO Remove node_modules from github
 async function start() {
 	server.startServer();
-	// await database.connect()
-	// await database.disconnect();
-
+	
 	setInterval(refresh, 300000); // every 5 minutes (300000)
 	// TODO set up review apps - these get created when you create a new pull request
 	// TODO Test sending multiple requests at once to see if the server can handle it.

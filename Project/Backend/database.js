@@ -51,7 +51,7 @@ async function searchStylistsByZip(zip, radius){
     console.log(results)
     if (results.length==0 || results == false || results==undefined){
       console.log("No styists found near zipcode")
-      return {sorry: "No stylists found"}
+      return {error: "No stylists found"}
     }
     console.log(`Found ${results.length} stylists near zipcode`)
     return results
@@ -104,18 +104,25 @@ async function searchStylistsByZip(zip, radius){
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
-  // TODO This doesn't insert a bid.  Is that a problem?
-  // I think so, because I get the error
-  // "ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1"
-  // With the input
-  // database.createBooking("testemailthomas@gmail.com", "1", "2019-10-10", "09:30:00")
+  
   async function createBooking(user, offerID, date, time){
-    status = await runQuery(`INSERT INTO bookings VALUES('${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
+    status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
       console.log("Error Unable to create booking")
       return false;
     } else {
       console.log("Booking created successfully");
+      return true;
+    }
+  }
+
+  async function deleteBooking(bid){
+    status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
+    if (!status){
+      console.log("Unable to remove booking");
+      return false;
+    } else  {
+      console.log("Successfully removed booking");
       return true;
     }
   }
@@ -153,7 +160,7 @@ async function searchStylistsByZip(zip, radius){
     let styleQueries = [];
     console.log("Adding hairstyles to stylist account..")
     styles.forEach((e) => {
-      styleQueries.push(`INSERT INTO offersStyle VALUES ('${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
+      styleQueries.push(`INSERT INTO offersStyle VALUES (null,'${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
     });
     status = await transaction(styleQueries);
     if (!status){
@@ -161,7 +168,14 @@ async function searchStylistsByZip(zip, radius){
       return false;
     }
     console.log("Stylist account activated successfully")
-    return false;
+    return true;
+  }
+
+  async function deleteStylistComponent(email){
+    status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
+    if (status){
+      await runQuery(`UPDATE user SET isStylist = false WHERE email = '${email}'`)
+    }
   }
 
 
@@ -173,44 +187,6 @@ async function searchStylistsByZip(zip, radius){
 
 
   //******DATABASE CONNECTION AND RUN-QUERY FUNCTIONS *********/
-
-  //CONNECT TO DB
-  // async function connect(){
-  //   return new Promise((resolve, reject)=>{
-  //     connection.connect((err) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve();
-  //       }
-  //     });
-  //   }).then(()=>{
-  //     console.log('DB connection established');
-  //   }).catch((err)=>{
-  //     console.log('Unable to connect to Db');
-  //     //console.log(err);
-  //   })
-  // }
-  //
-  // //DISCONNECT FROM DB
-  // async function disconnect(){
-  //   return new Promise((resolve, reject)=>{
-  //     connection.end((err) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve();
-  //       }
-  //     });
-  //   }).then(()=>{
-  //     console.log('DB connection ended gracefully');
-  //   }).catch((err)=>{
-  //     console.log('Error ending Db connection');
-  //     //console.log(err);
-  //   })
-  // }
-
-
 
   //EXECUTE QUERY (run this for selects and single insertions)
   async function runQuery(SQLString) {
@@ -293,3 +269,5 @@ async function searchStylistsByZip(zip, radius){
   exports.createBooking = createBooking;
   exports.getStylistAppointments = getStylistAppointments;
   exports.getClientAppointments = getClientAppointments;
+  exports.deleteStylistComponent = deleteStylistComponent;
+  exports.deleteBooking = deleteBooking;

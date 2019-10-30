@@ -248,13 +248,13 @@ describe('getStylistAppointments', function() {
     let offerID = result[0].offerID
     //add bookings
     await database.createBooking("jestGetStylistAppointments@mail.com", offerID, "2019-12-10", "09:30:00")
-    await database.createBooking("jestGetStylistAppointments@mail.com", offerID, "2019-10-11", "09:30:00")
+    await database.createBooking("jestGetStylistAppointments@mail.com", offerID, "2019-10-11", "09:40:00")
     //test
     result = await database.getStylistAppointments("jestGetStylistAppointments@mail.com");
     bookings = result.bookings;
     expect(bookings.length).toBe(2);
-    expect(bookings[0].bookDate).toStrictEqual(new Date("2019-12-10T05:00:00.000Z"))
-    expect(bookings[1].bookDate).toStrictEqual(new Date("2019-10-11T04:00:00.000Z"))
+    expect(bookings[0].bookTime).toBe("09:30:00")
+    expect(bookings[1].bookTime).toBe("09:40:00")
 
     //cleanup
     await database.runQuery(`DELETE FROM bookings WHERE offerID = ${offerID}`);

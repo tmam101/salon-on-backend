@@ -34,7 +34,7 @@ async function searchStylists(term){
 }
 //GET STYLISTS WITH ZIPCODES IN RADIUS
 async function searchStylistsByZip(zip, radius){
-  console.log("Searching stylists by zipcode...")
+  console.log("Searching stylists by zipcode " + zip)
   zips = zipcodes.radius(zip, radius)
   //WILL ALWAYS RETURN AT LEAST USER ZIP
   query = `SELECT * FROM user U, isLocated L WHERE U.email = L.email AND U.isStylist=true AND (L.zip=${zips[0]}`
@@ -46,10 +46,12 @@ async function searchStylistsByZip(zip, radius){
       }
     }
     query+= `)`
+    console.log(query)
     results = await runQuery(query);
-    if (results.length==0){
+    console.log(results)
+    if (results.length==0 || results == false || results==undefined){
       console.log("No styists found near zipcode")
-      return {sorry: "No stylists found"}
+      return {error: "No stylists found"}
     }
     console.log(`Found ${results.length} stylists near zipcode`)
     return results
@@ -91,24 +93,36 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getClientAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
-    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
     return {"bookings": results}
   }
   async function getStylistAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price, 
-    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H 
+    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
+  
   async function createBooking(user, offerID, date, time){
-    status = await runQuery(`INSERT INTO bookings VALUES('${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
+    status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
       console.log("Error Unable to create booking")
       return false;
     } else {
       console.log("Booking created successfully");
+      return true;
+    }
+  }
+
+  async function deleteBooking(bid){
+    status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
+    if (!status){
+      console.log("Unable to remove booking");
+      return false;
+    } else  {
+      console.log("Successfully removed booking");
       return true;
     }
   }
@@ -134,7 +148,7 @@ async function searchStylistsByZip(zip, radius){
   //ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
   //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
 
-  async function addstylist(email, stylistBio, styles){
+  async function addStylist(email, stylistBio, styles){
     //TOGGLES isStylist TO TRUE
     console.log("activating stylist account...")
     status =  await runQuery(`UPDATE user SET isStylist = TRUE, stylistBio = '${stylistBio}' WHERE EMAIL = '${email}'`)
@@ -146,7 +160,7 @@ async function searchStylistsByZip(zip, radius){
     let styleQueries = [];
     console.log("Adding hairstyles to stylist account..")
     styles.forEach((e) => {
-      styleQueries.push(`INSERT INTO offersStyle VALUES ('${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
+      styleQueries.push(`INSERT INTO offersStyle VALUES (null,'${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
     });
     status = await transaction(styleQueries);
     if (!status){
@@ -154,7 +168,14 @@ async function searchStylistsByZip(zip, radius){
       return false;
     }
     console.log("Stylist account activated successfully")
-    return false;
+    return true;
+  }
+
+  async function deleteStylistComponent(email){
+    status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
+    if (status){
+      await runQuery(`UPDATE user SET isStylist = false WHERE email = '${email}'`)
+    }
   }
 
 
@@ -166,44 +187,6 @@ async function searchStylistsByZip(zip, radius){
 
 
   //******DATABASE CONNECTION AND RUN-QUERY FUNCTIONS *********/
-
-  //CONNECT TO DB
-  async function connect(){
-    return new Promise((resolve, reject)=>{
-      connection.connect((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    }).then(()=>{
-      console.log('DB connection established');
-    }).catch((err)=>{
-      console.log('Unable to connect to Db');
-      //console.log(err);
-    })
-  }
-
-  //DISCONNECT FROM DB
-  async function disconnect(){
-    return new Promise((resolve, reject)=>{
-      connection.end((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    }).then(()=>{
-      console.log('DB connection ended gracefully');
-    }).catch((err)=>{
-      console.log('Error ending Db connection');
-      //console.log(err);
-    })
-  }
-
-
 
   //EXECUTE QUERY (run this for selects and single insertions)
   async function runQuery(SQLString) {
@@ -267,8 +250,10 @@ async function searchStylistsByZip(zip, radius){
   }
 
   //EXPORTS
-  exports.connect= connect;
-  exports.disconnect=disconnect;
+  // exports.connect= connect;
+  // exports.disconnect=disconnect;
+  exports.transaction=transaction;
+  exports.runQuery = runQuery;
   exports.getAllAmenities= getAllAmenities;
   exports.getAllClients=getAllClients;
   exports.getAllHairStyles=getAllHairStyles;
@@ -276,7 +261,7 @@ async function searchStylistsByZip(zip, radius){
   exports.getAmenityByID=getAmenityByID;
   exports.getClientByID=getClientByID;
   exports.getClientByUserAndPass=getClientByUserAndPass;
-  exports.addstylist=addstylist;
+  exports.addStylist=addStylist;
   exports.createUser=createUser;
   exports.searchStylistsByZip =searchStylistsByZip;
   exports.searchStylists = searchStylists;
@@ -284,7 +269,5 @@ async function searchStylistsByZip(zip, radius){
   exports.createBooking = createBooking;
   exports.getStylistAppointments = getStylistAppointments;
   exports.getClientAppointments = getClientAppointments;
-
-
-
-
+  exports.deleteStylistComponent = deleteStylistComponent;
+  exports.deleteBooking = deleteBooking;

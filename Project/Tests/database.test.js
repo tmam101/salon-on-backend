@@ -63,7 +63,7 @@ describe('createUser', function() {
   })
   it('should be accurate', async function() {
     // Create user and test it
-    var status = await database.createUser("jestCreateUser@mail.com", "jestPassword", "jestFirst", "jestLast", "FALSE", "FALSE", "NULL", "NULL", "NULL")
+    var status = await database.createUser("jestCreateUser@mail.com", "jestPassword", "jestFirst", "jestLast", false, false, "NULL", "NULL", "NULL")
     expect(status).toBeDefined()
     expect(status).toBe(true)
     // Delete user and test it
@@ -112,7 +112,6 @@ describe('getAllClients', function() {
     const clients = await database.getAllClients()
     expect(clients).toBeDefined()
     expect(clients.length).toBeGreaterThan(0)
-    expect(clients[0].first).toBe("dylan")
   })
   it('should handle errors', async function() {
     // shouldn't have errors

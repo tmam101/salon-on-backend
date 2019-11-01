@@ -52,7 +52,7 @@ async function getClientByID(req, res) {
   }
 }
 
-function redirect() {
+function redirect(req, res) {
   res.redirect('https://frosty-tereshkova-9806e1.netlify.com/index.html/')
 }
 

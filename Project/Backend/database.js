@@ -27,8 +27,9 @@ async function getAllClients() {
   return await runQuery("SELECT * FROM user");
 }
 
-async function updatePassword(newPass) {
-  result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='thomas@mail.com'`)
+async function updatePassword(email, newPass) {
+  result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
+  // TODO handle bad results
   console.log(result)
 }
 

@@ -8,7 +8,7 @@ const 	database  = require('./Backend/database.js')
 async function start() {
 	server.startServer();
 	setInterval(refresh, 300000); // every 5 minutes (300000)
-	await database.updatePassword("thomastestpassword")
+	await database.updatePassword("thomas@mail.com", "thomastestpassword")
 	// TODO set up review apps - these get created when you create a new pull request
 	// TODO Test sending multiple requests at once to see if the server can handle it.
 

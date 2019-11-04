@@ -27,8 +27,6 @@ async function getAllClients() {
   return await runQuery("SELECT * FROM user");
 }
 
-await updatePassword("thomastestpassword")
-
 async function updatePassword(newPass) {
   result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='thomas@mail.com'`)
   console.log(result)
@@ -278,3 +276,4 @@ async function searchStylistsByZip(zip, radius){
   exports.getClientAppointments = getClientAppointments;
   exports.deleteStylistComponent = deleteStylistComponent;
   exports.deleteBooking = deleteBooking;
+  exports.updatePassword = updatePassword;

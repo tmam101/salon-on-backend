@@ -17,10 +17,7 @@ describe('get', function() {
 describe('post', function() {
   it('should be accurate', async function() {
     jest.setTimeout(30000);
-  	body = {
-      "text" : "refresh"
-    };
-    var response = await network.post("https://salon-on-backend.herokuapp.com/refresh", body);
+    var response = await network.post("https://salon-on-backend.herokuapp.com/refresh", {});
     expect(response).toBeDefined()
     expect(response.statusCode).toBe(200)
     expect(response.body).toBe("{\"response\":\"1\"}")

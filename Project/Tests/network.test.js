@@ -10,6 +10,23 @@ describe('get', function() {
   })
 })
 
+describe('post', function() {
+  it('should be accurate', async function() {
+    jest.setTimeout(30000);
+    options = {
+  		hostname: "salon-on-backend.herokuapp.com",
+  		path: '/refresh',
+  		method: 'POST'
+  	};
+  	body = {
+      "text" : "refresh"
+    };
+    var response = await network.post(options, body);
+    expect(response).toBeDefined()
+    expect(response).toBe(200)
+  })
+})
+
 // describe('post', function() {
 //   it('should be accurate', async function() {
 //     options = {

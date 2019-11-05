@@ -24,5 +24,5 @@ async function refresh() {
 	body = {
     "text" : "refresh"
   };
-	network.post(options, body);
+	await network.post(options, body);
 }

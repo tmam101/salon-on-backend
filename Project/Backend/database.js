@@ -27,6 +27,12 @@ async function getAllClients() {
   return await runQuery("SELECT * FROM user");
 }
 
+async function updatePassword(email, newPass) {
+  result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
+  // TODO handle bad results
+  console.log(result)
+}
+
 //MORE QUERY FUNCTIONS
 async function searchStylists(term){
   results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
@@ -104,7 +110,7 @@ async function searchStylistsByZip(zip, radius){
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
-  
+
   async function createBooking(user, offerID, date, time){
     status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
@@ -271,3 +277,4 @@ async function searchStylistsByZip(zip, radius){
   exports.getClientAppointments = getClientAppointments;
   exports.deleteStylistComponent = deleteStylistComponent;
   exports.deleteBooking = deleteBooking;
+  exports.updatePassword = updatePassword;

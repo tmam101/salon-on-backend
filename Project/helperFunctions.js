@@ -8,7 +8,7 @@ const googleAPIKEY=process.env.GOOGLE_API_KEY;
 //functions
 async function distanceBetweenTwoPoints(origin, destination) {
 	// TODO Consider the matrix since this is a 3 way transaction
-	console.log("called distanceBetweenTwoPoints")
+	console.log("called distanceBetweenTwoPoints " + origin + " " + destination)
 	origin.replace(" ", "+")
 	origin.replace(",", "")
 	destination.replace(" ", "+")

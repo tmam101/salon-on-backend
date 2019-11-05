@@ -3,12 +3,28 @@ const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
 var app = express()
+var portNumber = undefined
+var listener = undefined
 
 //FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
-function startServer(){
-  let port = Number(process.env.PORT || 5000);
-  app.listen(port)
-  console.log("http server started")
+async function startServer(){
+  return new Promise((resolve, reject) => {
+    if (portNumber != undefined) {
+      console.log("port defined already")
+      resolve(portNumber)
+    } else {
+      try {
+        listener = app.listen(process.env.PORT || 5000, function() {
+          portNumber = listener.address().port
+          console.log("http server started on port " + portNumber)
+          resolve(portNumber)
+        })
+      } catch (error) {
+        console.log("Couldn't bind to port")
+        reject()
+      }
+    }
+  })
 }
 
 // ENDPOINTS
@@ -22,7 +38,7 @@ app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 
 // ENDPOINT IMPLEMENTATION FUNCTIONS
 async function getAmenityByID(req, res) {
-  console.log("called get amenity by id");
+  console.log("called get amenity by id " + req.query.id);
   let id = req.query.id;
   let amenity = await database.getAmenityByID(id)
   if (amenity) {
@@ -122,3 +138,10 @@ async function searchStylistLocation(req, res){
 }
 
 exports.startServer=startServer;
+exports.getAmenityByID = getAmenityByID;
+exports.refresh = refresh;
+exports.getClientByID=getClientByID;
+exports.redirect=redirect;
+exports.login=login;
+exports.createUser=createUser;
+exports.searchStylistLocation=searchStylistLocation;

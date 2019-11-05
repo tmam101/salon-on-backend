@@ -17,11 +17,6 @@ describe('get', function() {
 describe('post', function() {
   it('should be accurate', async function() {
     jest.setTimeout(30000);
-    options = {
-  		hostname: "salon-on-backend.herokuapp.com",
-  		path: '/refresh',
-  		method: 'POST'
-  	};
   	body = {
       "text" : "refresh"
     };
@@ -31,18 +26,3 @@ describe('post', function() {
     expect(response.body).toBe("{\"response\":\"1\"}")
   })
 })
-
-// describe('post', function() {
-//   it('should be accurate', async function() {
-//     options = {
-//   		hostname: "https://www.reddit.com",
-//   		path: "/r/" + "dogelore" + "/top.json?t=" + "day" + "&limit=" + "100",
-//   		method: 'POST'
-//   	};
-//   	body = {
-//     };
-//     const response = await network.post(options, body)
-//     console.log(response)
-//     expect(response).toBeDefined()
-//   })
-// })

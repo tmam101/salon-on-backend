@@ -23,6 +23,9 @@ async function get(url) {
 
 async function post(url, json) {
   return new Promise((resolve, reject) => {
+    if (!url.startsWith("https://")) {
+      url = "https://" + url
+    }
     request.post(url, json, (error, res, body) => {
       if (error) {
         console.error(error)

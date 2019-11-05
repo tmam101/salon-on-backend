@@ -4,7 +4,6 @@ const network = require('../Backend/network.js')
 
 
 describe('get', function() {
-  jest.setTimeout(30000);
   it('should be accurate', async function() {
     const response = await network.get("https://www.reddit.com/r/" + "dogelore" + "/top.json?t=" + "day" + "&limit=" + "100")
     expect(response).toBeDefined()

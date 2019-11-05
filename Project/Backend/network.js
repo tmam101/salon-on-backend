@@ -31,11 +31,7 @@ async function post(url, json) {
       }
       console.log(`statusCode: ${res.statusCode}`)
       console.log(body)
-      returnObject = {
-        statusCode: res.statusCode,
-        body: body
-      }
-      resolve(returnObject)
+      resolve({statusCode: res.statusCode, body: body})
     })
   })
 }

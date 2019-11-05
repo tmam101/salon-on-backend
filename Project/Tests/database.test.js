@@ -272,8 +272,10 @@ describe('createBooking', function() {
     expect(status).toBeDefined()
     expect(status).toBe(true)
     // cleanup
-    await database.runQuery("DELETE FROM bookings WHERE client = 'jestCreateBooking@mail.com' AND offerID = 1 AND bookDate = '2019-10-10' AND bookTime = '09:30:00'")
-    await database.runQuery("DELETE FROM user WHERE email = 'jestCreateBooking@mail.com'")
+    const status1 = await database.runQuery("DELETE FROM bookings WHERE client = 'jestCreateBooking@mail.com' AND offerID = 1 AND bookDate = '2019-10-10' AND bookTime = '09:30:00'")
+    const status2 = await database.runQuery("DELETE FROM user WHERE email = 'jestCreateBooking@mail.com'")
+    expect(status1).toBe(true)
+    expect(status2).toBe(true)
   })
   it('should handle errors', async function() {
     // TODO

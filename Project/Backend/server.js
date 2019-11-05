@@ -3,12 +3,23 @@ const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
 var app = express()
+var portNumber = undefined
 
 //FUNCTION TO LAUNCH SERVER AND SET PORT, FOR LOCAL TESTING, CAN CHANGE .listen(xxxx) to whatever
-function startServer(){
-  let port = Number(process.env.PORT || 5000);
-  app.listen(port)
-  console.log("http server started")
+async function startServer(){
+  return new Promise((resolve, reject) => {
+    if (portNumber != undefined) {
+      console.log("port undefined")
+      resolve(portNumber)
+    } else {
+      let port = Number(process.env.PORT || 5000);
+      var listener = app.listen(port, function() {
+        console.log("http server started")
+        portNumber = listener.address().port
+        resolve(portNumber)
+      })
+    }
+  })
 }
 
 // ENDPOINTS

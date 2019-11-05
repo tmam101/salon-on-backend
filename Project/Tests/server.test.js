@@ -81,18 +81,41 @@ describe('login', function() {
 
 describe('createUser', function() {
   it('should be accurate', async function() {
-    var req = new Request({id: "thomas@mail.com"})
+    var req = new Request({
+      user: "thomastest@mail.com",
+      first: "thomas",
+      last: "test",
+      pass: "thomastestpassword",
+      isStylist: "false",
+      isSalon : "false",
+      stylistBio: "null",
+      salonBio: "null",
+      salonRate: "null"
+    })
     var res = new Response()
-    await server.getClientByID(req, res)
-    expect(res.value).toBe("{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":\"0\"}")
+    await server.createUser(req, res)
+    expect(res.value).toBeDefined()
+    expect(JSON.parse(res.value).status).toBe(true)
+    status = await database.runQuery("DELETE FROM user WHERE email='thomastest@mail.com'")
+    expect(status).toBeDefined()
+    expect(status.affectedRows).toBeDefined()
+    expect(status.affectedRows).toBe(1)
   })
 })
 
 describe('searchStylistLocation', function() {
   it('should be accurate', async function() {
-    var req = new Request({id: "thomas@mail.com"})
+    var req = new Request({
+      zip: 27514,
+      radius: 10,
+      addr: "700 Bolinwood Dr",
+      city: "Chapel Hill",
+      state: "NC"
+    })
     var res = new Response()
-    await server.getClientByID(req, res)
-    expect(res.value).toBe("{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":\"0\"}")
+    await server.searchStylistLocation(req, res)
+    expect(res.value).toBeDefined()
+    expect(JSON.parse(res.value).profiles).toBeDefined()
+    expect(JSON.parse(res.value).profiles.length).toBeGreaterThan(0)
   })
 })

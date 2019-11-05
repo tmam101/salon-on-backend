@@ -13,25 +13,16 @@ async function startServer(){
       console.log("port defined already")
       resolve(portNumber)
     } else {
-
-      const iterate = function(num) {
-        try {
-          var port = Number(num)
-          listener = app.listen(process.env.PORT || num, function() {
-            portNumber = listener.address().port
-            console.log("http server started on port " + portNumber)
-            resolve(portNumber)
-          })
-        } catch (error) {
-          if (num == 5050) {
-            return undefined
-          }
-          console.log("iterate")
-          iterate(num+1)
-        }
+      try {
+        listener = app.listen(process.env.PORT || 5000, function() {
+          portNumber = listener.address().port
+          console.log("http server started on port " + portNumber)
+          resolve(portNumber)
+        })
+      } catch (error) {
+        console.log("Couldn't bind to port")
+        reject()
       }
-      
-      let port = iterate(5000)
     }
   })
 }

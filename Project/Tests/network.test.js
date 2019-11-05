@@ -1,4 +1,7 @@
+const	env = require('dotenv')
+env.config()
 const network = require('../Backend/network.js')
+
 
 describe('get', function() {
   it('should be accurate', async function() {
@@ -11,17 +14,12 @@ describe('get', function() {
   })
 })
 
-// describe('post', function() {
-//   it('should be accurate', async function() {
-//     options = {
-//   		hostname: "https://www.reddit.com",
-//   		path: "/r/" + "dogelore" + "/top.json?t=" + "day" + "&limit=" + "100",
-//   		method: 'POST'
-//   	};
-//   	body = {
-//     };
-//     const response = await network.post(options, body)
-//     console.log(response)
-//     expect(response).toBeDefined()
-//   })
-// })
+describe('post', function() {
+  it('should be accurate', async function() {
+    jest.setTimeout(30000);
+    var response = await network.post("https://salon-on-backend.herokuapp.com/refresh", {});
+    expect(response).toBeDefined()
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toBe("{\"response\":\"1\"}")
+  })
+})

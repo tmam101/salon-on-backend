@@ -1,4 +1,5 @@
 const HTTPS     = require('https');
+const request = require('request')
 
 //MARK: HTTPS FUNCTIONS
 async function get(url) {
@@ -20,23 +21,19 @@ async function get(url) {
   return promise
 }
 
-function post(options, body) {
-  var botReq;
-  botReq = HTTPS.request(options, function(res) {
-    // console.log(res)
-    if(res.statusCode > 299 || res.statusCode < 200) {
-      console.log('rejecting bad status code ' + res.statusCode);
-    } else {
-      // console.log('good status code')
-    }
-  });
-  botReq.on('error', function(err) {
-    console.log('error posting message '  + JSON.stringify(err));
-  });
-  botReq.on('timeout', function(err) {
-    console.log('timeout posting message '  + JSON.stringify(err));
-  });
-  botReq.end(JSON.stringify(body));
+async function post(url, json) {
+  return new Promise((resolve, reject) => {
+    request.post(url, json, (error, res, body) => {
+      if (error) {
+        console.error(error)
+        reject(error)
+        return
+      }
+      console.log(`statusCode: ${res.statusCode}`)
+      console.log(body)
+      resolve({statusCode: res.statusCode, body: body})
+    })
+  })
 }
 
 exports.get = get;

@@ -1,6 +1,10 @@
+const	env = require('dotenv')
+env.config()
 const network = require('../Backend/network.js')
 
+
 describe('get', function() {
+  jest.setTimeout(30000);
   it('should be accurate', async function() {
     const response = await network.get("https://www.reddit.com/r/" + "dogelore" + "/top.json?t=" + "day" + "&limit=" + "100")
     expect(response).toBeDefined()
@@ -21,9 +25,10 @@ describe('post', function() {
   	body = {
       "text" : "refresh"
     };
-    var response = await network.post(options, body);
+    var response = await network.post("https://salon-on-backend.herokuapp.com/refresh", body);
     expect(response).toBeDefined()
-    expect(response).toBe(200)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toBe("{\"response\":\"1\"}")
   })
 })
 

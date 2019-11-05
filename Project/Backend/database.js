@@ -121,7 +121,7 @@ async function searchStylistsByZip(zip, radius){
       return true;
     }
   }
-  await runQuery("DELETE FROM user WHERE email='client'")
+  
   async function deleteBooking(bid){
     status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
     if (!status){

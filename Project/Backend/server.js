@@ -17,10 +17,11 @@ async function startServer(){
       const iterate = function(num) {
         try {
           var port = Number(num)
-          app.listen(port)
-          console.log("http server started")
-          portNumber = port
-          return portNumber
+          listener = app.listen(process.env.PORT || num, function() {
+            portNumber = listener.address().port
+            console.log("http server started on port " + portNumber)
+            resolve(portNumber)
+          })
         } catch (error) {
           if (num == 5050) {
             return undefined
@@ -29,11 +30,8 @@ async function startServer(){
           iterate(num+1)
         }
       }
-
-
+      
       let port = iterate(5000)
-      console.log("port : " + port)
-      resolve(port)
     }
   })
 }

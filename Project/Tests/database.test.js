@@ -274,8 +274,8 @@ describe('createBooking', function() {
     // cleanup
     const status1 = await database.runQuery("DELETE FROM bookings WHERE client = 'jestCreateBooking@mail.com' AND offerID = 1 AND bookDate = '2019-10-10' AND bookTime = '09:30:00'")
     const status2 = await database.runQuery("DELETE FROM user WHERE email = 'jestCreateBooking@mail.com'")
-    expect(status1).toBe(true)
-    expect(status2).toBe(true)
+    expect(status1).toBe({"affectedRows": 1, "changedRows": 0, "fieldCount": 0, "insertId": 0, "message": "", "protocol41": true, "serverStatus": 2, "warningCount": 0})
+    expect(status2).toBe({"affectedRows": 1, "changedRows": 0, "fieldCount": 0, "insertId": 0, "message": "", "protocol41": true, "serverStatus": 2, "warningCount": 0})
   })
   it('should handle errors', async function() {
     // TODO

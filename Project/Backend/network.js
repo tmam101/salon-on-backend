@@ -29,6 +29,7 @@ async function post(url, json) {
     }
     request.post(url, json, (error, res, body) => {
       if (error) {
+        console.log("POST url with error: " + url)
         console.error(error)
         reject(error)
         return

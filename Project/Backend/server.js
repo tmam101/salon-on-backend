@@ -35,8 +35,12 @@ app.get('/', redirect)
 app.post('/login', login)
 app.post('/createuser', createUser)
 app.post('/searchstylistslocation', searchStylistLocation)  // TODO
+app.post('/add-stylist', addStylist)
 
-// ENDPOINT IMPLEMENTATION FUNCTIONS
+
+// ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+
 async function getAmenityByID(req, res) {
   console.log("called get amenity by id " + req.query.id);
   let id = req.query.id;
@@ -66,6 +70,15 @@ async function getClientByID(req, res) {
   } else {
     // TODO Handle no client found.
   }
+}
+
+//******TODO: ONCE THE APP CAN SEND STYLES, THIS NEEDS TO PASS THEM TO FUNCTION**********
+async function addStylist(req, res){
+  let email = req.query.id;
+  let bio = req.query.bio;
+  let styles = req.query.styles;
+  result = await database.addStylist(email, bio, [])
+  res.send(JSON.stringify({"status": status}))
 }
 
 function redirect(req, res) {

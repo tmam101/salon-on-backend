@@ -77,6 +77,7 @@ async function addStylist(req, res){
   let email = req.query.id;
   let bio = req.query.bio;
   let styles = JSON.parse(req.query.styles);
+  console.log(styles)
   result = await database.addStylist(email, bio, [styles])
   res.send(JSON.stringify({"status": status}))
 }

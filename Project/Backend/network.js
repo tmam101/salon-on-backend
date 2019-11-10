@@ -23,11 +23,13 @@ async function get(url) {
 
 async function post(url, json) {
   return new Promise((resolve, reject) => {
+    console.log("post url: " + url)
     if (!url.startsWith("https://")) {
       url = "https://" + url
     }
     request.post(url, json, (error, res, body) => {
       if (error) {
+        console.log("POST url with error: " + url)
         console.error(error)
         reject(error)
         return

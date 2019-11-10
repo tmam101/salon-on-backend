@@ -30,7 +30,7 @@ async function startServer(){
 // ENDPOINTS
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
-app.post('/client-by-id', getClientByID)  // TODO Unnecessary?
+app.post('/client-by-id', getClientByID)
 app.get('/', redirect)
 app.post('/login', login)
 app.post('/createuser', createUser)
@@ -57,7 +57,7 @@ async function getAmenityByID(req, res) {
   if (amenity) {
     res.send(JSON.stringify(amenity));
   } else {
-    // TODO Handle no amenity found.
+    res.send(JSON.stringify({"status":"No amenity found"}))
   }
 }
 
@@ -70,14 +70,13 @@ async function getClientByID(req, res) {
   console.log("called get Client by id");
   let id = req.query.id;
   if (!id) {
-    // TODO Test
     res.send(JSON.stringify({"status" : "no ID provided"}))
   }
   let client = await database.getClientByID(id)
   if (client) {
     res.send(JSON.stringify(client));
   } else {
-    // TODO Handle no client found.
+    res.send(JSON.stringify({"status":"No client found"}))
   }
 }
 

@@ -34,9 +34,22 @@ app.post('/client-by-id', getClientByID)
 app.get('/', redirect)
 app.post('/login', login)
 app.post('/createuser', createUser)
-app.post('/searchstylistslocation', searchStylistLocation)
+app.post('/searchstylistslocation', searchStylistLocation)  // TODO
+app.post('/add-stylist', addStylist)
+app.post('/get-styles', getAllStylyes)
 
-// ENDPOINT IMPLEMENTATION FUNCTIONS
+
+// ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+async function getAllStylyes(req, res){
+  let results=JSON.stringify(await database.getAllHairStyles())
+  if (results){
+    res.send({"status":true,"results":results})
+  } else {
+    res.send({"status":false})
+  }
+}
+
 async function getAmenityByID(req, res) {
   console.log("called get amenity by id " + req.query.id);
   let id = req.query.id;
@@ -65,6 +78,16 @@ async function getClientByID(req, res) {
   } else {
     res.send(JSON.stringify({"status":"No client found"}))
   }
+}
+
+//ADD STYLIST COMPONENT AND OFFERS TO ACCOUNT
+async function addStylist(req, res){
+  let email = req.query.id;
+  let bio = req.query.bio;
+  console.log(req.query.styles)
+  let styles = JSON.parse(req.query.styles);
+  result = await database.addStylist(email, bio, styles.styleArray) 
+  res.send(JSON.stringify({"status": status}))
 }
 
 function redirect(req, res) {

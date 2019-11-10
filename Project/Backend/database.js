@@ -168,10 +168,12 @@ async function searchStylistsByZip(zip, radius){
     styles.forEach((e) => {
       styleQueries.push(`INSERT INTO offersStyle VALUES (null,'${email}', ${e.id}, ${e.price}, ${e.deposit}, ${e.duration})`)
     });
-    status = await transaction(styleQueries);
+    if (styleQueries.length>0){
+      status = await transaction(styleQueries);
     if (!status){
       console.log("FAILED: unable to add hairstyles to stylist account")
       return false;
+    }
     }
     console.log("Stylist account activated successfully")
     return true;

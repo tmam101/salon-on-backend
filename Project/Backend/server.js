@@ -101,6 +101,8 @@ async function login(req, res){
     body.push(chunk);
   }).on('end', () => {
     body = Buffer.concat(body).toString();
+    console.log("body")
+    console.log(body)
     // at this point, `body` has the entire request body stored in it as a string
   });
   console.log("attempting to login...");

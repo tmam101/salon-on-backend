@@ -23,3 +23,13 @@ describe('post', function() {
     expect(response.body).toBe("{\"response\":\"1\"}")
   })
 })
+
+// describe('broke', function() {
+//   it('shouldnt be broke', async function() {
+//     jest.setTimeout(30000)
+//     var response = await network.post("salon-on-backend.herokuapp.com/searchstylistslocation?radius=10&zip=27514&addr=700 Bolinwood Dr&city=Chapel Hill&state=NC", undefined)
+//     expect(response).toBeDefined()
+//     console.log(response)
+//     expect(JSON.parse(response).body).toBeDefined()
+//   })
+// })

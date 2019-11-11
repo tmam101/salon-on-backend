@@ -96,6 +96,13 @@ function redirect(req, res) {
 
 //RETURNS PROFILE FROM LOGIN
 async function login(req, res){
+  let body = [];
+  req.on('data', (chunk) => {
+    body.push(chunk);
+  }).on('end', () => {
+    body = Buffer.concat(body).toString();
+    // at this point, `body` has the entire request body stored in it as a string
+  });
   console.log("attempting to login...");
   console.log(req)
   // Handle no parameters

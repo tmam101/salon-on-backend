@@ -186,6 +186,19 @@ async function searchStylistsByZip(zip, radius){
     }
   }
 
+  async function updateProfilePhoto(email, photo){
+    status = await runQuery(`INSERT INTO profilePhoto (VALUES '${email}', '${photo}')`)
+    if (status == false){
+      return false;
+    } else {
+      return true;
+    }
+  }
+  async function getProfilePoto(email){
+    results = await runQuery(`select photo from user where email = '${email}'`)
+    return results
+  }
+
 
 
   //TODO: ADD SALON COMPONENT TO ACCOUNT.

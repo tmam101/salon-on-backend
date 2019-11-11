@@ -7,7 +7,7 @@ const 	database  = require('./Backend/database.js')
 //TODO Remove node_modules from github
 async function start() {
 	await server.startServer();
-	setInterval(refresh, 3000); // every 5 minutes (300000)
+	setInterval(refresh, 300000); // every 5 minutes (300000)
 	// TODO set up review apps - these get created when you create a new pull request
 	// TODO Test sending multiple requests at once to see if the server can handle it.
 
@@ -16,11 +16,6 @@ async function start() {
 start();
 
 async function refresh() {
-	// options = {
-	// 	hostname: process.env.THISURL,
-	// 	path: '/refresh',
-	// 	method: 'POST'
-	// };
 	body = {
     "text" : "refresh"
   };

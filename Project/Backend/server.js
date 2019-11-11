@@ -86,7 +86,7 @@ async function addStylist(req, res){
   let bio = req.query.bio;
   console.log(req.query.styles)
   let styles = JSON.parse(req.query.styles);
-  result = await database.addStylist(email, bio, styles.styleArray) 
+  result = await database.addStylist(email, bio, styles.styleArray)
   res.send(JSON.stringify({"status": status}))
 }
 
@@ -97,19 +97,19 @@ function redirect(req, res) {
 //RETURNS PROFILE FROM LOGIN
 async function login(req, res){
   console.log("attempting to login...");
+  console.log(req)
   // Handle no parameters
   if (req.query == undefined) { // TODO This probably isn't right.
     console.log("Login Failed: No parameters");
-    let status = {
-      "status" : "Login Failed: No parameters"
-    }
-    res.send(JSON.stringify(status))
+    res.send(JSON.stringify({"status" : "Login Failed: No parameters"}))
+    return
   }
   let user = req.query.user
   let pass = req.query.pass
   // Handle incorrect parameters
   if (!user || !pass) {
     res.send(JSON.stringify({"status" : "Login Failed: No parameters"}))
+    return
   }
   let clientProfile = await database.getClientByUserAndPass(user, pass);
   console.log(clientProfile)

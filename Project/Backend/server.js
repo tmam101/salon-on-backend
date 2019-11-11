@@ -46,10 +46,24 @@ app.post('/add-stylist', addStylist)
 app.post('/get-styles', getAllStylyes)
 app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
+app.post('/add-location', addLocation)
 
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 
+
+async function addLocation(req, res){
+  info = req.query;
+  let zip = info.zip;
+  let address = info.addr+" "+info.city+" "+info.state;
+  let email = info.id;
+  let result = await database.addLocation(email, address, zip)
+  if (result){
+    res.send(JSON.stringify({"status": true}))
+  } else {
+    res.send(JSON.stringify({"status": false}))
+  }
+}
 async function updateProfilePhoto(req, res){
   let email = req.query.id;
   let photo = req.query.photo;

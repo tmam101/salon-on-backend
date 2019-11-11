@@ -33,6 +33,16 @@ async function updatePassword(email, newPass) {
   console.log(result)
 }
 
+async function addLocation(email, address, zip){
+  result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
+  if(result == false){
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
 //MORE QUERY FUNCTIONS
 async function searchStylists(term){
   results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
@@ -295,3 +305,4 @@ async function searchStylistsByZip(zip, radius){
   exports.updatePassword = updatePassword;
   exports.updateProfilePhoto=updateProfilePhoto;
   exports.getProfilePhoto= getProfilePhoto;
+  exports.addLocation = addLocation;

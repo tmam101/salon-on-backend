@@ -114,6 +114,7 @@ describe('searchStylistLocation', function() {
     })
     var res = new Response()
     await server.searchStylistLocation(req, res)
+    console.log(res.value)
     expect(res.value).toBeDefined()
     expect(JSON.parse(res.value).profiles).toBeDefined()
     expect(JSON.parse(res.value).profiles.length).toBeGreaterThan(0)

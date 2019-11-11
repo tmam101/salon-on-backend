@@ -16,13 +16,8 @@ async function start() {
 start();
 
 async function refresh() {
-	options = {
-		hostname: process.env.THISURL,
-		path: '/refresh',
-		method: 'POST'
-	};
 	body = {
     "text" : "refresh"
   };
-	await network.post(options, body);
+	await network.post(process.env.THISURL + '/refresh', body);
 }

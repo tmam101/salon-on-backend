@@ -55,7 +55,7 @@ describe('getClientByID', function() {
     var req = new Request({id: "thomas@mail.com"})
     var res = new Response()
     await server.getClientByID(req, res)
-    expect(res.value).toBe("{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":\"0\"}")
+    expect(res.value).toBe("{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":0}")
   })
 })
 
@@ -72,7 +72,7 @@ describe('login', function() {
     var req = new Request({user: "thomas@mail.com", pass: "thomastestpassword"})
     var res = new Response()
     await server.login(req, res)
-    expect(res.value).toBe("{\"profile\":{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":\"0\"}}")
+    expect(res.value).toBe("{\"profile\":{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":0}}")
   })
   it('should handle errors', async function() {
 

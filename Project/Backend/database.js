@@ -33,6 +33,16 @@ async function updatePassword(email, newPass) {
   console.log(result)
 }
 
+async function addLocation(email, address, zip){
+  result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
+  if(result == false){
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
 //MORE QUERY FUNCTIONS
 async function searchStylists(term){
   results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
@@ -186,6 +196,19 @@ async function searchStylistsByZip(zip, radius){
     }
   }
 
+  async function updateProfilePhoto(email, photo){
+    status = await runQuery(`INSERT INTO profilePhotos VALUES( '${email}', '${photo}') ON DUPLICATE KEY UPDATE photo = '${photo}'`)
+    if (status == false){
+      return false;
+    } else {
+      return true;
+    }
+  }
+  async function getProfilePhoto(email){
+    results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
+    return results[0].photo
+  }
+
 
 
   //TODO: ADD SALON COMPONENT TO ACCOUNT.
@@ -280,3 +303,6 @@ async function searchStylistsByZip(zip, radius){
   exports.deleteStylistComponent = deleteStylistComponent;
   exports.deleteBooking = deleteBooking;
   exports.updatePassword = updatePassword;
+  exports.updateProfilePhoto=updateProfilePhoto;
+  exports.getProfilePhoto= getProfilePhoto;
+  exports.addLocation = addLocation;

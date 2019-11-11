@@ -1,5 +1,3 @@
-const http      = require('http');
-const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
 const bodyParser = require('body-parser')
@@ -50,8 +48,6 @@ app.post('/add-location', addLocation)
 
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
-
-
 async function addLocation(req, res){
   info = req.query;
   let zip = info.zip;
@@ -64,6 +60,7 @@ async function addLocation(req, res){
     res.send(JSON.stringify({"status": false}))
   }
 }
+
 async function updateProfilePhoto(req, res){
   let email = req.query.id;
   let photo = req.query.photo;

@@ -2,6 +2,7 @@ const http      = require('http');
 const director  = require('director');
 const database  = require('./database.js')
 const express   = require('express')
+const bodyParser = require('body-parser')
 var app = express()
 var portNumber = undefined
 var listener = undefined
@@ -28,6 +29,12 @@ async function startServer(){
 }
 
 // ENDPOINTS
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+)
+app.use(bodyParser.json())
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)
@@ -37,16 +44,37 @@ app.post('/createuser', createUser)
 app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 app.post('/add-stylist', addStylist)
 app.post('/get-styles', getAllStylyes)
+app.post('/update-profile-photo', updateProfilePhoto)
+app.post('/get-profile-photo', getProfilePhoto)
 
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 
+async function updateProfilePhoto(req, res){
+  let email = req.query.id;
+  let photo = req.query.photo;
+  let body = req.body.base64;
+
+  let status= await database.updateProfilePhoto(email, body);
+  res.send(JSON.stringify({"status": status}))
+}
+
+async function getProfilePhoto(req, res){
+  let email = req.query.id
+  result = await database.getProfilePhoto(email);
+  if (results){
+    res.send(JSON.stringify({"status":true,"results":result}))
+  } else {
+    res.send(JSON.stringify({"status":false}))
+  }
+}
+
 async function getAllStylyes(req, res){
   let results=JSON.stringify(await database.getAllHairStyles())
   if (results){
-    res.send({"status":true,"results":results})
+    res.send(JSON.stringify({"status":true,"results":results}))
   } else {
-    res.send({"status":false})
+    res.send(JSON.stringify({"status":false}))
   }
 }
 

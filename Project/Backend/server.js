@@ -27,10 +27,10 @@ async function startServer(){
 }
 
 // ENDPOINTS
-// app.use(
-//   bodyParser.json()
-// )
-app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({extended: true})
+)
+// app.use(bodyParser.json())
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)

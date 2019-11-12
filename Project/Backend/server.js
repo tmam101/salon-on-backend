@@ -62,6 +62,7 @@ async function addLocation(req, res){
 async function updateProfilePhoto(req, res){
   let email = req.query.id;
   let photo = req.query.photo;
+  console.log(req.query)
   console.log(req.body)
   let body = req.body.base64;
   console.log("body")

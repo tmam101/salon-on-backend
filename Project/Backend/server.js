@@ -28,9 +28,7 @@ async function startServer(){
 
 // ENDPOINTS
 app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
+  bodyParser.json()
 )
 app.use(bodyParser.json())
 app.post('/amenity-by-id', getAmenityByID)
@@ -64,7 +62,10 @@ async function addLocation(req, res){
 async function updateProfilePhoto(req, res){
   let email = req.query.id;
   let photo = req.query.photo;
+  console.log(req.body)
   let body = req.body.base64;
+  console.log("body")
+  console.log(body)
 
   let status= await database.updateProfilePhoto(email, body);
   res.send(JSON.stringify({"status": status}))

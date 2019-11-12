@@ -27,9 +27,9 @@ async function startServer(){
 }
 
 // ENDPOINTS
-app.use(
-  bodyParser.json()
-)
+// app.use(
+//   bodyParser.json()
+// )
 app.use(bodyParser.json())
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)

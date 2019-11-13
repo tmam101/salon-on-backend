@@ -49,9 +49,8 @@ Tasked with producing a clickable prototype, designing Android UI elements, inte
 Thomas Goss - tpgoss@live.unc.edu - Backend Developer and Network Admin  
 Responsible for implementing the network communications between node.js webserver and the android API, as well as managing the deployment of the backend onto heroku and its associated automated test suites.
 
-**License:**
-TBD
+**License:**   All source code in this repository and other creative works related to this project are property of the University of North Carolina at Chapel Hill.
 
 **Acknowledgements:**
 
-We extend our graditude to our mentor Mike Lake, and Professor Jeff Terrel for providing their insights throughout the duration of this project.
+We extend our graditude to our mentor, Dr. Mike Lake, and Professor, Dr. Jeff Terrell for providing their insights throughout the duration of this project.

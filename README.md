@@ -18,7 +18,7 @@ The tests are located in 'Project/Tests'.  These files all end with '.test.js'. 
 
 **Deployment:**
 
-The codebase of this project lives on two repositories. This one, and the frontend mentioned in the about section. While the backend is hosted by Heroku at https://dashboard.heroku.com/apps/salon-on-backend, the android app is still in development and as such the frontend has not been officially deployed to any platform at the time of this documentation. However a walking skeleton of the app can be accessed from the project website located at https://frosty-tereshkova-9806e1.netlify.com/index.html.
+The codebase of this project lives in two repositories. This one, and the frontend mentioned in the about section. While the backend is hosted by Heroku at https://dashboard.heroku.com/apps/salon-on-backend, the android app is still in development and as such the frontend has not been officially deployed to any platform at the time of this documentation. However a walking skeleton of the app can be accessed from the project website located at https://frosty-tereshkova-9806e1.netlify.com/index.html.
 
 **Technologies Used:**
 
@@ -50,7 +50,7 @@ Thomas Goss - tpgoss@live.unc.edu - Backend Developer and Network Admin
 Responsible for implementing the network communications between node.js webserver and the android API, as well as managing the deployment of the backend onto heroku and its associated automated test suites.
 
 **License:**
-TBD
+All source code in this repository and other creative works related to this project are property of the University of North Carolina at Chapel Hill.  
 
 **Acknowledgements:**
 

@@ -54,4 +54,4 @@ TBD
 
 **Acknowledgements:**
 
-We extend our graditude to our mentor Mike Lake, and Professor Jeff Terrel for providing their insights throughout the duration of this project.
+We extend our graditude to our mentor Mike Lake, and Professor Jeff Terrell for providing their insights throughout the duration of this project.

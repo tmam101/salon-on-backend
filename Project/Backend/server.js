@@ -62,13 +62,10 @@ async function addLocation(req, res){
 }
 
 async function updateProfilePhoto(req, res){
-  let email = req.query.id;
-  let photo = req.query.photo;
+  let email = req.body.id;
+  let photo = req.body.photo;
   console.log(req.query)
   console.log(req.body)
-  let body = req.body.base64;
-  console.log("body")
-  console.log(body)
 
   let status= await database.updateProfilePhoto(email, body);
   res.send(JSON.stringify({"status": status}))

@@ -32,7 +32,7 @@ app.use(
     extended: true
   })
 )
-
+app.use(bodyParser.json());
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)
@@ -64,10 +64,9 @@ async function addLocation(req, res){
 async function updateProfilePhoto(req, res){
   let email = req.body.id;
   let photo = req.body.photo;
-  console.log(req.query)
   console.log(req.body)
 
-  let status= await database.updateProfilePhoto(email, body);
+  let status= await database.updateProfilePhoto(email, photo);
   res.send(JSON.stringify({"status": status}))
 }
 

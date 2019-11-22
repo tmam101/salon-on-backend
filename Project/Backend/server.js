@@ -32,7 +32,6 @@ app.use(
     extended: true
   })
 )
-app.use(bodyParser.json());
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)
@@ -123,7 +122,6 @@ async function getClientByID(req, res) {
 async function addStylist(req, res){
   let email = req.query.id;
   let bio = req.query.bio;
-  console.log(req.query.styles)
   let styles = JSON.parse(req.query.styles);
   result = await database.addStylist(email, bio, styles.styleArray)
   res.send(JSON.stringify({"status": status}))
@@ -151,7 +149,6 @@ async function login(req, res){
     return
   }
   let clientProfile = await database.getClientByUserAndPass(user, pass);
-  console.log(clientProfile)
   res.send(JSON.stringify({"profile" : clientProfile}))
 }
 

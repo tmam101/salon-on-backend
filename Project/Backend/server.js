@@ -29,7 +29,8 @@ async function startServer(){
 // ENDPOINTS
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
+    limit: '50mb'
   })
 )
 app.post('/amenity-by-id', getAmenityByID)

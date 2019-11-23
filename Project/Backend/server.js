@@ -30,7 +30,7 @@ async function startServer(){
 app.use(
   bodyParser.urlencoded({
     extended: true,
-    limit: '50mb'
+    limit: '50mb' 
   })
 )
 app.post('/amenity-by-id', getAmenityByID)
@@ -62,11 +62,11 @@ async function addLocation(req, res){
 }
 
 async function updateProfilePhoto(req, res){
-  let email = req.body.id;
-  let photo = req.body.photo;
   console.log(req.body)
+  let email = req.body.id;
+  let pic = req.body.photo;
 
-  let status= await database.updateProfilePhoto(email, photo);
+  let status= await database.updateProfilePhoto(email, pic);
   res.send(JSON.stringify({"status": status}))
 }
 

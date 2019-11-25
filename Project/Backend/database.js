@@ -28,13 +28,13 @@ async function getAllClients() {
 }
 
 async function updatePassword(email, newPass) {
-  result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
+  let result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
   // TODO handle bad results
   console.log(result)
 }
 
 async function addLocation(email, address, zip){
-  result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
+  let result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
   if(result == false){
     return false;
   } else {
@@ -45,7 +45,7 @@ async function addLocation(email, address, zip){
 
 //MORE QUERY FUNCTIONS
 async function searchStylists(term){
-  results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
+  let results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
   return JSON.stringify(results);
 }
 //GET STYLISTS WITH ZIPCODES IN RADIUS
@@ -91,17 +91,17 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getAmenityByID(id){
-    result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
+    let result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
     console.log("Got amenity from DB");
     return result[0];
   }
   async function getClientByID(email){
-    result = await runQuery(`SELECT * FROM user WHERE email ='${email}'`);
+    let result = await runQuery(`SELECT * FROM user WHERE email ='${email}'`);
     console.log("Got client from DB");
     return result[0];
   }
   async function getClientByUserAndPass(user, pass){
-    result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
+    let result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
     if (result.length == 0){
       return {Error: "No user found"}
     }
@@ -109,20 +109,20 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getClientAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    let results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
     return {"bookings": results}
   }
   async function getStylistAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+   let  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
 
   async function createBooking(user, offerID, date, time){
-    status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
+    let status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
       console.log("Error Unable to create booking")
       return false;
@@ -133,12 +133,24 @@ async function searchStylistsByZip(zip, radius){
   }
   
   async function deleteBooking(bid){
-    status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
+    let status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
     if (!status){
       console.log("Unable to remove booking");
       return false;
     } else  {
       console.log("Successfully removed booking");
+      return true;
+    }
+  }
+
+  async function addRating(stylist, client, clean, pro, friend, access, comment){
+    let status = await runQuery(`INSERT INTO ratings VALUES('${stylist}', 
+      '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}')`);
+    if(status ==false){
+      console,log("Unable to add rating")
+      return false;
+    } else {
+      console.log("Successfully added rating")
       return true;
     }
   }
@@ -158,8 +170,6 @@ async function searchStylistsByZip(zip, radius){
     console.log("new user created successfully");
     return true;
   }
-
-
 
   //ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
   //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
@@ -190,14 +200,14 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function deleteStylistComponent(email){
-    status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
+    let status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
     if (status){
       await runQuery(`UPDATE user SET isStylist = false WHERE email = '${email}'`)
     }
   }
 
   async function updateProfilePhoto(email, photo){
-    status = await runQuery(`INSERT INTO profilePhotos VALUES( '${email}', '${photo}') ON DUPLICATE KEY UPDATE photo = '${photo}'`)
+    let status = await runQuery(`INSERT INTO profilePhotos VALUES( '${email}', '${photo}') ON DUPLICATE KEY UPDATE photo = '${photo}'`)
     if (status == false){
       return false;
     } else {
@@ -205,10 +215,9 @@ async function searchStylistsByZip(zip, radius){
     }
   }
   async function getProfilePhoto(email){
-    results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
+    let results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
     return results[0].photo
   }
-
 
 
   //TODO: ADD SALON COMPONENT TO ACCOUNT.
@@ -281,8 +290,6 @@ async function searchStylistsByZip(zip, radius){
   }
 
   //EXPORTS
-  // exports.connect= connect;
-  // exports.disconnect=disconnect;
   exports.transaction=transaction;
   exports.runQuery = runQuery;
   exports.getAllAmenities= getAllAmenities;
@@ -306,3 +313,4 @@ async function searchStylistsByZip(zip, radius){
   exports.updateProfilePhoto=updateProfilePhoto;
   exports.getProfilePhoto= getProfilePhoto;
   exports.addLocation = addLocation;
+  exports.addRating = addRating;

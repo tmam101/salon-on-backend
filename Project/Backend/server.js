@@ -42,6 +42,7 @@ app.post('/get-styles', getAllStylyes)
 app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
 app.post('/add-location', addLocation)
+app.post('/add-rating', addRating)
 
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
@@ -76,6 +77,18 @@ async function getProfilePhoto(req, res){
   } else {
     res.send(JSON.stringify({"status":false}))
   }
+}
+
+async function addRating(req, res){
+  let stylist = red.query.stylist;
+  let client = req.query.email;
+  let clean = req.query.clean;
+  let pro = req.query.pro;
+  let friend = req.query.friend;
+  let access = req.query.access;
+  let comment = req.query.comment;
+  let result = await database.addRating(stylist, client, clean, pro, friend, access, comment)
+  res.send(JSON.stringify({"status":result}));
 }
 
 async function getAllStylyes(req, res){
@@ -126,6 +139,7 @@ async function addStylist(req, res){
   res.send(JSON.stringify({"status": status}))
 }
 
+//REDIRECT ROOT TO PROJECT SITE
 function redirect(req, res) {
   res.redirect('https://frosty-tereshkova-9806e1.netlify.com/index.html/')
 }

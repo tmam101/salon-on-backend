@@ -144,8 +144,9 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function addRating(stylist, client, clean, pro, friend, access, comment){
-    let status = await runQuery(`INSERT INTO ratings VALUES('${stylist}', 
-      '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}')`);
+    let query = `INSERT INTO ratings VALUES('${stylist}', 
+    '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}')`
+    let status = await runQuery(query);
     if(status ==false){
       console,log("Unable to add rating")
       return false;
@@ -155,7 +156,13 @@ async function searchStylistsByZip(zip, radius){
     }
   }
 
-
+  async function getAverageRatings(email){
+    let result = await runQuery(`select avg(cleanliness) as clean, avg(friendliness) as friend, avg(professionalism) as pro, avg(accessibility) as access from (select * from ratings where stylist = '${email}') as average`)
+    if (result == false){
+      return false;
+    }
+    return result[0];
+  }
 
   //FUNCTION TO CREATE NEW ACCOUNT. 'isStylist' and 'isSalon" are booleans, and should be set
   //accordingly on the front end. Bio variables and salonRate should be null when not applicable.
@@ -220,9 +227,37 @@ async function searchStylistsByZip(zip, radius){
   }
 
 
-  //TODO: ADD SALON COMPONENT TO ACCOUNT.
+  //ADD SALON COMPONENT TO ACCOUNT.
+  async function addSalon(email, salonBio, amenities){
+    let statusActivate =  await runQuery(`UPDATE user SET isSalon = TRUE, salonBio = '${salonBio}' WHERE EMAIL = '${email}'`);
+    if (!statusActivate){
+      return false;
+    }
+    let amenQueries = [];
+    amenities.forEach((e)=>{
+      amenQueries.push(`INSERT INTO offersAmenity VALUES ('${email}', ${e})`)
+    })
+    if (amenQueries.length >0){
+      let statusTrans = await transaction(amenQueries);
+      if (!statusTrans){
+        return false;
+      }
+    }
+    return true;
+  }
 
-
+  //REMOVE SALON FROM ACCOUNT
+  async function deleteSalon(email){
+    let statusAmen = await runQuery(`DELETE FROM offersAmenity WHERE email = '${email}'`);
+    if (!statusAmen){
+      return false;
+    }
+    let statusUser = await runQuery(`UPDATE user SET isSalon = false WHERE email = '${email}'`)
+    if (!statusUser){
+      return false;
+    }
+    return true;
+  }
 
 
 
@@ -314,3 +349,6 @@ async function searchStylistsByZip(zip, radius){
   exports.getProfilePhoto= getProfilePhoto;
   exports.addLocation = addLocation;
   exports.addRating = addRating;
+  exports.addSalon = addSalon;
+  exports.deleteSalon = deleteSalon;
+  exports.getAverageRatings = getAverageRatings;

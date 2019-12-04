@@ -43,7 +43,8 @@ app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
 app.post('/add-location', addLocation)
 app.post('/add-rating', addRating)
-
+app.post('/add-salon', addSalon)
+app.post('/get-rating', getRatings)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 async function addLocation(req, res){
@@ -80,7 +81,7 @@ async function getProfilePhoto(req, res){
 }
 
 async function addRating(req, res){
-  let stylist = red.query.stylist;
+  let stylist = req.query.stylist;
   let client = req.query.email;
   let clean = req.query.clean;
   let pro = req.query.pro;
@@ -89,6 +90,15 @@ async function addRating(req, res){
   let comment = req.query.comment;
   let result = await database.addRating(stylist, client, clean, pro, friend, access, comment)
   res.send(JSON.stringify({"status":result}));
+}
+
+async function getRatings(req, res){
+  let email = req.query.id;
+  let results = await database.getAverageRatings(email);
+  if (results == false){
+    res.send(JSON.stringify({"status":false}))
+  }
+  res.send(JSON.stringify({"status":true,"results":results}))
 }
 
 async function getAllStylyes(req, res){
@@ -136,6 +146,14 @@ async function addStylist(req, res){
   let bio = req.query.bio;
   let styles = JSON.parse(req.query.styles);
   result = await database.addStylist(email, bio, styles.styleArray)
+  res.send(JSON.stringify({"status": status}))
+}
+
+async function addSalon(req, res){
+  let email = req.query.id;
+  let bio = req.query.bio;
+  let amenities = req.query.amenities.split(" "); //amenities are space separated id's to array
+  let status = await database.addSalon(email, bio, amenities)
   res.send(JSON.stringify({"status": status}))
 }
 

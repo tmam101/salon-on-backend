@@ -38,7 +38,7 @@ app.post('/login', login)
 app.post('/createuser', createUser)
 app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 app.post('/add-stylist', addStylist)
-app.post('/get-styles', getAllStylyes)
+app.post('/get-styles', getAllStyles)
 app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
 app.post('/add-location', addLocation)
@@ -122,8 +122,8 @@ async function getRatings(req, res){
   res.send(JSON.stringify({"status":true,"results":results}))
 }
 
-async function getAllStylyes(req, res){
-  let results=JSON.stringify(await database.getAllHairStyles())
+async function getAllStyles(req, res){
+  let results=await database.getAllHairStyles()
   if (results){
     res.send(JSON.stringify({"status":true,"results":results}))
   } else {

@@ -27,13 +27,9 @@ async function startServer(){
 }
 
 // ENDPOINTS
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: '50mb' 
-  })
-)
+app.use(bodyParser.urlencoded({extended: true,limit: '50mb'}))
 //app.use(bodyParser.json({limit: '50mb'}))
+//app.use(multer());
 app.post('/amenity-by-id', getAmenityByID)
 app.post('/refresh', refresh)
 app.post('/client-by-id', getClientByID)
@@ -46,9 +42,32 @@ app.post('/get-styles', getAllStylyes)
 app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
 app.post('/add-location', addLocation)
-
+app.post('/add-rating', addRating)
+app.post('/add-salon', addSalon)
+app.post('/get-rating', getRatings)
+app.post('/delete-user', deleteUser)
+app.post('/get-amenities', getAllAmenities)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+async function getAllAmenities(req, res){
+  let results = await database.getAllAmenities();
+  if (results == false){
+    res.send(JSON.stringify({"status": false}))
+  } else {
+    res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
+
+async function deleteUser(req, res){
+  let email = req.query.id;
+  let result = await database.deleteUser(email);
+  if (result){
+    res.send(JSON.stringify({"status": true}))
+  } else {
+    res.send(JSON.stringify({"status": false}))
+  }
+}
 async function addLocation(req, res){
   info = req.query;
   let zip = info.zip;
@@ -82,6 +101,27 @@ async function getProfilePhoto(req, res){
   }
 }
 
+async function addRating(req, res){
+  let stylist = req.query.stylist;
+  let client = req.query.email;
+  let clean = req.query.clean;
+  let pro = req.query.pro;
+  let friend = req.query.friend;
+  let access = req.query.access;
+  let comment = req.query.comment;
+  let result = await database.addRating(stylist, client, clean, pro, friend, access, comment)
+  res.send(JSON.stringify({"status":result}));
+}
+
+async function getRatings(req, res){
+  let email = req.query.id;
+  let results = await database.getAverageRatings(email);
+  if (results == false){
+    res.send(JSON.stringify({"status":false}))
+  }
+  res.send(JSON.stringify({"status":true,"results":results}))
+}
+
 async function getAllStylyes(req, res){
   let results=JSON.stringify(await database.getAllHairStyles())
   if (results){
@@ -90,6 +130,7 @@ async function getAllStylyes(req, res){
     res.send(JSON.stringify({"status":false}))
   }
 }
+
 
 async function getAmenityByID(req, res) {
   console.log("called get amenity by id " + req.query.id);
@@ -130,6 +171,15 @@ async function addStylist(req, res){
   res.send(JSON.stringify({"status": status}))
 }
 
+async function addSalon(req, res){
+  let email = req.query.id;
+  let bio = req.query.bio;
+  let amenities = req.query.amenities; //amenities are space separated id's to array
+  let status = await database.addSalon(email, bio, amenities)
+  res.send(JSON.stringify({"status": status}))
+}
+
+//REDIRECT ROOT TO PROJECT SITE
 function redirect(req, res) {
   res.redirect('https://frosty-tereshkova-9806e1.netlify.com/index.html/')
 }

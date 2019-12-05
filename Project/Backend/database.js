@@ -28,13 +28,13 @@ async function getAllClients() {
 }
 
 async function updatePassword(email, newPass) {
-  result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
+  let result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
   // TODO handle bad results
   console.log(result)
 }
 
 async function addLocation(email, address, zip){
-  result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
+  let result = await runQuery(`INSERT INTO isLocated VALUES( '${email}', '${address}', ${zip}) ON DUPLICATE KEY UPDATE address = '${address}', zip = ${zip}`)
   if(result == false){
     return false;
   } else {
@@ -45,7 +45,7 @@ async function addLocation(email, address, zip){
 
 //MORE QUERY FUNCTIONS
 async function searchStylists(term){
-  results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
+  let results = await runQuery(`SELECT * FROM user WHERE isStylist = true AND first like '%${term}%' OR last like '%${term}%'`)
   return JSON.stringify(results);
 }
 //GET STYLISTS WITH ZIPCODES IN RADIUS
@@ -91,17 +91,17 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getAmenityByID(id){
-    result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
+    let result = await runQuery(`SELECT * FROM amenities WHERE aid=${id}`);
     console.log("Got amenity from DB");
     return result[0];
   }
   async function getClientByID(email){
-    result = await runQuery(`SELECT * FROM user WHERE email ='${email}'`);
+    let result = await runQuery(`SELECT * FROM user WHERE email ='${email}'`);
     console.log("Got client from DB");
     return result[0];
   }
   async function getClientByUserAndPass(user, pass){
-    result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
+    let result = await runQuery(`SELECT * FROM user WHERE email = '${user}' AND hashword = '${sha1(pass)}'`)
     if (result.length == 0){
       return {Error: "No user found"}
     }
@@ -109,20 +109,20 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function getClientAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    let results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
     return {"bookings": results}
   }
   async function getStylistAppointments(user){
-    results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+   let  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return {"bookings": results}
   }
 
   async function createBooking(user, offerID, date, time){
-    status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
+    let status = await runQuery(`INSERT INTO bookings VALUES(null,'${user}', '${offerID}', null, '${date}', '${time}', FALSE, FALSE, FALSE)`);
     if(!status){
       console.log("Error Unable to create booking")
       return false;
@@ -133,7 +133,7 @@ async function searchStylistsByZip(zip, radius){
   }
   
   async function deleteBooking(bid){
-    status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
+    let status = await runQuery(`DELETE FROM bookings WHERE bid = '${bid}'`);
     if (!status){
       console.log("Unable to remove booking");
       return false;
@@ -143,7 +143,26 @@ async function searchStylistsByZip(zip, radius){
     }
   }
 
+  async function addRating(stylist, client, clean, pro, friend, access, comment){
+    let query = `INSERT INTO ratings VALUES('${stylist}', 
+    '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}')`
+    let status = await runQuery(query);
+    if(status ==false){
+      console,log("Unable to add rating")
+      return false;
+    } else {
+      console.log("Successfully added rating")
+      return true;
+    }
+  }
 
+  async function getAverageRatings(email){
+    let result = await runQuery(`select avg(cleanliness) as clean, avg(friendliness) as friend, avg(professionalism) as pro, avg(accessibility) as access from (select * from ratings where stylist = '${email}') as average`)
+    if (result == false){
+      return false;
+    }
+    return result[0];
+  }
 
   //FUNCTION TO CREATE NEW ACCOUNT. 'isStylist' and 'isSalon" are booleans, and should be set
   //accordingly on the front end. Bio variables and salonRate should be null when not applicable.
@@ -159,7 +178,24 @@ async function searchStylistsByZip(zip, radius){
     return true;
   }
 
-
+  async function deleteUser(email){
+    let deleteQueries = []
+    deleteQueries.push(`DELETE FROM bookings WHERE offerID IN (SELECT offerID FROM offersStyle WHERE offersStyle.stylist = '${email}');`);
+    deleteQueries.push(`DELETE FROM bookings WHERE client = '${email}'`);
+    deleteQueries.push(`DELETE FROM isLocated WHERE email ='${email}'`);
+    deleteQueries.push(`DELETE FROM offersAmenity WHERE email ='${email}'`);
+    deleteQueries.push(`DELETE FROM offersStyle WHERE stylist ='${email}'`);
+    deleteQueries.push(`DELETE FROM ratings WHERE stylist ='${email}' OR client = '${email}'`);
+    deleteQueries.push(`DELETE FROM profilePhotos WHERE id ='${email}'`);
+    deleteQueries.push(`DELETE FROM user WHERE email ='${email}'`);
+  
+    let status = await transaction(deleteQueries);
+    if (status == false){
+      return false
+    }else {
+      return true;
+    }
+  }
 
   //ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
   //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
@@ -190,14 +226,14 @@ async function searchStylistsByZip(zip, radius){
   }
 
   async function deleteStylistComponent(email){
-    status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
+    let status = await runQuery(`DELETE FROM offersStyle WHERE stylist = '${email}'`);
     if (status){
       await runQuery(`UPDATE user SET isStylist = false WHERE email = '${email}'`)
     }
   }
 
   async function updateProfilePhoto(email, photo){
-    status = await runQuery(`INSERT INTO profilePhotos VALUES( '${email}', '${photo}') ON DUPLICATE KEY UPDATE photo = '${photo}'`)
+    let status = await runQuery(`INSERT INTO profilePhotos VALUES( '${email}', '${photo}') ON DUPLICATE KEY UPDATE photo = '${photo}'`)
     if (status == false){
       return false;
     } else {
@@ -205,15 +241,42 @@ async function searchStylistsByZip(zip, radius){
     }
   }
   async function getProfilePhoto(email){
-    results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
+    let results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
     return results[0].photo
   }
 
 
+  //ADD SALON COMPONENT TO ACCOUNT.
+  async function addSalon(email, salonBio, amenities){
+    let statusActivate =  await runQuery(`UPDATE user SET isSalon = TRUE, salonBio = '${salonBio}' WHERE EMAIL = '${email}'`);
+    if (!statusActivate){
+      return false;
+    }
+    let amenQueries = [];
+    amenities.forEach((e)=>{
+      amenQueries.push(`INSERT INTO offersAmenity VALUES ('${email}', ${e})`)
+    })
+    if (amenQueries.length >0){
+      let statusTrans = await transaction(amenQueries);
+      if (!statusTrans){
+        return false;
+      }
+    }
+    return true;
+  }
 
-  //TODO: ADD SALON COMPONENT TO ACCOUNT.
-
-
+  //REMOVE SALON FROM ACCOUNT
+  async function deleteSalon(email){
+    let statusAmen = await runQuery(`DELETE FROM offersAmenity WHERE email = '${email}'`);
+    if (!statusAmen){
+      return false;
+    }
+    let statusUser = await runQuery(`UPDATE user SET isSalon = false WHERE email = '${email}'`)
+    if (!statusUser){
+      return false;
+    }
+    return true;
+  }
 
 
 
@@ -281,8 +344,6 @@ async function searchStylistsByZip(zip, radius){
   }
 
   //EXPORTS
-  // exports.connect= connect;
-  // exports.disconnect=disconnect;
   exports.transaction=transaction;
   exports.runQuery = runQuery;
   exports.getAllAmenities= getAllAmenities;
@@ -306,3 +367,8 @@ async function searchStylistsByZip(zip, radius){
   exports.updateProfilePhoto=updateProfilePhoto;
   exports.getProfilePhoto= getProfilePhoto;
   exports.addLocation = addLocation;
+  exports.addRating = addRating;
+  exports.addSalon = addSalon;
+  exports.deleteSalon = deleteSalon;
+  exports.getAverageRatings = getAverageRatings;
+  exports.deleteUser = deleteUser;

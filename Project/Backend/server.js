@@ -45,8 +45,19 @@ app.post('/add-location', addLocation)
 app.post('/add-rating', addRating)
 app.post('/add-salon', addSalon)
 app.post('/get-rating', getRatings)
+app.post('/delete-user', deleteUser)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+async function deleteUser(req, res){
+  let email = req.query.id;
+  let result = await database.deleteUser(email);
+  if (result){
+    res.send(JSON.stringify({"status": true}))
+  } else {
+    res.send(JSON.stringify({"status": false}))
+  }
+}
 async function addLocation(req, res){
   info = req.query;
   let zip = info.zip;
@@ -109,6 +120,7 @@ async function getAllStylyes(req, res){
     res.send(JSON.stringify({"status":false}))
   }
 }
+
 
 async function getAmenityByID(req, res) {
   console.log("called get amenity by id " + req.query.id);

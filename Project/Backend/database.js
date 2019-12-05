@@ -178,6 +178,25 @@ async function searchStylistsByZip(zip, radius){
     return true;
   }
 
+  async function deleteUser(email){
+    let deleteQueries = []
+    deleteQueries.push(`DELETE FROM bookings WHERE offerID IN (SELECT offerID FROM offersStyle WHERE offersStyle.stylist = '${email}');`);
+    deleteQueries.push(`DELETE FROM bookings WHERE client = '${email}'`);
+    deleteQueries.push(`DELETE FROM isLocated WHERE email ='${email}'`);
+    deleteQueries.push(`DELETE FROM offersAmenity WHERE email ='${email}'`);
+    deleteQueries.push(`DELETE FROM offersStyle WHERE stylist ='${email}'`);
+    deleteQueries.push(`DELETE FROM ratings WHERE stylist ='${email}' OR client = '${email}'`);
+    deleteQueries.push(`DELETE FROM profilePhotos WHERE id ='${email}'`);
+    deleteQueries.push(`DELETE FROM user WHERE email ='${email}'`);
+  
+    let status = await transaction(deleteQueries);
+    if (status == false){
+      return false
+    }else {
+      return true;
+    }
+  }
+
   //ADDS STYLIST COMPONENT TO A USER ACCOUNT. 'styles' should be array of
   //style objects in the form {id: "id matching db table", price: "value", deposit: "value", duration: "time to complete"}
 
@@ -352,3 +371,4 @@ async function searchStylistsByZip(zip, radius){
   exports.addSalon = addSalon;
   exports.deleteSalon = deleteSalon;
   exports.getAverageRatings = getAverageRatings;
+  exports.deleteUser = deleteUser;

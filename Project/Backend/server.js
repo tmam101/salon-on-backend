@@ -46,8 +46,18 @@ app.post('/add-rating', addRating)
 app.post('/add-salon', addSalon)
 app.post('/get-rating', getRatings)
 app.post('/delete-user', deleteUser)
+app.post('/get-amenities', getAllAmenities)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+async function getAllAmenities(req, res){
+  let results = await database.getAllAmenities();
+  if (results == false){
+    res.send(JSON.stringify({"status": false}))
+  } else {
+    res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
 
 async function deleteUser(req, res){
   let email = req.query.id;
@@ -164,7 +174,7 @@ async function addStylist(req, res){
 async function addSalon(req, res){
   let email = req.query.id;
   let bio = req.query.bio;
-  let amenities = req.query.amenities.split(" "); //amenities are space separated id's to array
+  let amenities = req.query.amenities; //amenities are space separated id's to array
   let status = await database.addSalon(email, bio, amenities)
   res.send(JSON.stringify({"status": status}))
 }

@@ -252,7 +252,10 @@ async function searchStylistsByZip(zip, radius){
     if (!statusActivate){
       return false;
     }
+    console.log(amenities);
     let amenQueries = [];
+
+    
     amenities.forEach((e)=>{
       amenQueries.push(`INSERT INTO offersAmenity VALUES ('${email}', ${e})`)
     })

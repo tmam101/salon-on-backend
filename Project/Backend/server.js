@@ -174,7 +174,7 @@ async function addStylist(req, res){
 async function addSalon(req, res){
   let email = req.query.id;
   let bio = req.query.bio;
-  let amenities = req.query.amenities; //amenities are space separated id's to array
+  let amenities = JSON.parse(req.query.amenities); //parse array from string
   let status = await database.addSalon(email, bio, amenities)
   res.send(JSON.stringify({"status": status}))
 }

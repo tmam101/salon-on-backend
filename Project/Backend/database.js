@@ -112,13 +112,13 @@ async function searchStylistsByZip(zip, radius){
     let results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
-    return {"bookings": results}
+    return results
   }
   async function getStylistAppointments(user){
    let  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
-    return {"bookings": results}
+    return results
   }
 
   async function createBooking(user, offerID, date, time){

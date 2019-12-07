@@ -47,11 +47,33 @@ app.post('/add-salon', addSalon)
 app.post('/get-rating', getRatings)
 app.post('/delete-user', deleteUser)
 app.post('/get-amenities', getAllAmenities)
+app.post('/get-client-bookings', getClientBookings)
+app.post('/get-stylist-bookings', getStylistBookings)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 
 async function getAllAmenities(req, res){
   let results = await database.getAllAmenities();
+  if (results == false){
+    res.send(JSON.stringify({"status": false}))
+  } else {
+    res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
+
+async function getClientBookings(req, res){
+  let email = req.query.id;
+  let results = await database.getClientAppointments(email);
+  if (results == false){
+    res.send(JSON.stringify({"status": false}))
+  } else {
+    res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
+
+async function getStylistBookings(req, res){
+  let email = req.query.id;
+  let results = await database.getStylistAppointments(email);
   if (results == false){
     res.send(JSON.stringify({"status": false}))
   } else {

@@ -250,7 +250,7 @@ describe('getStylistAppointments', function() {
     await database.createBooking("jestGetStylistAppointments@mail.com", offerID, "2019-10-11", "09:40:00")
     //test
     result = await database.getStylistAppointments("jestGetStylistAppointments@mail.com");
-    bookings = result.bookings;
+    bookings = result;
     expect(bookings.length).toBe(2);
     expect(bookings[0].bookTime).toBe("09:30:00")
     expect(bookings[1].bookTime).toBe("09:40:00")

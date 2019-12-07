@@ -65,6 +65,7 @@ async function getAllAmenities(req, res){
 async function getClientBookings(req, res){
   let email = req.query.id;
   let results = await database.getClientAppointments(email);
+  console.log(results)
   if (results == false){
     res.send(JSON.stringify({"status": false}))
   } else {

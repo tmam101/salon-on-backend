@@ -129,7 +129,6 @@ async function addLocation(req, res){
 }
 
 async function updateProfilePhoto(req, res){
-  console.log(req)
   info = req.body
   let email = info.id;
   let pic = info.photo;

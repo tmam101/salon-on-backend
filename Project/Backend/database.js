@@ -108,14 +108,31 @@ async function searchStylistsByZip(zip, radius){
     return result[0];
   }
 
+  async function confirmBooking(bid, accountType){
+    let queryType = ""
+    if (accountType == "salon"){
+      queryType = "salonConfirm"
+    } else if (accountType = "client"){
+      queryType = "clientConfirm"
+    } else if (accountType = "stylist"){
+      queryType = "stylistConfirm"
+    }
+    let result = await runQuery(`UPDATE bookings SET ${queryType} = TRUE WHERE bid = ${bid};`)
+    if (status == false){
+      return false
+    }else {
+      return true;
+    }
+  }
+
   async function getClientAppointments(user){
-    let results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+    let results = await runQuery(`select bid client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND client = '${user}';`);
     return results
   }
   async function getStylistAppointments(user){
-   let  results = await runQuery(`select client, stylist, salon, styleName, category, bookDate, bookTime, price,
+   let  results = await runQuery(`select bid client, stylist, salon, styleName, category, bookDate, bookTime, price,
     deposit, duration, clientConfirm, stylistConfirm, salonConfirm from offersStyle S, bookings B, hairstyles H
     WHERE B.offerID = S.offerID AND S.hid = H.hid AND stylist = '${user}';`);
     return results
@@ -375,3 +392,4 @@ async function searchStylistsByZip(zip, radius){
   exports.deleteSalon = deleteSalon;
   exports.getAverageRatings = getAverageRatings;
   exports.deleteUser = deleteUser;
+  exports.confirmBooking = confirmBooking;

@@ -36,9 +36,9 @@ app.post('/client-by-id', getClientByID)
 app.get('/', redirect)
 app.post('/login', login)
 app.post('/createuser', createUser)
-app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 app.post('/add-stylist', addStylist)
 app.post('/get-styles', getAllStyles)
+app.post('/searchstylistslocation', searchStylistLocation)  // TODO
 app.post('/update-profile-photo', updateProfilePhoto)
 app.post('/get-profile-photo', getProfilePhoto)
 app.post('/add-location', addLocation)
@@ -49,6 +49,7 @@ app.post('/delete-user', deleteUser)
 app.post('/get-amenities', getAllAmenities)
 app.post('/get-client-bookings', getClientBookings)
 app.post('/get-stylist-bookings', getStylistBookings)
+app.post('/confirm-booking', confirmBooking)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 
@@ -78,6 +79,17 @@ async function getStylistBookings(req, res){
     res.send(JSON.stringify({"status": false}))
   } else {
     res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
+
+async function confirmBooking(req, res){
+  let bid = req.query.bid;
+  let accountType = req.query.accountType;
+  let result = await database.confirmBooking(bid, accountType);
+  if (result){
+    res.send(JSON.stringify({"status": true}))
+  } else {
+    res.send(JSON.stringify({"status": false}))
   }
 }
 

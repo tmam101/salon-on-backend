@@ -66,7 +66,7 @@ async function getClientBookings(req, res){
   let email = req.query.id;
   let results = await database.getClientAppointments(email);
   console.log(results)
-  if (results == false){
+  if (results === false){
     res.send(JSON.stringify({"status": false}))
   } else {
     res.send(JSON.stringify({"status": true, "results":results}))
@@ -76,7 +76,7 @@ async function getClientBookings(req, res){
 async function getStylistBookings(req, res){
   let email = req.query.id;
   let results = await database.getStylistAppointments(email);
-  if (results == false){
+  if (results === false){
     res.send(JSON.stringify({"status": false}))
   } else {
     res.send(JSON.stringify({"status": true, "results":results}))

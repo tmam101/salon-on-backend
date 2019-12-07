@@ -27,6 +27,10 @@ async function getAllClients() {
   return await runQuery("SELECT * FROM user");
 }
 
+async function getStylistOffers(email){
+  return await runQuery(`SELECT offerID, h.hid, stylist, styleName, category, price, deposit, duration FROM offersStyle o, hairstyles h WHERE h.hid=o.hid AND stylist = '${email}'`)
+}
+
 async function updatePassword(email, newPass) {
   let result = await runQuery(`UPDATE user SET hashword = '${sha1(newPass)}' WHERE email='${email}'`)
   // TODO handle bad results
@@ -393,3 +397,4 @@ async function searchStylistsByZip(zip, radius){
   exports.getAverageRatings = getAverageRatings;
   exports.deleteUser = deleteUser;
   exports.confirmBooking = confirmBooking;
+  exports.getStylistOffers = getStylistOffers;

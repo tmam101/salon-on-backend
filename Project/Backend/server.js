@@ -50,8 +50,20 @@ app.post('/get-amenities', getAllAmenities)
 app.post('/get-client-bookings', getClientBookings)
 app.post('/get-stylist-bookings', getStylistBookings)
 app.post('/confirm-booking', confirmBooking)
+app.post('/get-stylist-offers', getStylistOffers)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
+
+async function getStylistOffers(req, res){
+  let email = req.query.id;
+  let results = await database.getStylistOffers(email);
+  console.log(results)
+  if (results === false){
+    res.send(JSON.stringify({"status": false}))
+  } else {
+    res.send(JSON.stringify({"status": true, "results":results}))
+  }
+}
 
 async function getAllAmenities(req, res){
   let results = await database.getAllAmenities();

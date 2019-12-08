@@ -287,7 +287,7 @@ async function searchStylistLocation(req, res){
   }
   info = req.query;
   let zip = info.zip;
-  let address = info.addr+" "+info.city+" "+info.state;
+  let address = info.addr;
   let radius = info.radius;
 
   let profiles = await database.searchStylistsSpecificLocation(address, parseInt(zip), parseInt(radius));

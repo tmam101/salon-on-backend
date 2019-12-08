@@ -83,7 +83,8 @@ async function searchStylistsByZip(zip, radius){
     const getDistances = async function(batch) {
         var results = []
         for(var i = 0; i < batch.length; i++) {
-          const distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
+          let distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
+          distance = distance / 1609.3440057765;
           if (distance<radius){
             results.push(batch[i]);
           }

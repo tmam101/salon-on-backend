@@ -17,11 +17,11 @@ async function distanceBetweenTwoPoints(origin, destination) {
 	const parameters = "origins=" + origin + "&destinations=" + destination + "&key=" + googleAPIKEY
 	const calculatedURL = baseURL + parameters
 	var response = await network.get(calculatedURL)
-	var distanceInMiles = response.rows[0].elements[0].distance.text.replace(" mi", "")
+
+	var distanceInMeters = response.rows[0].elements[0].distance.value
 	var timeToTravel = response.rows[0].elements[0].duration.text // TODO This is so far unused
 	// TODO We can also get these values in meters and seconds.
-	console.log(distanceInMiles)
-	return distanceInMiles
+	return distanceInMeters
 }
 
 //exports

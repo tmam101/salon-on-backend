@@ -86,6 +86,7 @@ async function searchStylistsByZip(zip, radius){
           let distance = await helperFunctions.distanceBetweenTwoPoints(address, batch[i].address)
           distance = distance / 1609.3440057765;
           if (distance<radius){
+            batch[i]["distance"] = distance;
             results.push(batch[i]);
           }
         }

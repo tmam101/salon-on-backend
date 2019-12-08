@@ -140,10 +140,10 @@ async function updateProfilePhoto(req, res){
 async function getProfilePhoto(req, res){
   let email = req.query.id
   result = await database.getProfilePhoto(email);
-  if (results){
-    res.send(JSON.stringify({"status":true,"results":result}))
-  } else {
+  if (result === false){
     res.send(JSON.stringify({"status":false}))
+  } else {
+    res.send(JSON.stringify({"status":true,"results":result}))
   }
 }
 
@@ -233,7 +233,6 @@ function redirect(req, res) {
 //RETURNS PROFILE FROM LOGIN
 async function login(req, res){
   console.log("attempting to login...");
-  console.log(req)
   // Handle no parameters
   if (req.query == undefined) { // TODO This probably isn't right.
     console.log("Login Failed: No parameters");

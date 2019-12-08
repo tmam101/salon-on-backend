@@ -265,7 +265,13 @@ async function searchStylistsByZip(zip, radius){
   }
   async function getProfilePhoto(email){
     let results = await runQuery(`select photo from profilePhotos where id = '${email}'`)
-    return results[0].photo
+    if(results.length == 0){
+      return false;
+    } else if(results[0].photo === null) {
+      return false;
+    } else {
+      return results[0].photo
+    }
   }
 
 

@@ -213,10 +213,10 @@ async function getClientByID(req, res) {
     res.send(JSON.stringify({"status" : "no ID provided"}))
   }
   let client = await database.getClientByID(id)
-  if (client) {
-    res.send(JSON.stringify(client));
+  if (client === false) {
+    res.send(JSON.stringify({"status":false}));
   } else {
-    res.send(JSON.stringify({"status":"No client found"}))
+    res.send(JSON.stringify({"status":true, "results":client}))
   }
 }
 

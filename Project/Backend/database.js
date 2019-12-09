@@ -168,7 +168,7 @@ async function searchStylistsByZip(zip, radius){
 
   async function addRating(stylist, client, clean, pro, friend, access, comment){
     let query = `INSERT INTO ratings VALUES('${stylist}', 
-    '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}')`
+    '${client}', ${clean}, ${pro}, ${friend}, ${access}, '${comment}, null')`
     let status = await runQuery(query);
     if(status ==false){
       console,log("Unable to add rating")

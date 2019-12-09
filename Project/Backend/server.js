@@ -51,6 +51,7 @@ app.post('/get-client-bookings', getClientBookings)
 app.post('/get-stylist-bookings', getStylistBookings)
 app.post('/confirm-booking', confirmBooking)
 app.post('/get-stylist-offers', getStylistOffers)
+app.post('/create-booking', createBooking)
 
 // ***************** ENDPOINT IMPLEMENTATION FUNCTIONS *********************
 
@@ -93,6 +94,17 @@ async function getStylistBookings(req, res){
   } else {
     res.send(JSON.stringify({"status": true, "results":results}))
   }
+}
+
+async function createBooking(req, res){
+  let client = req.query.client;
+  let offer = req.query.offer;
+  let date = req.query.date;
+  let time = req.query.time;
+
+  let result = await database.createBooking(client, offer, date, time);
+  res.send(JSON.stringify({"status": result}))
+
 }
 
 async function confirmBooking(req, res){

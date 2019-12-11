@@ -127,7 +127,7 @@ describe('searchStylists', function() {
     const stylists = await database.searchStylists("susie")
     expect(stylists).toBeDefined()
     expect(JSON.parse(stylists).length).toBeGreaterThan(0)
-    expect(JSON.parse(stylists)[0].first).toBe("susie")
+    expect(JSON.parse(stylists)[0].first).toBe("Susie")
   })
   it('should handle errors', async function() {
     // shouldn't have errors
@@ -193,7 +193,7 @@ describe('getClientByID', function() {
   it('should be accurate', async function() {
     const client = await database.getClientByID("susie@mail.com")
     expect(client).toBeDefined()
-    expect(client.first).toBe("susie")
+    expect(client.first).toBe("Susie")
   })
   it('should handle errors', async function() {
     // TODO

@@ -52,10 +52,10 @@ describe('refresh', function() {
 
 describe('getClientByID', function() {
   it('should be accurate', async function() {
-    var req = new Request({id: "thomas@mail.com"})
+    var req = new Request({id: "susie@mail.com"})
     var res = new Response()
     await server.getClientByID(req, res)
-    expect(res.value).toBe("{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":0}")
+    expect(res.value).toBe("{\"status\":true,\"results\":{\"email\":\"susie@mail.com\",\"hashword\":\"1bc60d6644e3577357e874b7d86e84ffcc155014\",\"first\":\"Susie\",\"last\":\"Jenkins\",\"isStylist\":1,\"isSalon\":0,\"stylistBio\":\"TeeHee\",\"salonBio\":\"null\",\"salonRate\":0}}")
   })
 })
 
@@ -68,12 +68,13 @@ describe('redirect', function() {
 })
 
 describe('login', function() {
-  it('should be accurate', async function() {
-    var req = new Request({user: "thomas@mail.com", pass: "thomastestpassword"})
+  it('should not accept an incorrect password', async function() {
+    var req = new Request({user: "susie@mail.com", pass: "thomastestpassword"})
     var res = new Response()
     await server.login(req, res)
-    expect(res.value).toBe("{\"profile\":{\"email\":\"thomas@mail.com\",\"hashword\":\"6af9a2627bbccb10cc866c46d6efc50da709dc19\",\"first\":\"goss\",\"last\":\"thomas\",\"isStylist\":0,\"isSalon\":0,\"stylistBio\":\"none\",\"salonBio\":\"none\",\"salonRate\":0}}")
+    expect(res.value).toBe("{\"profile\":{\"Error\":\"No user found\"}}")
   })
+  // TODO Handle correct password
   it('should handle errors', async function() {
 
   })
